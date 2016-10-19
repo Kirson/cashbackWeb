@@ -13,10 +13,11 @@ import com.cashback.interfaces.Globales;
 import com.cashback.interfaces.IActorRol;
 import com.cashback.interfaces.IUsuario;
 import com.cashback.model.Usuario;
+import java.io.Serializable;
 
 @SessionScoped
 @ManagedBean
-public class LoginCtr {
+public class LoginCtr implements Serializable {
 	private Usuario u, usuario;
 	private String usrNombre;
 	private String usrPassword, usrPasswordNuevo, usrPasswordNuevo2;

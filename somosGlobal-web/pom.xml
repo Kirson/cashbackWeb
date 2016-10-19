@@ -50,6 +50,12 @@
             <version>1.4.7</version>
         </dependency>
         
+        <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+            <version>2.4</version>
+        </dependency>
+        
          <dependency>
             <groupId>com.somosglobal</groupId>
             <artifactId>somosGlobal-ejb</artifactId>

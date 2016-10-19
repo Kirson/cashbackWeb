@@ -17,6 +17,8 @@ import java.util.List;
 public interface IPuntosActor {
     
     void crearPuntos(PuntosActor puntos) throws ExcGuardarRegistro;
+    
+    
 
     List<PuntosActor> recuperarPuntos(Actor actor);
 }

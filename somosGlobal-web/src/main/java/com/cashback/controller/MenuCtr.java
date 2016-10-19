@@ -15,10 +15,11 @@ import com.cashback.interfaces.IMenu;
 import com.cashback.interfaces.IMenuPerfil;
 import com.cashback.model.Menu;
 import com.cashback.model.Usuario;
+import java.io.Serializable;
 
 @SessionScoped
 @ManagedBean
-public class MenuCtr {
+public class MenuCtr implements Serializable {
 	private MenuModel menuModel;
 	private Usuario usuario;
 	@EJB
@@ -119,16 +120,16 @@ public class MenuCtr {
 		consultasSubmenu.addElement(item10);
                 
                 Menu men11 = sMenu.recuperarMenu("CONSULTAS:PUNTOS");
-		DefaultMenuItem item11 = new DefaultMenuItem("Actor");
-		item11.setUrl(men10.getMenUrl());
+		DefaultMenuItem item11 = new DefaultMenuItem("Puntos");
+		item11.setUrl(men11.getMenUrl());
 		item11.setIcon("ui-icon-person");
 		item11.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
 				men11) != null);
 		consultasSubmenu.addElement(item11);
                 
                 Menu men12 = sMenu.recuperarMenu("CONSULTAS:DEMOPUNTOS");
-		DefaultMenuItem item12 = new DefaultMenuItem("Actor");
-		item12.setUrl(men10.getMenUrl());
+		DefaultMenuItem item12 = new DefaultMenuItem("Puntos demo");
+		item12.setUrl(men12.getMenUrl());
 		item12.setIcon("ui-icon-person");
 		item12.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
 				men12) != null);

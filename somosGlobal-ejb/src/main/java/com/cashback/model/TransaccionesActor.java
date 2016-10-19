@@ -63,6 +63,10 @@ public class TransaccionesActor implements Serializable {
     private Date fechaTransaccion;
     @Column(name = "valor_compra")
     private BigDecimal valorCompra;
+    @Column(name = "porcentaje_descuento")
+    private BigDecimal porcentajeDescuento;
+    @Column(name = "descripcion_compra")
+    private String descripcionCompra;
     
 
     //bi-directional many-to-one association to Actor
@@ -166,6 +170,22 @@ public class TransaccionesActor implements Serializable {
 
     public void setLocalVenta(Actor localVenta) {
         this.localVenta = localVenta;
+    }
+
+    public BigDecimal getPorcentajeDescuento() {
+        return porcentajeDescuento;
+    }
+
+    public void setPorcentajeDescuento(BigDecimal porcentajeDescuento) {
+        this.porcentajeDescuento = porcentajeDescuento;
+    }
+
+    public String getDescripcionCompra() {
+        return descripcionCompra;
+    }
+
+    public void setDescripcionCompra(String descripcionCompra) {
+        this.descripcionCompra = descripcionCompra;
     }
 
    

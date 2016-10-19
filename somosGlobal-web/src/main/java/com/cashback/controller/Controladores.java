@@ -36,8 +36,9 @@ import com.cashback.model.Localidad;
 import com.cashback.model.Perfil;
 import com.cashback.model.Provincia;
 import com.cashback.model.Usuario;
+import java.io.Serializable;
 
-public class Controladores {
+public class Controladores implements Serializable{
 	protected String pathImagenes, lvPalabrasClave, palabraClaveAct;
 	protected String servidorNombre = "";
 
@@ -271,5 +272,32 @@ public class Controladores {
 	public void setPalabraClaveAct(String palabraClaveAct) {
 		this.palabraClaveAct = palabraClaveAct;
 	}
+        
+        protected void ponerMensajeInfo(final String summary, final String detail) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesMessage infoMessage = new FacesMessage();
+        infoMessage.setSummary(summary);
+        infoMessage.setDetail(detail);
+        infoMessage.setSeverity(FacesMessage.SEVERITY_INFO);
+        context.addMessage(null, infoMessage);
+    }
+
+    protected void ponerMensajeError(final String summary, final String detail) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesMessage errorMessage = new FacesMessage();
+        errorMessage.setSummary(summary);
+        errorMessage.setDetail(detail);
+        errorMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+        context.addMessage(null, errorMessage);
+    }
+
+    protected void ponerMensajeWarning(final String summary, final String detail) {
+        FacesMessage infoMessage = new FacesMessage();
+        FacesContext context = FacesContext.getCurrentInstance();
+        infoMessage.setSummary(summary);
+        infoMessage.setDetail(detail);
+        infoMessage.setSeverity(FacesMessage.SEVERITY_WARN);
+        context.addMessage(null, infoMessage);
+    }
 
 }

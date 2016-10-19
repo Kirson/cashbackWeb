@@ -1,6 +1,7 @@
 package com.cashback.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -172,8 +173,12 @@ public class Actor implements Serializable {
 
 	@Transient
 	private List<Actor> actoresHijos;
+        
+        @Transient
+        private BigDecimal porcentaje;
 
 	public Actor() {
+            porcentaje = new BigDecimal(0);
 	}
 
 	public int getIdAct() {
@@ -534,6 +539,28 @@ public class Actor implements Serializable {
 		this.actoresHijos = actoresHijos;
 	}
 
+    public BigDecimal getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(BigDecimal porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+        
+        
+
+        @Override
+        public String toString() {
+            String str = "";
+            if(this.getNombresAct()!=null){
+                str = this.getNombresAct();
+            }
+            if(this.getRazonSocialAct()!=null){
+                str = str + " " +this.getRazonSocialAct();
+            }
+            
+            return str;
+        }
 }
 
 // public Actor addActor(Actor actor) {

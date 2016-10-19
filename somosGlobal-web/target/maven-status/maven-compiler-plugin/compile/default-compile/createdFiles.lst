@@ -6,6 +6,8 @@ com\app\controller\ActorCat02Ctrl.class
 com\cashback\controller\ConLocalVentaCategoria.class
 com\cashback\controller\ConLocalVentaCategoria05.class
 com\cashback\controller\CadenaValorCtr.class
+com\cashback\bean\CadenaValorBean.class
+com\cashback\bean\PuntosBean.class
 com\app\controller\ActorCat06Ctrl.class
 com\cashback\controller\CtrMntHobbie.class
 com\cashback\controller\ConLocalUsuarioCtr.class
@@ -42,6 +44,8 @@ com\cashback\controller\ConLocalVentaAvanzada.class
 com\cashback\controller\MenuCtr.class
 com\cashback\utilidades\EnviadorMail$1.class
 com\app\controller\ActorCat08Ctrl.class
+com\cashback\controller\RegistroPuntosCtr.class
 com\cashback\controller\ActorCtr.class
 com\app\controller\ActorCat05Ctrl.class
+com\cashback\bean\ActorBean.class
 com\cashback\controller\ConLocalVentaCategoria04.class
