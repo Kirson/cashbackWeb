@@ -9,99 +9,84 @@
 	<ui:define name="content">
 		<h:form id="frmMntLocalVenta" rendered="#{loginCtr.usuario!=null}">
 			<p:growl autoUpdate="true" id="message" />
-			<div class="panel panel-primary">
-				<div class="panel-heading">#{msj.buscandoRegistro}</div>
-				<div class="panel-body">
-					<h4>Ingresa la información uno o varios campos y luego
-						presiona el botón "Buscar"</h4>
+			<p:panel header="#{msj.buscarActor}">
+				<div class="ui-fluid">
+					<p:panelGrid id="buscarActorPGroup" columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank">
 
-					<h:panelGroup id="buscarActorPGroup">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<h:outputText value="#{msj.cedRucPas}" />
-									<p:inputText value="#{actorCtr.cedRucPasAct}" maxlength="25"
-										style="width:100%;" />
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<h:outputText value="#{msj.razonSocial}" />
-									<p:inputText value="#{actorCtr.razonSocialAct}" maxlength="50"
-										style="width:100%;" />
-								</div>
-							</div>
+						<h:outputLabel value="#{msj.cedRucPas}" for="cedrucpasAct" />
+						<p:inputText id="cedrucpasAct" value="#{actorCtr.cedRucPasAct}"
+							maxlength="25" />
 
-							<div class="col-md-6">
-								<div class="form-group">
-									<h:outputText value="#{msj.nombres}" />
-									<p:inputText value="#{actorCtr.nombresAct}" maxlength="25"
-										style="width:100%;" />
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<h:outputText value="#{msj.apellidos}" />
-									<p:inputText value="#{actorCtr.apellidosAct}" maxlength="25"
-										style="width:100%;" />
-								</div>
-							</div>
-						</div>
-					</h:panelGroup>
+						<h:outputLabel value="#{msj.razonSocial}" for="razonSocialAct" />
+						<p:inputText id="razonSocialAct"
+							value="#{actorCtr.razonSocialAct}" maxlength="50" />
+
+						<h:outputLabel value="#{msj.nombres}" for="nombresAct" />
+						<p:inputText id="nombresAct" value="#{actorCtr.nombresAct}"
+							maxlength="25" />
+						<h:outputLabel value="#{msj.apellidos}" for="apellidosAct" />
+						<p:inputText id="apellidosAct" value="#{actorCtr.apellidosAct}"
+							maxlength="25" />
+					</p:panelGrid>
 				</div>
-				<div class="panel-footer" align="right">
-					<p:commandLink value="#{msj.buscar}" styleClass="btn btn-default"
-						process="@this buscarActorPGroup" update="actorTbl"
-						actionListener="#{actorCtr.buscarActor}" />
-				</div>
-			</div>
+				<p:commandButton value="#{msj.buscar}"
+					process="@this buscarActorPGroup" update="actorTbl"
+					actionListener="#{actorCtr.buscarActor}" />
+			</p:panel>
 			<br></br>
+			<p:dataTable value="#{actorCtr.actorRolList}" var="actorRol"
+				scrollable="true" scrollHeight="300" rowIndexVar="it"
+				styleClass="table table-striped" id="actorTbl" reflow="true">
+				<p:column headerText="Ln." style="width :60px; text-align :right;">
+					<h:outputText value="#{it+1}" />
+				</p:column>
+				<p:column headerText="#{msj.identificacion}">
+					<h:outputText value="#{actorRol.actor.cedrucpasAct}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.razonSocial}" />
+					</f:facet>
+					<h:outputText value="#{actorRol.actor.razonSocialAct}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.apellidos}" />
+					</f:facet>
+					<h:outputText value="#{actorRol.actor.apellidosAct}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.nombres}" />
+					</f:facet>
+					<h:outputText value="#{actorRol.actor.nombresAct}" />
+				</p:column>
+				<p:column headerText="#{msj.nivel}"   filterBy="#{actorRol.catalogoGen.nombreCg}" filterMatchMode="contains">
+					<h:outputText value="#{actorRol.catalogoGen.nombreCg}" />
+				</p:column>
 
-			<div class="panel panel-primary">
-				<div class="panel-heading">#{msj.registrosEncontrados}</div>
-				<div class="panel-body">
-					<div class="table-responsive"
-						style="overflow-y: auto; height: 300px;">
-						<h:dataTable value="#{actorCtr.actorList}" var="actor"
-							styleClass="table table-striped" id="actorTbl">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="#{msj.cedRucPas}" />
-								</f:facet>
-								<h:outputText value="#{actor.cedrucpasAct}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="#{msj.razonSocial}" />
-								</f:facet>
-								<h:outputText value="#{actor.razonSocialAct}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="#{msj.apellidos}" />
-								</f:facet>
-								<h:outputText value="#{actor.apellidosAct}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="#{msj.nombres}" />
-								</f:facet>
-								<h:outputText value="#{actor.nombresAct}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="#{msj.accion}" />
-								</f:facet>
-								<p:commandLink value="#{msj.seleccionar}" process="@this"
-									action="#{actorCtr.seleccionarActor}">
-									<f:setPropertyActionListener
-										target="#{actorCtr.idActSeleccionado}" value="#{actor.idAct}" />
-								</p:commandLink>
-							</h:column>
-						</h:dataTable>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.fechaCrea}" />
+					</f:facet>
+					<h:outputText
+						value="#{actorCtr.dateTimeToFechaHora2(actorRol.actor.fecCreaAct)}" />
+				</p:column>
+
+				<p:column headerText="#{msj.editar}" style="width :60px;">
+					<div align="center">
+						<p:commandButton title="#{msj.editar}" process="@this"
+							icon="ui-icon-pencil" action="#{actorCtr.seleccionarActor}">
+							<f:setPropertyActionListener target="#{actorCtr.actorRol}"
+								value="#{actorRol}" />
+						</p:commandButton>
 					</div>
-				</div>
-			</div>
+				</p:column>
+			</p:dataTable>
+
+
 		</h:form>
 	</ui:define>
 </ui:composition>

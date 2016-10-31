@@ -45,7 +45,7 @@
 						<p:commandButton type="button" onclick="PF('switcher').next();"
 						    icon="ui-icon-circle-triangle-e" id="next"/>
 						 
-						<p:imageSwitch effect="shuffle" widgetVar="switcher" slideshowAuto="true">
+						<p:imageSwitch effect="shuffle" widgetVar="switcher" panelHeight="666" panelWidth="1000" slideshowAuto="true">
 						    <ui:repeat value="#{conLocalVentaCtr.localVenta.localPromocionList}" var="localPromocion">
 						        <p:graphicImage value="/imagenes/#{localPromocion.lpImagen}" height="666" width="1000"/>
 						    </ui:repeat>

@@ -12,6 +12,7 @@ com\app\controller\ActorCat06Ctrl.class
 com\cashback\controller\CtrMntHobbie.class
 com\cashback\controller\ConLocalUsuarioCtr.class
 com\cashback\controller\MntPersonaCtr.class
+com\app\controller\BusquedaAvanzadaCtrl.class
 com\cashback\controller\ConLocalVentaCategoria03.class
 com\cashback\validadores\ValidadorEmail.class
 com\app\controller\ActorLocalCtrl.class
@@ -33,6 +34,7 @@ com\cashback\controller\MntLocalVentaCtr.class
 com\cashback\validadores\ValidadorCedula.class
 com\cashback\controller\ConLocalVentaCtr.class
 com\cashback\controller\ConLocalVentaCategoria07.class
+com\app\controller\PlantillaConsultaCtrl.class
 com\app\controller\ActorCat04Ctrl.class
 com\cashback\pojo\LvLogoObj.class
 com\cashback\controller\Test.class
@@ -49,3 +51,4 @@ com\cashback\controller\ActorCtr.class
 com\app\controller\ActorCat05Ctrl.class
 com\cashback\bean\ActorBean.class
 com\cashback\controller\ConLocalVentaCategoria04.class
+com\cashback\controller\RegistroVentaCtr.class

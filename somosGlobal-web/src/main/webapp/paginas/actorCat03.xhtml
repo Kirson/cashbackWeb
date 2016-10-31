@@ -5,65 +5,121 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/plantillaConsulta.xhtml">
-	<ui:define name="filtro">
-		<h:form>
-			<p:growl autoUpdate="true" showDetail="true" />
-			<h:panelGroup id="pGridBusquedaAvanzada">
-				<div class="row">
-					<div class="col-sm-4">
-						<p:commandLink value="Quitar Filtros" process="@this" styleClass="btn btn-default"
-							action="#{actorCat03Ctrl.recuperarTodo}" update="@all" />
-					</div>
-					<div class="col-sm-4">
-						<p:autoComplete id="acSimple2"
-							value="#{actorCat03Ctrl.palabraClaveAct}"
-							completeMethod="#{conLocalVentaAvanzada.completeLvPalabrasClave}">
-						</p:autoComplete>
-						<p:watermark for="acSimple2" value="#{msj.palabraClave}"
-							id="watermark2" />
-						<p:commandLink value="#{msj.buscar}" styleClass="btn btn-default"
-							process="pGridBusquedaAvanzada @this"
-							action="#{actorCat03Ctrl.recuperarLocalVentaList3}"
-							update=":frmconLocalVentaCategoria01:pGroupLocalVentaList" />
-					</div>
-					<div class="col-sm-4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{actorCat03Ctrl.catIdSeleccionada}">
-							<f:selectItem itemLabel="Todas las Categorias" itemValue="01"
-								noSelectionOption="true" />
-							<f:selectItems value="#{actorCat03Ctrl.categoriaListItem}" />
-							<f:ajax event="change" 
-								listener="#{actorCat03Ctrl.recuperarActorList}" execute="@this"
-								render="@all" />
-						</h:selectOneMenu>
-					</div>
-				</div>
-			</h:panelGroup>
-		</h:form>
-	</ui:define>
-
 	<ui:define name="categoria">
 		<h:graphicImage
 			value="/imagenes/#{actorCat03Ctrl.categoria.catImagen}" />
 	</ui:define>
+	<ui:define name="filtro">
+		<p:growl autoUpdate="true" showDetail="true" />
+		<h:panelGroup id="pGridBusquedaAvanzada">
+			<p:autoComplete id="acSimple2"
+					value="#{actorCat03Ctrl.palabraClaveAct}"
+					completeMethod="#{conLocalVentaAvanzada.completeLvPalabrasClave}">
+				</p:autoComplete> <p:watermark for="acSimple2" value="#{msj.palabraClave}"
+					id="watermark2" /> <p:commandLink value="#{msj.buscar}"
+					styleClass="btn btn-default" process="pGridBusquedaAvanzada @this"
+					action="#{actorCat03Ctrl.recuperarLocalVentaList3}"
+					update=":frmconLocalVentaCategoria03:pGroupLocalVentaList" /> <h:selectOneMenu
+					styleClass="form-control"
+					value="#{actorCat03Ctrl.catIdSeleccionada}">
+					<f:selectItem itemLabel="Todas las Categorias" itemValue="02"
+						noSelectionOption="true" />
+					<f:selectItems value="#{actorCat03Ctrl.categoriaListItem}" />
+					<f:ajax event="change"
+						listener="#{actorCat03Ctrl.recuperarActorList}" execute="@this"
+						render="@all" />
+				</h:selectOneMenu> <p:commandLink value="Quitar Filtros" process="@this"
+					styleClass="btn btn-default"
+					action="#{actorCat03Ctrl.recuperarTodo}" update="@all" />
+		</h:panelGroup>
+	</ui:define>
+
+	<ui:define name="cercanos">
+		<p:commandLink value="Mas Cercanos" process="@this"
+			styleClass="btn btn-primary" onclick="PF('mascercanosDlg').show()"
+			action="#{plantillaConsultaCtrl.nuevaBusqueda}"
+			update=":frmId:localActorTbl" />
+	</ui:define>
+
+
 	<ui:define name="contenido">
-		<h:form id="frmconLocalVentaCategoria01">
+		<p:dialog widgetVar="mascercanosDlg" modal="true" width="50%"
+			header=" Locales más Cercanos" position="center">
+
+			<div class="col-md-12">
+				Primero permitenos saber tu ubicación:
+				<button id="obtener" type="button" class="btn btn-link">Compartir
+					mi ubicación</button>
+			</div>
+
+			<h:form id="frmId">
+				<h:panelGroup id="pGroupCoordenadas">
+					<div class="col-md-4">Tú ubicación aproximada:</div>
+					<div class="col-md-4">
+						<p:outputLabel value="Latitud:" for="latitud" />
+						<p:inputText id="latitud" value="#{plantillaConsultaCtrl.latitud}"
+							required="true" requiredMessage="Primero comparte tu ubicación"
+							style="width: 100%;" />
+					</div>
+					<div class="col-md-4">
+						<p:outputLabel value="Longitud:" for="longitud" />
+						<p:inputText id="longitud" required="true"
+							requiredMessage="Primero comparte tu ubicación"
+							value="#{plantillaConsultaCtrl.longitud}" style="width: 100%;" />
+					</div>
+					<br></br>
+					<br></br>
+				</h:panelGroup>
+				<div class="col-md-12">
+					Una véz obtenida tu ubicación, busca los locales más cercanos:
+					<p:commandLink process="@this pGroupCoordenadas"
+						update="pGroupCoordenadas localActorTbl"
+						styleClass="btn btn-primary btn-block" value="Buscar Locales"
+						action="#{plantillaConsultaCtrl.lectura('03')}" />
+					<br></br> <br></br>
+					<div class="table-responsive">
+						<p:dataTable id="localActorTbl" scrollable="true"
+							scrollHeight="200" value="#{plantillaConsultaCtrl.locales}"
+							var="localActor">
+							<p:column headerText="Nombre del Establecimiento">
+								<h:outputText value="#{localActor.razonSocialAct}" />
+							</p:column>
+
+							<p:column headerText="Distancia" style="text-align: right;">
+								<h:outputText value="#{localActor.distancia} Km." />
+							</p:column>
+
+							<p:column headerText="Ver Local">
+								<center>
+									<p:commandLink value="Ver local" process="@this"
+										styleClass="btn btn-warning"
+										action="#{actorLocalCtrl.verActorLocal}">
+										<f:setPropertyActionListener
+											target="#{actorLocalCtrl.localActor}" value="#{localActor}" />
+									</p:commandLink>
+								</center>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<h:form id="frmconLocalVentaCategoria03">
 			<h:panelGroup id="pGroupLocalVentaList">
 				<ui:repeat var="grupoEmpresarialActor"
 					value="#{actorCat03Ctrl.actorList}">
 					<br />
 					<div class="row">
-						<div class="col-sm-4">
-							<h:graphicImage 
-								styleClass="img-responsive"
+						<div class="col-md-4">
+							<h:graphicImage styleClass="img-responsive"
 								value="/imagenes/#{grupoEmpresarialActor.fotoAct}" />
 						</div>
-						<div class="col-sm-6">
+						<div class="col-md-6" align="center">
 							<h2>
 								<h:outputText value="#{grupoEmpresarialActor.razonSocialAct}" />
 							</h2>
-							<div style="width: 90%; height: 150px; overflow-y: scroll;">
-
+							<div style="width: 100%; height: 150px; overflow-y: scroll;">
 								<div class="table-responsive">
 									<h:dataTable value="#{grupoEmpresarialActor.actoresHijos}"
 										styleClass="table table-striped" var="localActor">
@@ -71,24 +127,37 @@
 											<h:dataTable value="#{localActor.direccionesActor}"
 												var="direccion" styleClass="table table-striped">
 												<h:column>
+													<f:facet name="header">Conócenos</f:facet>
 													<p:commandLink process="@this"
+														title="Ver Geo Localización del establecimiento"
 														action="#{actorLocalCtrl.verActorLocal}">
-														<h:graphicImage value="/imagenes/bt_I.png" />
-														<f:setPropertyActionListener
-															target="#{actorLocalCtrl.localActor}"
-															value="#{localActor}" />
-													</p:commandLink>
-													<p:commandLink process="@this"
-														action="#{actorLocalCtrl.verPromocionLocal}">
-														<h:graphicImage value="/imagenes/bt_p.png" />
+														<h:graphicImage value="/imagenes/btn-vermas.png" />
 														<f:setPropertyActionListener
 															target="#{actorLocalCtrl.localActor}"
 															value="#{localActor}" />
 													</p:commandLink>
 												</h:column>
 												<h:column>
-													<f:facet name="header">#{msj.sector}</f:facet>
-													#{direccion.localidad.locNombre}
+                                                                                                        <f:facet name="header">Promos</f:facet>
+													<p:commandLink process="@this"
+														title="Ver Promociones del establecimiento"
+														action="#{actorLocalCtrl.verPromocionLocal}">
+														<h:graphicImage value="/imagenes/btn-promo.png" />
+														<f:setPropertyActionListener
+															target="#{actorLocalCtrl.localActor}"
+															value="#{localActor}" />
+													</p:commandLink>
+												</h:column>
+                                                                                                <h:column>
+                                                                                                        <f:facet name="header">Fotos</f:facet>
+													<p:commandLink process="@this"
+                                                                                                              	title="Ver Fotos del establecimiento"
+														action="#{actorLocalCtrl.verGaleriaLocal}">
+														<h:graphicImage value="/imagenes/btn-fotos.png" />
+														<f:setPropertyActionListener
+															target="#{actorLocalCtrl.localActor}"
+															value="#{localActor}" />
+													</p:commandLink>
 												</h:column>
 												<h:column>
 													<f:facet name="header">#{msj.direccion}</f:facet>
@@ -97,17 +166,8 @@
 												</h:column>
 												<h:column>
 													<f:facet name="header">Hoy</f:facet>
-													<a href="#{msj.urlHome}"> <h:graphicImage
-															value="/imagenes/icon-abierto.png" /></a>
-												</h:column>
-												<h:column>
-													<p:commandLink process="@this"
-														action="#{actorLocalCtrl.verGaleriaLocal}">
-														<h:graphicImage value="/imagenes/bt_v.png" />
-														<f:setPropertyActionListener
-															target="#{actorLocalCtrl.localActor}"
-															value="#{localActor}" />
-													</p:commandLink>
+														<h:graphicImage
+														value="/imagenes/#{localActor.abiertoCerrado}" />
 												</h:column>
 											</h:dataTable>
 										</h:column>
@@ -118,7 +178,7 @@
 							<br></br>
 							<h:panelGroup rendered="false">
 								<div class="row" align="center">
-									<div class="col-sm-4">
+									<div class="col-md-4">
 										<p:commandLink process="@this"
 											action="#{actorLocalCtrl.verActorLocal}">
 											<h:graphicImage value="/imagenes/bt_infoygeo.png"
@@ -128,7 +188,7 @@
 												value="#{grupoEmpresarialActor}" />
 										</p:commandLink>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-md-4">
 										<p:commandLink process="@this" styleClass="pull-leght"
 											action="#{actorLocalCtrl.verGaleriaLocal}">
 											<h:graphicImage value="/imagenes/bt_vermas.png"
@@ -138,7 +198,7 @@
 												value="#{grupoEmpresarialActor}" />
 										</p:commandLink>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-md-4">
 										<p:commandLink process="@this"
 											action="#{actorLocalCtrl.verPromocionLocal}">
 											<h:graphicImage value="/imagenes/bt_promocion.png"
@@ -152,7 +212,7 @@
 							</h:panelGroup>
 						</div>
 
-						<div class="col-sm-2" align="right">
+						<div class="col-md-2" align="center">
 							<h:graphicImage width="200px" height="200px"
 								styleClass="img-rounded"
 								value="/imagenes/#{grupoEmpresarialActor.logoAct}" />
@@ -164,9 +224,9 @@
 					</div>
 				</ui:repeat>
 			</h:panelGroup>
-
 		</h:form>
 	</ui:define>
+
 </ui:composition>
 </html>
 

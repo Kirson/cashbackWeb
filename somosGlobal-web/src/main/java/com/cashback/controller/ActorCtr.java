@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,6 +23,7 @@ import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
 import com.cashback.enums.AppMensajes;
 import com.cashback.excepciones.ExcGuardarRegistro;
@@ -43,9 +45,12 @@ import com.cashback.model.TextoClave;
 @ManagedBean
 public class ActorCtr extends Controladores {
 	private Actor actor;
+	private ActorRol actorRol;
 	private CatalogoGen catalogoGen, catalogoGen2;
-	private ActorReferencia actorReferencia, horario, imagen, telefono, correo;
-	private List<Actor> actorList;
+	private ActorReferencia actorReferencia, horario, imagen, telefono, correo,
+			actRef, contactoDigital, servicio;
+
+	private List<ActorRol> actorRolList;
 	private String refCg, tipoAct, catIdSeleccionada, palabraClave,
 			headerActor, cedRucPasAct, razonSocialAct, nombresAct,
 			apellidosAct;
@@ -53,23 +58,38 @@ public class ActorCtr extends Controladores {
 			localidadCiudadListItem, localidadBarrioListItem, actorRolListItem;
 	private List<SelectItem> categoriaListItem, diasCatalogoGenListItem,
 			direccionesCatalogoGenListItem, correosCatalogoGenListItem,
-			telefonosCatalogoGenListItem, imagenCatalogoGenListItem;
+			telefonosCatalogoGenListItem, imagenCatalogoGenListItem,
+			catalogoDigitalListItem, servicioCatalogoListItem;
 	private Integer locIdBarrioSeleccionado, locIdProvinciaSeleccionado,
 			locIdCiudadSeleccionado, idArolSeleccionado, diaIdCgSeleccionado,
 			imagenIdCgSeleccionado, telefonoIdCgSeleccionado,
-			direccionIdCgSeleccionado, correoIdCgSeleccionado;
+			direccionIdCgSeleccionado, correoIdCgSeleccionado,
+			contactoDigitalIdSeleccionado, idActSeleccionado,
+			servicioIdCgSeleccionado;
 	private UploadedFile uploadedFile;
 	private List<String> palabraClaveList = new ArrayList<String>();
 	private MapModel model;
-	private boolean fileUploadRender, actualizarActorRender, crearActorRender,
-			crearTelefonoRender;
+
+	private boolean fileUploadRender, seleccionarPorcentajeRender,
+			actualizarActorRender, crearActorRender = true,
+			crearTelefonoRender = true, crearDireccionRender = true,
+			crearHorarioRender = true, crearCorreoRender = true,
+			crearImagenRender = true, crearContactoDigitalRender = true,
+			crearServicioRender = true;
+
+	private boolean actTelefonoRender, actDireccionRender, actHorarioRender,
+			actCorreoRender, actImagenRender, actContactoDigital,
+			actualizarServicioRender;
 
 	private List<ActorReferencia> telefonosActor = new ArrayList<ActorReferencia>();
 	private List<ActorReferencia> direccionesActor = new ArrayList<ActorReferencia>();
 	private List<ActorReferencia> horariosActor = new ArrayList<ActorReferencia>();
 	private List<ActorReferencia> correosActor = new ArrayList<ActorReferencia>();
+	private List<ActorReferencia> imagenesActor = new ArrayList<ActorReferencia>();
+	private List<ActorReferencia> contactosDigitalesAct = new ArrayList<ActorReferencia>();
 	private List<ActorReferencia> galeriaImgActor = new ArrayList<ActorReferencia>();
 	private List<ActorReferencia> promocionImgActor = new ArrayList<ActorReferencia>();
+	private List<ActorReferencia> serviciosActor = new ArrayList<ActorReferencia>();
 
 	@EJB
 	private IActor sActor;
@@ -91,14 +111,31 @@ public class ActorCtr extends Controladores {
 	@PostConstruct
 	public void inicio() {
 		actor = new Actor();
+		seleccionarPorcentajeRender = true;
+		limpiarDatos();
+	}
+
+	public void limpiarDatos() {
+
+		telefonosActor = new ArrayList<ActorReferencia>();
+		direccionesActor = new ArrayList<ActorReferencia>();
+		horariosActor = new ArrayList<ActorReferencia>();
+		correosActor = new ArrayList<ActorReferencia>();
+		imagenesActor = new ArrayList<ActorReferencia>();
+		contactosDigitalesAct = new ArrayList<ActorReferencia>();
+		galeriaImgActor = new ArrayList<ActorReferencia>();
+		promocionImgActor = new ArrayList<ActorReferencia>();
+		serviciosActor = new ArrayList<ActorReferencia>();
+
 		nuevoTelefono();
 		nuevoCorreo();
-		nuevaDireccion();
 		nuevoActorReferencia();
 		nuevoHorario();
 		nuevaImagen();
-		categoriaListItem = recuperarCategoriaItem();
+		nuevoContactoDigital();
+		nuevoServicio();
 
+		categoriaListItem = recuperarCategoriaItem();
 		imagenCatalogoGenListItem = recuperarCatalogoByFather(sCatalogoGen
 				.findByTipoCg(Globales.IMAGEN_TIPO_CATALOGO));
 
@@ -118,6 +155,14 @@ public class ActorCtr extends Controladores {
 				.findByTipoCg(Globales.CORREO_ELECTRONICO);
 		correosCatalogoGenListItem = recuperarCatalogoByFather(correoCatalogo);
 
+		CatalogoGen contactoDigitalCatalogo = sCatalogoGen
+				.findByTipoCg(Globales.CONTACTO_DIGITAL);
+		catalogoDigitalListItem = recuperarCatalogoByFather(contactoDigitalCatalogo);
+
+		CatalogoGen servicioCatalogo = sCatalogoGen
+				.findByTipoCg(Globales.SERVICIOS_TIPO_CATALOGO);
+		servicioCatalogoListItem = recuperarCatalogoByFather(servicioCatalogo);
+
 	}
 
 	public String asignarTipoCuenta() {
@@ -126,15 +171,15 @@ public class ActorCtr extends Controladores {
 	}
 
 	public void recuperarlocalidadCiudadList() {
-		Localidad localidad = new Localidad();
-		localidad.setLocId(locIdProvinciaSeleccionado);
-		localidadCiudadListItem = recuperarLocalidadItem(localidad);
+		Localidad provincia = new Localidad();
+		provincia.setLocId(locIdProvinciaSeleccionado);
+		localidadCiudadListItem = recuperarLocalidadItem(provincia);
 	}
 
 	public void recuperarlocalidadBarrioList() {
-		Localidad localidad = new Localidad();
-		localidad.setLocId(locIdCiudadSeleccionado);
-		localidadBarrioListItem = recuperarLocalidadItem(localidad);
+		Localidad ciudad = new Localidad();
+		ciudad.setLocId(locIdCiudadSeleccionado);
+		localidadBarrioListItem = recuperarLocalidadItem(ciudad);
 	}
 
 	public void recuperarActorRolListItem() {
@@ -185,7 +230,7 @@ public class ActorCtr extends Controladores {
 					"");
 			actor.setPalabrasClaveAct(palabrasClaveAct.replace("]", ""));
 		} else {
-			actor.setPalabrasClaveAct(null);
+			actor.setPalabrasClaveAct("");
 		}
 
 		// Crear cuenta
@@ -226,14 +271,45 @@ public class ActorCtr extends Controladores {
 		return null;
 	}
 
-	public void buscarActor() {
-		actorList = sActor.findAllByCedRucPasAndRazonSocialNombre(cedRucPasAct,
-				razonSocialAct, nombresAct, apellidosAct, "");
+	public String actualizarActor() {
+		// Crear Actor con cuenta
+		// Crear Actor
+		actor.setCedrucpasAct(actor.getCedrucpasAct().trim());
+		actor.setCatId(catIdSeleccionada);
+		actor.setUsrModAct(usuario.getUsrNombre());
+		if (palabraClaveList.size() > 0) {
+			String palabrasClaveAct = palabraClaveList.toString().replace("[",
+					"");
+			actor.setPalabrasClaveAct(palabrasClaveAct.replace("]", ""));
+		} else {
+			actor.setPalabrasClaveAct("");
+		}
 
+		sActor.actualizarActor(actor);
+		mostrarInfoSummary("Registro actualizado", "Actor ha sido actualizado");
+		return "agregarContacto";
+	}
+
+	public void buscarActor() {
+		actorRolList = sActorRol.findAllByDatosActor(cedRucPasAct,
+				razonSocialAct, nombresAct, apellidosAct);
 	}
 
 	public String seleccionarActor() {
-		actor = sActor.findByIdAct(actor.getIdAct());
+		limpiarDatos();
+		seleccionarPorcentajeRender = false;
+		crearActorRender = false;
+		actualizarActorRender = true;
+
+		actor = actorRol.getActor();
+		catIdSeleccionada = actor.getCatId();
+
+		if (actor.getPalabrasClaveAct() != null) {
+			String[] palabraClaveArray = actor.getPalabrasClaveAct().split(",");
+			palabraClaveList = new ArrayList<String>(
+					Arrays.asList(palabraClaveArray));
+		}
+
 		for (ActorReferencia ar : actor.getActorReferencias()) {
 			String tipoCatalogo = ar.getCatalogoGen().getCatalogoGen()
 					.getTipoCg();
@@ -253,17 +329,18 @@ public class ActorCtr extends Controladores {
 			}
 
 			if (tipoCatalogo.compareTo(Globales.IMAGEN_TIPO_CATALOGO) == 0) {
-				if (ar.getCatalogoGen().getRefCg()
-						.compareTo(Globales.IMAGEN_PROMOCION) == 0) {
-					promocionImgActor.add(ar);
-				}
-				if (ar.getCatalogoGen().getRefCg()
-						.compareTo(Globales.IMAGEN_GALERIA) == 0) {
-					galeriaImgActor.add(ar);
-				}
+				imagenesActor.add(ar);
+			}
+
+			if (tipoCatalogo.compareTo(Globales.CONTACTO_DIGITAL) == 0) {
+				contactosDigitalesAct.add(ar);
+			}
+			
+			if (tipoCatalogo
+					.compareTo(Globales.SERVICIOS_TIPO_CATALOGO) == 0) {
+				serviciosActor.add(ar);
 			}
 		}
-
 		return "GA";
 	}
 
@@ -279,13 +356,40 @@ public class ActorCtr extends Controladores {
 		telefono.setCatalogoGen(sCatalogoGen
 				.recuperarCatalogoGen(telefonoIdCgSeleccionado));
 		sActorReferencia.crearActorReferencia(telefono);
-		nuevoHorario();
-		mostrarInfo("Crear Teléfono", AppMensajes.INF_OPERACION_EXITO);
+		telefonosActor.add(telefono);
+		nuevoTelefono();
+		mostrarInfoSummary("Crear Registro", "Teléfono ha sido creado");
+	}
+
+	public void actualizarTelefono() {
+		telefono.setUsrModAr(usuario.getUsrNombre());
+		telefono.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(telefonoIdCgSeleccionado));
+		sActorReferencia.actualizarActorReferencia(telefono);
+		nuevoTelefono();
+		mostrarInfoSummary("Actualizar Registro",
+				"Teléfono ha sido actualizado");
+	}
+
+	public void seleccionarTelefono() {
+		telefonoIdCgSeleccionado = telefono.getCatalogoGen().getIdCg();
+		recuperarFormatoCatalogo();
+		crearTelefonoRender = false;
+		actTelefonoRender = true;
 	}
 
 	public String nuevoTelefono() {
 		telefono = new ActorReferencia();
+		crearTelefonoRender = true;
+		actTelefonoRender = false;
 		return null;
+	}
+
+	public void eliminarTelefono() {
+		sActorReferencia.delete(telefono);
+		telefonosActor.remove(telefono);
+		telefono = new ActorReferencia();
+		mostrarInfoSummary("Eliminar Registro", "Telefono ha sido eliminado");
 	}
 
 	public void crearCorreo() {
@@ -294,13 +398,38 @@ public class ActorCtr extends Controladores {
 		correo.setCatalogoGen(sCatalogoGen
 				.recuperarCatalogoGen(correoIdCgSeleccionado));
 		sActorReferencia.crearActorReferencia(correo);
-		nuevoHorario();
-		mostrarInfo("Crear Correo", AppMensajes.INF_OPERACION_EXITO);
+		correosActor.add(correo);
+		nuevoCorreo();
+		mostrarInfoSummary("Crear Registro", "Correo ha sido creado");
+	}
+
+	public void actualizarCorreo() {
+		correo.setUsrModAr(usuario.getUsrNombre());
+		correo.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(correoIdCgSeleccionado));
+		sActorReferencia.actualizarActorReferencia(correo);
+		nuevoCorreo();
+		mostrarInfoSummary("Actualizar Registro", "Correo ha sido actualizado");
+	}
+
+	public void seleccionarCorreo() {
+		correoIdCgSeleccionado = correo.getCatalogoGen().getIdCg();
+		crearCorreoRender = false;
+		actCorreoRender = true;
 	}
 
 	public String nuevoCorreo() {
 		correo = new ActorReferencia();
+		crearCorreoRender = true;
+		actCorreoRender = false;
 		return null;
+	}
+
+	public void eliminarCorreo() {
+		sActorReferencia.delete(correo);
+		correosActor.remove(correo);
+		correo = new ActorReferencia();
+		mostrarInfoSummary("Eliminar Registro", "Correo ha sido eliminado");
 	}
 
 	public String crearActorReferencia() {
@@ -310,8 +439,11 @@ public class ActorCtr extends Controladores {
 				.recuperarCatalogoGen(direccionIdCgSeleccionado));
 		actorReferencia.setVal1Ar(Integer.toString(locIdBarrioSeleccionado));
 		sActorReferencia.crearActorReferencia(actorReferencia);
+		actorReferencia.setLocalidad(sLocalidad
+				.recuperarLocalidad(locIdBarrioSeleccionado));
+		direccionesActor.add(actorReferencia);
 		nuevoActorReferencia();
-		mostrarInfo("Crear Dirección", AppMensajes.INF_OPERACION_EXITO);
+		mostrarInfoSummary("Crear Registro", "Dirección ha sido creada");
 		return null;
 	}
 
@@ -321,11 +453,54 @@ public class ActorCtr extends Controladores {
 		localidadProvinciaListItem = recuperarLocalidadItem(null);
 		localidadCiudadListItem = new ArrayList<SelectItem>();
 		localidadBarrioListItem = new ArrayList<SelectItem>();
+		crearDireccionRender = true;
+		actDireccionRender = false;
 		return null;
 	}
 
-	public void nuevaDireccion() {
+	public void seleccionarDireccion() {
+		locIdProvinciaSeleccionado = actorReferencia.getLocalidad()
+				.getLocalidad().getLocalidad().getLocId();
+		Localidad provincia = new Localidad();
+		provincia.setLocId(locIdProvinciaSeleccionado);
+		localidadCiudadListItem = recuperarLocalidadItem(provincia);
+
+		locIdCiudadSeleccionado = actorReferencia.getLocalidad().getLocalidad()
+				.getLocId();
+		Localidad ciudad = new Localidad();
+		ciudad.setLocId(locIdCiudadSeleccionado);
+		localidadBarrioListItem = recuperarLocalidadItem(ciudad);
+
+		locIdBarrioSeleccionado = actorReferencia.getLocalidad().getLocId();
+		direccionIdCgSeleccionado = actorReferencia.getCatalogoGen().getIdCg();
+		crearDireccionRender = false;
+		actDireccionRender = true;
+
+		model = new DefaultMapModel();
+		double latitud = Double.parseDouble(actorReferencia.getLatitudAr());
+		double longitud = Double.parseDouble(actorReferencia.getLongitudAr());
+		Marker marker = new Marker(new LatLng(latitud, longitud));
+		model.addOverlay(marker);
+	}
+
+	public void actualizarDireccion() {
+		actorReferencia.setUsrModAr(usuario.getUsrNombre());
+		actorReferencia.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(direccionIdCgSeleccionado));
+		actorReferencia.setVal1Ar(Integer.toString(locIdBarrioSeleccionado));
+		sActorReferencia.actualizarActorReferencia(actorReferencia);
+		actorReferencia.setLocalidad(sLocalidad
+				.recuperarLocalidad(locIdBarrioSeleccionado));
+		nuevoActorReferencia();
+		mostrarInfoSummary("Actualizar Registro",
+				"Dirección ha sido actualizada");
+	}
+
+	public void eliminarDireccion() {
+		sActorReferencia.delete(actorReferencia);
+		direccionesActor.remove(actorReferencia);
 		actorReferencia = new ActorReferencia();
+		mostrarInfoSummary("Eliminar Registro", "Dirección ha sido eliminada");
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
@@ -372,9 +547,10 @@ public class ActorCtr extends Controladores {
 		return null;
 	}
 
-	public String nuevoHorario() {
+	public void nuevoHorario() {
+		crearHorarioRender = true;
+		actHorarioRender = false;
 		horario = new ActorReferencia();
-		return null;
 	}
 
 	public void crearHorario() {
@@ -383,11 +559,79 @@ public class ActorCtr extends Controladores {
 		horario.setCatalogoGen(sCatalogoGen
 				.recuperarCatalogoGen(diaIdCgSeleccionado));
 		sActorReferencia.crearActorReferencia(horario);
+		horariosActor.add(horario);
 		nuevoHorario();
-		mostrarInfo("Crear Horario", AppMensajes.INF_OPERACION_EXITO);
+		mostrarInfoSummary("Horario", "Registro ha sido actualizado");
 	}
 
+	public void actualizarHorario() {
+		horario.setUsrModAr(usuario.getUsrNombre());
+		horario.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(diaIdCgSeleccionado));
+		sActorReferencia.actualizarActorReferencia(horario);
+		nuevoHorario();
+		mostrarInfoSummary("Horario", "Registro ha sido actualizado");
+	}
+
+	public void seleccionarHorario() {
+		diaIdCgSeleccionado = horario.getCatalogoGen().getIdCg();
+		crearHorarioRender = false;
+		actHorarioRender = true;
+	}
+
+	public void eliminarHorario() {
+		sActorReferencia.delete(horario);
+		horariosActor.remove(horario);
+		horario = new ActorReferencia();
+		mostrarInfoSummary("Horario", "Registro ha sido eliminado");
+	}
+
+	// Contactos Digitales //
+	public void nuevoContactoDigital() {
+		crearContactoDigitalRender = true;
+		actContactoDigital = false;
+		contactoDigital = new ActorReferencia();
+	}
+
+	public void crearContactoDigital() {
+		contactoDigital.setUsrCreaAr(usuario.getUsrNombre());
+		contactoDigital.setActor(actor);
+		contactoDigital.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(contactoDigitalIdSeleccionado));
+		sActorReferencia.crearActorReferencia(contactoDigital);
+		contactosDigitalesAct.add(contactoDigital);
+		nuevoContactoDigital();
+		mostrarInfoSummary("Contacto Digital", "Contacto digital ha sido creado");
+	}
+
+	public void actualizarContactoDigital() {
+		contactoDigital.setUsrModAr(usuario.getUsrNombre());
+		contactoDigital.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(contactoDigitalIdSeleccionado));
+		sActorReferencia.actualizarActorReferencia(contactoDigital);
+		nuevoHorario();
+		mostrarInfoSummary("Contacto Digital", "Registro ha sido actualizado");
+	}
+
+	public void seleccionarContactoDigital() {
+		contactoDigitalIdSeleccionado = contactoDigital.getCatalogoGen()
+				.getIdCg();
+		crearContactoDigitalRender = false;
+		actContactoDigital = true;
+	}
+
+	public void eliminarContactoDigital() {
+		sActorReferencia.delete(contactoDigital);
+		contactosDigitalesAct.remove(contactoDigital);
+		contactoDigital = new ActorReferencia();
+		mostrarInfoSummary("Contacto Digital", "Registro ha sido eliminado");
+	}
+
+	//
+
 	public void nuevaImagen() {
+		crearImagenRender = true;
+		actImagenRender = false;
 		imagen = new ActorReferencia();
 		imagenIdCgSeleccionado = 0;
 		fileUploadRender = false;
@@ -396,13 +640,80 @@ public class ActorCtr extends Controladores {
 	public void crearImagen() {
 		CatalogoGen tipoImagenCatalogoGen = sCatalogoGen
 				.recuperarCatalogoGen(imagenIdCgSeleccionado);
-		imagen.setUsrCreaAr(usuario.getUsrNombre());
-		imagen.setActor(actor);
-		imagen.setCatalogoGen(tipoImagenCatalogoGen);
+		if (crearImagenRender) {
+			imagen.setUsrCreaAr(usuario.getUsrNombre());
+			imagen.setActor(actor);
+			imagen.setCatalogoGen(tipoImagenCatalogoGen);
+			galeriaImgActor.add(imagen);
+			sActorReferencia.crearActorReferencia(imagen);
+		}
 
-		sActorReferencia.crearActorReferencia(imagen);
+		if (actImagenRender) {
+			imagen.setUsrModAr(usuario.getUsrNombre());
+			imagen.setCatalogoGen(tipoImagenCatalogoGen);
+			galeriaImgActor.add(imagen);
+			sActorReferencia.actualizarActorReferencia(imagen);
+		}
 		nuevaImagen();
 	}
+
+	public void seleccionarImagen() {
+		imagenIdCgSeleccionado = imagen.getCatalogoGen().getIdCg();
+		crearImagenRender = false;
+		actImagenRender = true;
+		fileUploadRender = true;
+	}
+
+	public void eliminarImagen() {
+		imagenesActor.remove(imagen);
+		sActorReferencia.delete(imagen);
+		imagen = new ActorReferencia();
+		mostrarInfoSummary("Eliminar Registro", "Imágen ha ha sido eliminada");
+	}
+
+	// Crear Servicio
+	public void crearServicio() {
+		servicio.setUsrCreaAr(usuario.getUsrNombre());
+		servicio.setActor(actor);
+		servicio.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(servicioIdCgSeleccionado));
+		sActorReferencia.crearActorReferencia(servicio);
+		serviciosActor.add(servicio);
+		nuevoServicio();
+		mostrarInfoSummary("Crear servicio", "Servicio ha sido creado");
+	}
+
+	public void actualizarServicio() {
+		servicio.setUsrModAr(usuario.getUsrNombre());
+		servicio.setCatalogoGen(sCatalogoGen
+				.recuperarCatalogoGen(servicioIdCgSeleccionado));
+		sActorReferencia.actualizarActorReferencia(servicio);
+		nuevoServicio();
+		mostrarInfoSummary("Actualizar Servicio",
+				"Servicio ha sido actualizado");
+	}
+
+	public void seleccionarServicio() {
+		servicioIdCgSeleccionado = servicio.getCatalogoGen().getIdCg();
+		crearServicioRender = false;
+		actualizarServicioRender = true;
+	}
+
+	public String nuevoServicio() {
+		servicio = new ActorReferencia();
+		crearServicioRender = true;
+		actualizarServicioRender = false;
+		return null;
+	}
+
+	public void eliminarServicio() {
+		sActorReferencia.delete(servicio);
+		serviciosActor.remove(servicio);
+		servicio = new ActorReferencia();
+		mostrarInfoSummary("Eliminar Servicio", "Servicio ha sido eliminado");
+	}
+
+	// Fin Crear Servicio
 
 	public void handleFileUpload2(FileUploadEvent event) {
 		uploadedFile = event.getFile();
@@ -432,6 +743,13 @@ public class ActorCtr extends Controladores {
 						+ latlng.getLng()));
 		actorReferencia.setLatitudAr(Double.toString(latlng.getLat()));
 		actorReferencia.setLongitudAr(Double.toString(latlng.getLng()));
+
+		model = new DefaultMapModel();
+		double latitud = Double.parseDouble(actorReferencia.getLatitudAr());
+		double longitud = Double.parseDouble(actorReferencia.getLongitudAr());
+		Marker marker = new Marker(new LatLng(latitud, longitud));
+		model.addOverlay(marker);
+
 	}
 
 	public void addMessage(FacesMessage message) {
@@ -445,6 +763,12 @@ public class ActorCtr extends Controladores {
 			fileUploadRender = false;
 		}
 
+	}
+
+	public void eliminarActorReferencia() {
+		sActorReferencia.delete(actRef);
+		actRef = new ActorReferencia();
+		mostrarInfoSummary("Referencias", "Registro ha sido eliminado");
 	}
 
 	public Actor getActor() {
@@ -735,14 +1059,6 @@ public class ActorCtr extends Controladores {
 		this.correoIdCgSeleccionado = correoIdCgSeleccionado;
 	}
 
-	public List<Actor> getActorList() {
-		return actorList;
-	}
-
-	public void setActorList(List<Actor> actorList) {
-		this.actorList = actorList;
-	}
-
 	public String getRazonSocialAct() {
 		return razonSocialAct;
 	}
@@ -845,6 +1161,227 @@ public class ActorCtr extends Controladores {
 
 	public void setCrearTelefonoRender(boolean crearTelefonoRender) {
 		this.crearTelefonoRender = crearTelefonoRender;
+	}
+
+	public boolean isActTelefonoRender() {
+		return actTelefonoRender;
+	}
+
+	public void setActTelefonoRender(boolean actTelefonoRender) {
+		this.actTelefonoRender = actTelefonoRender;
+	}
+
+	public boolean isActDireccionRender() {
+		return actDireccionRender;
+	}
+
+	public void setActDireccionRender(boolean actDireccionRender) {
+		this.actDireccionRender = actDireccionRender;
+	}
+
+	public boolean isActHorarioRender() {
+		return actHorarioRender;
+	}
+
+	public void setActHorarioRender(boolean actHorarioRender) {
+		this.actHorarioRender = actHorarioRender;
+	}
+
+	public boolean isCrearDireccionRender() {
+		return crearDireccionRender;
+	}
+
+	public void setCrearDireccionRender(boolean crearDireccionRender) {
+		this.crearDireccionRender = crearDireccionRender;
+	}
+
+	public boolean isCrearHorarioRender() {
+		return crearHorarioRender;
+	}
+
+	public void setCrearHorarioRender(boolean crearHorarioRender) {
+		this.crearHorarioRender = crearHorarioRender;
+	}
+
+	public boolean isCrearCorreoRender() {
+		return crearCorreoRender;
+	}
+
+	public void setCrearCorreoRender(boolean crearCorreoRender) {
+		this.crearCorreoRender = crearCorreoRender;
+	}
+
+	public boolean isCrearImagenRender() {
+		return crearImagenRender;
+	}
+
+	public void setCrearImagenRender(boolean crearImagenRender) {
+		this.crearImagenRender = crearImagenRender;
+	}
+
+	public ActorReferencia getActRef() {
+		return actRef;
+	}
+
+	public void setActRef(ActorReferencia actRef) {
+		this.actRef = actRef;
+	}
+
+	public boolean isActCorreoRender() {
+		return actCorreoRender;
+	}
+
+	public void setActCorreoRender(boolean actCorreoRender) {
+		this.actCorreoRender = actCorreoRender;
+	}
+
+	public boolean isActImagenRender() {
+		return actImagenRender;
+	}
+
+	public void setActImagenRender(boolean actImagenRender) {
+		this.actImagenRender = actImagenRender;
+	}
+
+	public List<ActorReferencia> getImagenesActor() {
+		return imagenesActor;
+	}
+
+	public void setImagenesActor(List<ActorReferencia> imagenesActor) {
+		this.imagenesActor = imagenesActor;
+	}
+
+	public boolean isSeleccionarPorcentajeRender() {
+		return seleccionarPorcentajeRender;
+	}
+
+	public void setSeleccionarPorcentajeRender(
+			boolean seleccionarPorcentajeRender) {
+		this.seleccionarPorcentajeRender = seleccionarPorcentajeRender;
+	}
+
+	public List<ActorReferencia> getContactosDigitalesAct() {
+		return contactosDigitalesAct;
+	}
+
+	public void setContactosDigitalesAct(
+			List<ActorReferencia> contactosDigitalesAct) {
+		this.contactosDigitalesAct = contactosDigitalesAct;
+	}
+
+	public ActorReferencia getContactoDigital() {
+		return contactoDigital;
+	}
+
+	public void setContactoDigital(ActorReferencia contactoDigital) {
+		this.contactoDigital = contactoDigital;
+	}
+
+	public boolean isCrearContactoDigitalRender() {
+		return crearContactoDigitalRender;
+	}
+
+	public void setCrearContactoDigitalRender(boolean crearContactoDigitalRender) {
+		this.crearContactoDigitalRender = crearContactoDigitalRender;
+	}
+
+	public boolean isActContactoDigital() {
+		return actContactoDigital;
+	}
+
+	public void setActContactoDigital(boolean actContactoDigital) {
+		this.actContactoDigital = actContactoDigital;
+	}
+
+	public Integer getContactoDigitalIdSeleccionado() {
+		return contactoDigitalIdSeleccionado;
+	}
+
+	public void setContactoDigitalIdSeleccionado(
+			Integer contactoDigitalIdSeleccionado) {
+		this.contactoDigitalIdSeleccionado = contactoDigitalIdSeleccionado;
+	}
+
+	public List<SelectItem> getCatalogoDigitalListItem() {
+		return catalogoDigitalListItem;
+	}
+
+	public void setCatalogoDigitalListItem(
+			List<SelectItem> catalogoDigitalListItem) {
+		this.catalogoDigitalListItem = catalogoDigitalListItem;
+	}
+
+	public Integer getIdActSeleccionado() {
+		return idActSeleccionado;
+	}
+
+	public void setIdActSeleccionado(Integer idActSeleccionado) {
+		this.idActSeleccionado = idActSeleccionado;
+	}
+
+	public List<ActorReferencia> getServiciosActor() {
+		return serviciosActor;
+	}
+
+	public void setServiciosActor(List<ActorReferencia> serviciosActor) {
+		this.serviciosActor = serviciosActor;
+	}
+
+	public ActorReferencia getServicio() {
+		return servicio;
+	}
+
+	public void setServicio(ActorReferencia servicio) {
+		this.servicio = servicio;
+	}
+
+	public Integer getServicioIdCgSeleccionado() {
+		return servicioIdCgSeleccionado;
+	}
+
+	public void setServicioIdCgSeleccionado(Integer servicioIdCgSeleccionado) {
+		this.servicioIdCgSeleccionado = servicioIdCgSeleccionado;
+	}
+
+	public boolean isActualizarServicioRender() {
+		return actualizarServicioRender;
+	}
+
+	public void setActualizarServicioRender(boolean actualizarServicioRender) {
+		this.actualizarServicioRender = actualizarServicioRender;
+	}
+
+	public boolean isCrearServicioRender() {
+		return crearServicioRender;
+	}
+
+	public void setCrearServicioRender(boolean crearServicioRender) {
+		this.crearServicioRender = crearServicioRender;
+	}
+
+	public List<SelectItem> getServicioCatalogoListItem() {
+		return servicioCatalogoListItem;
+	}
+
+	public void setServicioCatalogoListItem(
+			List<SelectItem> servicioCatalogoListItem) {
+		this.servicioCatalogoListItem = servicioCatalogoListItem;
+	}
+
+	public List<ActorRol> getActorRolList() {
+		return actorRolList;
+	}
+
+	public void setActorRolList(List<ActorRol> actorRolList) {
+		this.actorRolList = actorRolList;
+	}
+
+	public ActorRol getActorRol() {
+		return actorRol;
+	}
+
+	public void setActorRol(ActorRol actorRol) {
+		this.actorRol = actorRol;
 	}
 
 }

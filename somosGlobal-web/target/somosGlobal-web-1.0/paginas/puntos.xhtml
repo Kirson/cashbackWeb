@@ -10,30 +10,66 @@
             <h:form id="frmPuntos" >
                 <p:growl autoUpdate="true" showDetail="true" />
                 <div class="panel panel-primary">
-                    <div class="panel-heading">#{msj.registroPuntos}</div>
+                    <div class="panel-heading">#{msj.registroVenta}</div>
                     <div class="panel-body">
-                        <h:panelGrid id="PuntosPanel" columns="2" width="100%">
-                            <p:outputLabel for="puntos" value="Consumidores: " />
-                            <p:selectOneMenu id="puntos" value="#{registroPuntosCtr.consumidor}" converter="omnifaces.SelectItemsConverter">
-                                <f:selectItem itemLabel="Seleccione Consumidor" itemValue="" />
-                                <f:selectItems value="#{registroPuntosCtr.consumidores}" />
-                            </p:selectOneMenu>
-                            
-                            <p:outputLabel for="txtDescripcionCompra" value="Descripci&oacute;n Compra" />
-                            <p:inputText id="txtDescripcionCompra" value="#{registroPuntosCtr.transaccionActor.descripcionCompra}"
-                                        required="true"  />
-                           
-                            <p:outputLabel for="txtValorCompra" value="Valor Compra" />
-                            <p:inputText id="txtValorCompra" value="#{registroPuntosCtr.transaccionActor.valorCompra}"
-                                        required="true"  />
-                            
-                             <p:outputLabel for="txtPorcentaje" value="% Descuento Compra" />
-                             <p:inputText id="txtPorcentaje" value="#{registroPuntosCtr.transaccionActor.porcentajeDescuento}"
-                                        required="true"  />
-               
-                        </h:panelGrid>
-                         <p:commandButton id="puntosBtn" icon="ui-icon-save" value="GUARDAR" action="#{registroPuntosCtr.guardar}"/>
-                  
+                        <p:panelGrid style="margin-top:20px">
+                            <f:facet name="header">
+                                <p:row>
+                                     <p:column colspan="4">Número de comprobante</p:column>
+                                     <p:column>#{registroVentaCtr.numeroSecuencia}</p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <p:fieldset legend="Datos de Cliente" toggleable="true" toggleSpeed="500">
+                                        <h:panelGrid columns="4" cellpadding="5">
+                                            <p:outputLabel for="txtDocumento" value="C&eacute;dula / RUC / Pasaporte" />
+                                            <p:inputText id="txtDocumento" value="#{registroVentaCtr.clienteBean.documento}" required="true"  />
+                                            <p:outputLabel for="txtFechaNacimiento" value="Fecha Nacimiento" />
+                                            <p:inputText id="txtFechaNacimiento" value="#{registroVentaCtr.clienteBean.fechaNacimiento}" required="true"  />
+                                            <p:outputLabel for="txtNombre" value="Nombre" />
+                                            <p:inputText id="txtNombre" value="#{registroVentaCtr.clienteBean.nombre}" required="true"  />
+                                            <p:outputLabel for="txtApellido" value="Apellido" />
+                                            <p:inputText id="txtApellido" value="#{registroVentaCtr.clienteBean.apellido}" required="true"  />
+                                            
+                                        </h:panelGrid>
+                                    </p:fieldset>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <p:fieldset legend="Productos / Servicios " toggleable="true" toggleSpeed="500">
+                                        <p:dataTable id="datatablecollection">
+                                            <p:column headerText="C&oacute;digo">
+                                                <div align="right">
+                                                    <h:outputText value="1" />
+                                                </div>
+                                            </p:column>
+                                            <p:column headerText="Nombre Item">
+                                                <div align="right">
+                                                    <h:outputText value="1" />
+                                                </div>
+                                            </p:column>
+                                            <p:column headerText="Cantidad">
+                                                <div align="right">
+                                                    <h:outputText value="1" />
+                                                </div>
+                                            </p:column>
+                                            <p:column headerText="Valor Unitario">
+                                                <div align="right">
+                                                    <h:outputText value="1" />
+                                                </div>
+                                            </p:column>
+                                            <p:column headerText="Total">
+                                                <div align="right">
+                                                    <h:outputText value="1" />
+                                                </div>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:fieldset>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
                     </div>
                 </div>
             </h:form>

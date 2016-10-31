@@ -90,6 +90,27 @@ public class Controladores implements Serializable{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(date);
 	}
+	
+	/**
+	 * Fecha hora sin segundos
+	 * @param date
+	 * @return
+	 */
+	public String dateTimeToFechaHora2(Date date) {
+		if (date == null) {
+			return "";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return sdf.format(date);
+	}
+	
+	public String dateToFechaCorta(Date date) {
+		if (date == null) {
+			return "";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(date);
+	}
 
 	public void mostrarError(String messageCode) {
 		FacesContext.getCurrentInstance().addMessage(
@@ -126,6 +147,11 @@ public class Controladores implements Serializable{
 	public void mostrarErrorSummary(String summary, String detail) {
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, detail));
+	}
+
+	public void mostrarInfoSummary(String summary, String detail) {
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail));
 	}
 
 	protected List<SelectItem> recuperarHobbieListItem() {

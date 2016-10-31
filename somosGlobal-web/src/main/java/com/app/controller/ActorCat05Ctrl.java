@@ -11,14 +11,12 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 import com.cashback.controller.Controladores;
-import com.cashback.enums.AppMensajes;
 import com.cashback.interfaces.Globales;
 import com.cashback.interfaces.IActor;
 import com.cashback.interfaces.IActorReferencia;
 import com.cashback.interfaces.IActorRol;
 import com.cashback.interfaces.ICategoria;
 import com.cashback.model.Actor;
-import com.cashback.model.ActorReferencia;
 import com.cashback.model.CatalogoGen;
 import com.cashback.model.Categoria;
 import com.cashback.model.ICatalogoGen;
@@ -55,115 +53,43 @@ public class ActorCat05Ctrl extends Controladores {
 		categoriaListItem = recuperarCategoriaListItem(catIdSeleccionada);
 	}
 
-	public void recuperarActorList() {
-		List<Actor> actoresPadre = sActor
-				.findAllByCategoriaInHijosFromRolNegocio(rolNegocio,
-						catIdSeleccionada, Globales.EST_OK, Globales.EST_OK);
-		actorList = new ArrayList<Actor>();
-		for (Actor actorPadre : actoresPadre) {
-			List<Actor> actoresHijos = new ArrayList<Actor>();
-			for (Actor actorHijo : actorPadre.getActoresHijos()) {
-				List<ActorReferencia> telefonosActor = new ArrayList<ActorReferencia>();
-				List<ActorReferencia> direccionesActor = new ArrayList<ActorReferencia>();
-				List<ActorReferencia> horariosActor = new ArrayList<ActorReferencia>();
-				List<ActorReferencia> correosActor = new ArrayList<ActorReferencia>();
-				List<ActorReferencia> galeriaImgActor = new ArrayList<ActorReferencia>();
-				List<ActorReferencia> promocionImgActor = new ArrayList<ActorReferencia>();
-				for (ActorReferencia ar : actorHijo.getActorReferencias()) {
-					String tipoCatalogo = ar.getCatalogoGen().getCatalogoGen()
-							.getTipoCg();
-					if (tipoCatalogo.compareTo(Globales.TELEFONO) == 0) {
-						telefonosActor.add(ar);
-					}
-					if (tipoCatalogo.compareTo(Globales.DIRECCION) == 0) {
-						ar.setLocalidad(sLocalidad.recuperarLocalidad(Integer
-								.parseInt(ar.getVal1Ar())));
-						direccionesActor.add(ar);
-					}
-					if (tipoCatalogo.compareTo(Globales.DIAS_TIPO_CATALOGO) == 0) {
-						horariosActor.add(ar);
-					}
-					if (tipoCatalogo.compareTo(Globales.CORREO_ELECTRONICO) == 0) {
-						correosActor.add(ar);
-					}
-
-					if (tipoCatalogo.compareTo(Globales.IMAGEN_TIPO_CATALOGO) == 0) {
-						if (ar.getCatalogoGen().getRefCg()
-								.compareTo(Globales.IMAGEN_PROMOCION) == 0) {
-							promocionImgActor.add(ar);
-						}
-						if (ar.getCatalogoGen().getRefCg()
-								.compareTo(Globales.IMAGEN_GALERIA) == 0) {
-							galeriaImgActor.add(ar);
-						}
-					}
-				}
-				actorHijo.setTelefonosActor(telefonosActor);
-				actorHijo.setDireccionesActor(direccionesActor);
-				actorHijo.setHorariosActor(horariosActor);
-				actorHijo.setCorreosActor(correosActor);
-				actorHijo.setGaleriaImgActor(galeriaImgActor);
-				actorHijo.setPromocionImgActor(promocionImgActor);
-				actoresHijos.add(actorHijo);
-			}
-			actorPadre.setActoresHijos(actoresHijos);
-			actorList.add(actorPadre);
-		}
-		Collections.shuffle(actorList);
+	public void recuperarTodo() {
+		catIdSeleccionada = "05";
+		recuperarActorList();
 	}
 
-	public String recuperarLocalVentaList3() {
-		if (palabraClaveAct.trim().length() == 0) {
-			mostrarInfo(AppMensajes.INF_NO_RESULTADOS);
-			return null;
-		}
-
+	public void recuperarActorList() {
+		palabraClaveAct = null;
 		actorList = new ArrayList<Actor>();
-		List<Actor> actores = sActorRol.findAllByPalabraClaveAndRolNegocio(
-				palabraClaveAct, rolNegocio);
-		for (Actor actor : actores) {
-			List<ActorReferencia> telefonosActor = new ArrayList<ActorReferencia>();
-			List<ActorReferencia> direccionesActor = new ArrayList<ActorReferencia>();
-			List<ActorReferencia> horariosActor = new ArrayList<ActorReferencia>();
-			List<ActorReferencia> correosActor = new ArrayList<ActorReferencia>();
-			List<ActorReferencia> galeriaImgActor = new ArrayList<ActorReferencia>();
-			List<ActorReferencia> promocionImgActor = new ArrayList<ActorReferencia>();
-			for (ActorReferencia ar : actor.getActorReferencias()) {
-				String tipoCatalogo = ar.getCatalogoGen().getCatalogoGen()
-						.getTipoCg();
-				if (tipoCatalogo.compareTo(Globales.TELEFONO) == 0) {
-					telefonosActor.add(ar);
-				}
-				if (tipoCatalogo.compareTo(Globales.DIRECCION) == 0) {
-					direccionesActor.add(ar);
-				}
-				if (tipoCatalogo.compareTo(Globales.DIAS_TIPO_CATALOGO) == 0) {
-					horariosActor.add(ar);
-				}
-				if (tipoCatalogo.compareTo(Globales.CORREO_ELECTRONICO) == 0) {
-					correosActor.add(ar);
-				}
-
-				if (tipoCatalogo.compareTo(Globales.IMAGEN_TIPO_CATALOGO) == 0) {
-					if (ar.getCatalogoGen().getRefCg()
-							.compareTo(Globales.IMAGEN_PROMOCION) == 0) {
-						promocionImgActor.add(ar);
-					}
-					if (ar.getCatalogoGen().getRefCg()
-							.compareTo(Globales.IMAGEN_GALERIA) == 0) {
-						galeriaImgActor.add(ar);
-					}
-				}
-			}
-			actor.setTelefonosActor(telefonosActor);
-			actor.setDireccionesActor(direccionesActor);
-			actor.setHorariosActor(horariosActor);
-			actor.setCorreosActor(correosActor);
-			actor.setGaleriaImgActor(galeriaImgActor);
-			actor.setPromocionImgActor(promocionImgActor);
-			actorList.add(actor);
+		actorList = findAllActores("", catIdSeleccionada);
+		if (actorList.size() == 0) {
+			mostrarErrorSummary("Categorias",
+					"No existen registros en esta categoria");
+			return;
 		}
-		return null;
+	}
+
+	public void recuperarLocalVentaList3() {
+		if (palabraClaveAct.trim().length() == 0) {
+			mostrarInfoSummary("Palabra Clave",
+					"Debes ingresar una palabra clave para realizar la búsqueda");
+			return;
+		}
+		actorList = findAllActores(palabraClaveAct, "05");
+		if (actorList.size() == 0) {
+			mostrarErrorSummary("Palabra Clave",
+					"La palabra que buscas no esta disponible en esta categoria");
+			return;
+		}
+	}
+
+	private List<Actor> findAllActores(String palabraClave, String catId) {
+		List<Actor> actores = sActor
+				.findAllByCategoriaInHijosFromRolNegocio(rolNegocio, catId,
+						Globales.EST_OK, Globales.EST_OK, palabraClave);
+		Collections.shuffle(actores);
+		return actores;
+
 	}
 
 	public List<Actor> getActorList() {

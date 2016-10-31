@@ -6,79 +6,157 @@
 	xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/plantillaConsulta.xhtml">
 	<ui:define name="contenido">
-		<h:form id="frmconLocalVentaAvanzada">
-			<p:growl autoUpdate="true"  sticky="true" />
-			<br></br>
-			<h:panelGroup id="pGridBusquedaAvanzada">
-				<div class="panel panel-primary">
-					<div class="panel-heading">Búsqueda Avanzada</div>
-					<br></br>
-					<div class="panel-body">
-						<p:autoComplete id="acSimple2"
-							value="#{conLocalVentaAvanzada.lvPalabrasClave}"
-							completeMethod="#{conLocalVentaAvanzada.completeLvPalabrasClave}">
-						</p:autoComplete>
-						<p:watermark for="acSimple2" value="Ingrese palabra clave"
-							id="watermark2" />
-						<br></br>
-						<p:autoComplete id="acSimple"
-							value="#{conLocalVentaAvanzada.ubiPalabrasClave}"
-							completeMethod="#{conLocalVentaAvanzada.completeUbiPalabrasClave}">
-							<p:ajax event="itemSelect"
-								listener="#{conLocalVentaAvanzada.handleSelect}" />
-						</p:autoComplete>
-						<p:watermark for="acSimple" value="#{msj.ubicacion}"
-							id="watermark" />
-					</div>
-					<div class="panel-footer" align="right">
-						<p:commandLink value="#{msj.nuevo}" process="@this"
-							action="#{conLocalVentaAvanzada.nuevaBusqueda}"
-							update="pGridBusquedaAvanzada, tblLocalVenta" />
-						<p:commandLink value="#{msj.buscar}" styleClass="btn btn-primary"
-							process="pGridBusquedaAvanzada @this"
-							action="#{conLocalVentaAvanzada.recuperarLocalVentaList}"
-							update="tblLocalVenta" />
-					</div>
-				</div>
-			</h:panelGroup>
+		<h:form id="busquedaAvanzadaFrm">
+			<p:panel header="Búsqueda General">
+				<div class="ui-fluid">
+					<p:panelGrid id="busquedaAvanzadaPGrid" columns="3"
+						columnClasses="ui-grid-col-3,ui-grid-col-7,ui-grid-col-2"
+						layout="grid" styleClass="ui-panelgrid-blank">
 
-			<br></br>
-			<p:panel header="#{msj.localesEncontrados}">
-				<p:dataTable value="#{conLocalVentaAvanzada.localVentaList}"
-					id="tblLocalVenta" var="localVenta">
-					<p:column headerText="#{msj.localesTiendas}" width="600">
-						<h:graphicImage width="100px" height="100px"
-							value="/imagenes/#{localVenta.lvLogo}" />
-						<br></br>
-						<p:dataTable value="#{localVenta.ubicacions}" var="ubicacion"
-							scrollable="true" scrollHeight="150">
-							<p:column headerText="#{msj.sector}">
-								#{ubicacion.barrio.barNombre}
-							</p:column>
-							<p:column headerText="#{msj.sucursales}">
-								<h:outputText
-									value="#{ubicacion.ubiCallePrin} #{ubicacion.ubiNumPredio} y #{ubicacion.ubiCalleSec}" />
-							</p:column>
-						</p:dataTable>
-					</p:column>
-					<p:column headerText="#{msj.imagenesPromociones}">
-						<p:contentFlow value="#{localVenta.localPromocionList}"
-							var="image">
-							<h:graphicImage value="/imagenes/#{image.lpImagen}"
-								styleClass="content" />
-						</p:contentFlow>
-					</p:column>
-					<p:column width="150">
-						<p:commandButton value="#{msj.verMas}" process="@this"
-							icon=" ui-icon-plusthick"
-							action="#{conLocalVentaCtr.seleccionarLocalVenta}">
-							<f:setPropertyActionListener
-								target="#{conLocalVentaCtr.localVenta}" value="#{localVenta}" />
-						</p:commandButton>
-					</p:column>
-				</p:dataTable>
+						<p:outputLabel value="Ingresa lo que estas buscando:" />
+
+						<p:autoComplete id="acSimple2" placeholder="Palabra clave:"
+							maxResults="20" scrollHeight="400"
+							value="#{conLocalVentaAvanzada.lvPalabrasClave}"
+							completeMethod="#{conLocalVentaAvanzada.completeLvPalabrasClave}" />
+						<p:commandButton value="Buscar"
+							action="#{conLocalVentaAvanzada.findAllActorByPalabraClave}"
+							process="@this busquedaAvanzadaPGrid"
+							update="busquedaAvanzadaPGrid, pGroupLocalVentaList" />
+					</p:panelGrid>
+				</div>
+
 			</p:panel>
+			<h:panelGroup id="pGroupLocalVentaList">
+				<ui:repeat var="grupoEmpresarialActor"
+					value="#{conLocalVentaAvanzada.actorList}">
+					<br />
+					<div class="row">
+						<div class="col-md-4">
+							<h:graphicImage styleClass="img-responsive"
+								value="/imagenes/#{grupoEmpresarialActor.fotoAct}" />
+						</div>
+						<div class="col-md-6" align="center">
+							<h2>
+								<h:outputText value="#{grupoEmpresarialActor.razonSocialAct}" />
+							</h2>
+							<div style="width: 100%; height: 150px; overflow-y: scroll;">
+								<div class="table-responsive">
+									<h:dataTable value="#{grupoEmpresarialActor.actoresHijos}"
+										styleClass="table table-striped" var="localActor">
+										<h:column>
+											<h:dataTable value="#{localActor.direccionesActor}"
+												var="direccion" styleClass="table table-striped">
+												<h:column>
+													<p:commandLink process="@this"
+														title="Ver Geo Localización del establecimiento"
+														action="#{actorLocalCtrl.verActorLocal}">
+														<h:graphicImage value="/imagenes/bt_I.gif" />
+														<f:setPropertyActionListener
+															target="#{actorLocalCtrl.localActor}"
+															value="#{localActor}" />
+													</p:commandLink>
+													<p:commandLink process="@this"
+														title="Ver Promociones del establecimiento"
+														action="#{actorLocalCtrl.verPromocionLocal}">
+														<h:graphicImage value="/imagenes/bt_p.gif" />
+														<f:setPropertyActionListener
+															target="#{actorLocalCtrl.localActor}"
+															value="#{localActor}" />
+													</p:commandLink>
+												</h:column>
+												<h:column>
+													<f:facet name="header">Conócenos</f:facet>
+													<p:commandLink process="@this" title="Conócenos"
+														action="#{actorLocalCtrl.verActorLocal}">
+														<h:graphicImage value="/imagenes/btn-vermas.png" />
+														<f:setPropertyActionListener
+															target="#{actorLocalCtrl.localActor}"
+															value="#{localActor}" />
+													</p:commandLink>
+												</h:column>
+												<h:column>
+													<f:facet name="header">#{msj.sector}</f:facet>
+													<h:outputText
+														value="#{direccion.localidad.locNombre}" />
+												</h:column>
+												<h:column>
+													<f:facet name="header">#{msj.direccion}</f:facet>
+													<h:outputText
+														value="#{direccion.val2Ar} #{direccion.val4ar} y #{direccion.val3Ar}" />
+												</h:column>
+												<h:column>
+													<f:facet name="header">Hoy</f:facet>
+													<h:graphicImage
+														value="/imagenes/#{localActor.abiertoCerrado}" />
+												</h:column>
+												<h:column>
+													<p:commandLink process="@this"
+														title="Ver Fotos del establecimiento"
+														action="#{actorLocalCtrl.verGaleriaLocal}">
+														<h:graphicImage value="/imagenes/bt_v.gif" />
+														<f:setPropertyActionListener
+															target="#{actorLocalCtrl.localActor}"
+															value="#{localActor}" />
+													</p:commandLink>
+												</h:column>
+											</h:dataTable>
+										</h:column>
+									</h:dataTable>
+								</div>
+							</div>
+
+							<br></br>
+							<h:panelGroup rendered="false">
+								<div class="row" align="center">
+									<div class="col-md-4">
+										<p:commandLink process="@this"
+											action="#{actorLocalCtrl.verActorLocal}">
+											<h:graphicImage value="/imagenes/bt_infoygeo.png"
+												styleClass="img-responsive" />
+											<f:setPropertyActionListener
+												target="#{actorLocalCtrl.localActor}"
+												value="#{grupoEmpresarialActor}" />
+										</p:commandLink>
+									</div>
+									<div class="col-md-4">
+										<p:commandLink process="@this" styleClass="pull-leght"
+											action="#{actorLocalCtrl.verGaleriaLocal}">
+											<h:graphicImage value="/imagenes/bt_vermas.png"
+												styleClass="img-responsive" />
+											<f:setPropertyActionListener
+												target="#{actorLocalCtrl.localActor}"
+												value="#{grupoEmpresarialActor}" />
+										</p:commandLink>
+									</div>
+									<div class="col-md-4">
+										<p:commandLink process="@this"
+											action="#{actorLocalCtrl.verPromocionLocal}">
+											<h:graphicImage value="/imagenes/bt_promocion.png"
+												styleClass="img-responsive" />
+											<f:setPropertyActionListener
+												target="#{actorLocalCtrl.localActor}"
+												value="#{grupoEmpresarialActor}" />
+										</p:commandLink>
+									</div>
+								</div>
+							</h:panelGroup>
+						</div>
+
+						<div class="col-md-2" align="center">
+							<h:graphicImage width="200px" height="200px"
+								styleClass="img-rounded"
+								value="/imagenes/#{grupoEmpresarialActor.logoAct}" />
+						</div>
+					</div>
+					<br />
+					<div style="background-color: orange; height: 5px;">
+						<br />
+					</div>
+				</ui:repeat>
+			</h:panelGroup>
 		</h:form>
 	</ui:define>
+
 </ui:composition>
 </html>

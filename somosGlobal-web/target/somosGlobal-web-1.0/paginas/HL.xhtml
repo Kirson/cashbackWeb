@@ -12,78 +12,62 @@
 			<p:growl />
 			<div class="panel panel-primary">
 				<div class="panel-heading">#{actorCtr.headerActor}</div>
-				<br></br>
 				<div class="panel-body">
-					<h:panelGroup id="pGridActor">
-						#{msj.ruc}
-						<h:inputText id="cedRucPasActTxt" styleClass="form-control"
+					<p:panelGrid id="pGridActor" columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel for="cedRucPasActTxt" value="#{msj.ruc}:" />
+						<p:inputText id="cedRucPasActTxt"
 							value="#{actorCtr.actor.cedrucpasAct}" required="true"
 							requiredMessage="#{msj.reqCedRucPas}" />
-						<br></br>
-					
-						#{msj.razonSocial}
-						<h:inputText styleClass="form-control"
-							value="#{actorCtr.actor.razonSocialAct}" required="true"
-							requiredMessage="#{msj.reqRazonSocial}" />
-						<br></br>
-					
-						#{msj.actividadPrincipal}
-						<h:inputText styleClass="form-control"
-							value="#{actorCtr.actor.actividadAct}" required="true"
-							requiredMessage="#{msj.reqActividadPrincipal}" />
-						<br></br>
-						
-						
-						#{msj.slogan}
-						<h:inputText styleClass="form-control"
-							value="#{actorCtr.actor.sloganAct}" required="true"
-							requiredMessage="#{msj.reqSlogan}" />
-						<br></br>
-						
-						#{msj.servicio}
-						<h:inputText styleClass="form-control"
-							value="#{actorCtr.actor.servicioAct}" required="true"
-							requiredMessage="#{msj.reqServicio}" />
-						<br></br>
 
-						#{msj.calificacion}
+						<p:outputLabel for="razonSocialAct" value="#{msj.razonSocial}:" />
+						<p:inputText value="#{actorCtr.actor.razonSocialAct}"
+							required="true" requiredMessage="#{msj.reqRazonSocial}" />
+
+						<p:outputLabel for="actividadAct"
+							value="#{msj.actividadPrincipal}" />
+						<p:inputText value="#{actorCtr.actor.actividadAct}:"
+							required="true" requiredMessage="#{msj.reqActividadPrincipal}" />
+
+						<p:outputLabel for="sloganAct" value="#{msj.slogan}:" />
+						<p:inputText value="#{actorCtr.actor.sloganAct}" required="true"
+							requiredMessage="#{msj.reqSlogan}" />
+
+						<p:outputLabel for="servicioAct" value="#{msj.servicio}:" />
+						<p:inputText value="#{actorCtr.actor.servicioAct}" required="true"
+							requiredMessage="#{msj.reqServicio}" />
+
+						<p:outputLabel for="rankingAct" value="#{msj.calificacion}:" />
 						<p:rating value="#{actorCtr.actor.rankingAct}" />
-						<br></br>
-						<br></br>
-						
-						#{msj.imagenFotoLocal}
+
+						<p:outputLabel for="logoAct" value="#{msj.imagenFotoLocal}" />
 						<h:graphicImage id="logoAct" styleClass="img-rounded" width="140"
 							height="140" value="/imagenes/#{actorCtr.actor.logoAct}" />
-						<br></br>
-						<br></br>
-						
-						#{msj.cambiar}
+
+						<p:outputLabel value="#{msj.cambiar}:" />
 						<p:fileUpload id="fu1"
 							fileUploadListener="#{actorCtr.handleFileUpload}"
 							allowTypes="/(\.|\/)(png|jpg|jpeg)$/" sizeLimit="500000"
 							update="logoAct" />
-						<br></br>
-					
-						#{msj.seleccionePorcentajeNivel}
-						<h:selectOneMenu value="#{actorCtr.idArolSeleccionado}"
-							required="true" requiredMessage="#{msj.reqPorcentajeNivel}"
-							styleClass="form-control">
-							<f:selectItem noSelectionOption="true" itemDisabled="true"
+
+
+						<p:outputLabel for="idArolSeleccionado"
+							value="#{msj.seleccionePorcentajeNivel}" />
+						<p:selectOneMenu value="#{actorCtr.idArolSeleccionado}"
+							required="true" requiredMessage="#{msj.reqPorcentajeNivel}">
+							<f:selectItem noSelectionOption="true"
 								itemLabel="#{msj.seleccione}" />
 							<f:selectItems value="#{actorCtr.actorRolListItem}" />
-						</h:selectOneMenu>
-					</h:panelGroup>
-					<br></br>
-
-					<div class="panel-footer">
-						<div align="right">
-							<p:commandButton value="#{msj.nuevo}" process="@this"
-								update="pGridActor" action="#{actorCtr.inicio}" />
-							<p:commandButton value="#{msj.crear}" process="@this,pGridActor"
-								action="#{actorCtr.crearActor}" update="pGridActor" />
-
-						</div>
-					</div>
+						</p:selectOneMenu>
+					</p:panelGrid>
+				</div>
+				<div class="panel-footer" align="right">
+					<p:commandButton value="#{msj.nuevo}" process="@this"
+						update="pGridActor" action="#{actorCtr.inicio}" />
+					<p:commandButton value="#{msj.crear}" process="@this,pGridActor"
+						action="#{actorCtr.crearActor}" update="pGridActor" />
 				</div>
 			</div>
 		</h:form>

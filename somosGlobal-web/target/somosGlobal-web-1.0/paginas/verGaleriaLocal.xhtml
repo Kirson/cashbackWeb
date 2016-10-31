@@ -7,27 +7,29 @@
 <ui:composition template="../templates/plantillaConsulta.xhtml">
 	<ui:define name="contenido">
 		<h:form id="frmconLocalVentaCategoria01">
-
+			<br></br>
 			<div class="row">
-				<div class="col-sm-12">
-					<div>
-						<h:outputText value="#{actorLocalCtrl.localActor.razonSocialAct}"
-							style="FONT-SIZE: xx-large;" />
-						<p:commandLink process="@this" styleClass="pull-right" rendered="#{actorLocalCtrl.verPromociones}"
-							action="#{actorLocalCtrl.verPromocionLocal}">
-							<h:graphicImage value="/imagenes/bt_vermas.png" />
-						</p:commandLink>	
-						<p:commandLink process="@this" styleClass="pull-right" rendered="#{actorLocalCtrl.verGaleria}"
-							action="#{actorLocalCtrl.verPromocionLocal}">
-							<h:graphicImage value="/imagenes/bt_promocion.png" />
-						</p:commandLink>
-						<p:commandLink process="@this" styleClass="pull-right"
-							action="#{actorLocalCtrl.verActorLocal}">
-							<h:graphicImage value="/imagenes/bt_infoygeo.png" />
-						</p:commandLink>
-					</div>
+				<div class="col-md-4">
+					<h:outputText value="#{actorLocalCtrl.localActor.razonSocialAct}"
+						style="FONT-SIZE: xx-large;" />
+				</div>
+				<div class="col-md-8" align="right">
+					<p:commandLink process="@this" value="Fotos"
+						styleClass="btn btn-primary btn-lg"
+						rendered="#{actorLocalCtrl.verPromociones}"
+						action="#{actorLocalCtrl.verGaleriaLocal}" />
+					<p:commandLink process="@this" styleClass="btn btn-success btn-lg"
+						rendered="#{actorLocalCtrl.verGaleria}" value="Promo"
+						action="#{actorLocalCtrl.verPromocionLocal}">
+						<h:graphicImage value="/imagenes/bt_promocion.png" />
+					</p:commandLink>
+					<p:commandLink process="@this" styleClass="pull-right"
+						action="#{actorLocalCtrl.verActorLocal}">
+						<h:graphicImage value="/imagenes/bt_infoygeo.png" />
+					</p:commandLink>
 				</div>
 			</div>
+
 			<div align="center">
 				<h:panelGroup id="galeriaPGrid"
 					rendered="#{actorLocalCtrl.verGaleria}">

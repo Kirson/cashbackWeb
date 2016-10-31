@@ -614,6 +614,98 @@
 				</div>
 			</h:panelGroup>
 
+			<!-- Servicios -->
+			<h:panelGroup id="pGroupServicios">
+				<div class="panel panel-primary">
+					<div class="panel-heading">#{msj.agregarServicios}</div>
+					<div class="panel-body">
+
+						<div class="row">
+							<div class="col-sm-6">
+								<p:outputLabel for="servicioIdCg"
+									value="#{msj.seleccioneTipoServicio}" />
+								<h:selectOneMenu id="servicioIdCg" required="true"
+									requiredMessage="#{msj.reqTipoServicio}"
+									value="#{actorCtr.servicioIdCgSeleccionado}"
+									styleClass="form-control">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="#{msj.seleccione}" />
+									<f:selectItems value="#{actorCtr.servicioCatalogoListItem}" />
+								</h:selectOneMenu>
+							</div>
+							<div class="col-sm-6">
+								<p:outputLabel for="descripcionServicio"
+									value="#{msj.descripcion}" />
+								<p:inputText id="descripcionServicio"
+									value="#{actorCtr.servicio.val1Ar}" required="true"
+									requiredMessage="#{msj.reqDescripcionServicio}"
+									style="width: 100%;" />
+							</div>
+						</div>
+
+						<br></br>
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<h:dataTable id="servicioTbl" styleClass="table table-striped"
+									value="#{actorCtr.serviciosActor}" var="servicio">
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Tipo" />
+										</f:facet>
+										<h:outputText value="#{servicio.catalogoGen.nombreCg}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="#{msj.descripcion}" />
+										</f:facet>
+										<h:outputText value="#{servicio.val1Ar}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="#{msj.editar}" />
+										</f:facet>
+										<p:commandLink process="@this" value="#{msj.editar}"
+											update=":frmContacto:pGroupServicios"
+											action="#{actorCtr.seleccionarServicio}">
+											<f:setPropertyActionListener target="#{actorCtr.servicio}"
+												value="#{servicio}" />
+										</p:commandLink>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="#{msj.eliminar}" />
+										</f:facet>
+										<p:commandLink value="#{msj.eliminar}" process="@this"
+											update=":frmContacto:pGroupServicios"
+											action="#{actorCtr.eliminarServicio}">
+											<f:setPropertyActionListener target="#{actorCtr.servicio}"
+												value="#{servicio}" />
+										</p:commandLink>
+									</h:column>
+								</h:dataTable>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer" align="right">
+						<p:commandLink value="#{msj.nuevo}" process="@this"
+							styleClass="btn btn-default" update="pGroupContactosDigitales"
+							actionListener="#{actorCtr.nuevoServicio}" />
+						&nbsp;
+						<p:commandLink value="#{msj.crear}" styleClass="btn btn-primary"
+							rendered="#{actorCtr.crearServicioRender}"
+							actionListener="#{actorCtr.crearServicio}"
+							process="@this,pGroupServicios" update="pGroupServicios" />
+						<p:commandLink value="#{msj.actualizar}"
+							rendered="#{actorCtr.actualizarServicioRender}"
+							actionListener="#{actorCtr.actualizarServicio}"
+							process="@this,pGroupServicios" update="pGroupServicios" />
+					</div>
+				</div>
+			</h:panelGroup>
+
+
+
+
 			<!-- Imagenes -->
 			<h:panelGroup id="pGroupImagenes">
 				<div class="panel panel-primary">
@@ -669,17 +761,6 @@
 											<h:outputText value="#{msj.tipo}" />
 										</f:facet>
 										<h:outputText value="#{galeria.catalogoGen.nombreCg}" />
-									</h:column>
-									<h:column>
-										<f:facet name="header">
-											<h:outputText value="#{msj.editar}" />
-										</f:facet>
-										<p:commandLink process="@this" value="#{msj.editar}"
-											update=":frmContacto:pGroupImagenes"
-											action="#{actorCtr.seleccionarImagen}">
-											<f:setPropertyActionListener target="#{actorCtr.imagen}"
-												value="#{galeria}" />
-										</p:commandLink>
 									</h:column>
 									<h:column>
 										<f:facet name="header">

@@ -11,54 +11,52 @@
 			<p:growl autoUpdate="true" />
 			<div class="panel panel-primary">
 				<div class="panel-heading">#{actorCtr.headerActor}</div>
-				<br></br>
 				<div class="panel-body">
-					<h:panelGroup id="pGridActor">
-						#{msj.cedRucPas}
-						
-						
-					
-						<h:inputText id="cedRucPasActTxt" styleClass="form-control"
-							value="#{actorCtr.actor.cedrucpasAct}" required="true"
-							requiredMessage="#{msj.reqCedRucPas}" />
-						<br></br>
-						<br></br>
-						#{msj.nombres}
-						<h:inputText id="nombresActTxt" styleClass="form-control"
-							value="#{actorCtr.actor.nombresAct}" required="true"
-							requiredMessage="#{msj.reqNombres}" />
-						<br></br>
-						<br></br>
+					<div class="ui-fluid">
+						<p:panelGrid id="pGridActor" columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+							styleClass="ui-panelgrid-blank">
+
+							<p:outputLabel for="cedRucPasActTxt" value="#{msj.cedRucPas}:" />
+							<p:inputText id="cedRucPasActTxt"
+								value="#{actorCtr.actor.cedrucpasAct}" required="true"
+								requiredMessage="#{msj.reqCedRucPas}" />
+
+							<p:outputLabel for="nombresActTxt" value="#{msj.nombres}" />
+							<p:inputText id="nombresActTxt"
+								value="#{actorCtr.actor.nombresAct}" required="true"
+								requiredMessage="#{msj.reqNombres}" />
+							
 						#{msj.apellidos}
 						<h:inputText id="apellidosActTxt" styleClass="form-control"
-							value="#{actorCtr.actor.apellidosAct}" required="true"
-							requiredMessage="#{msj.reqApellidos}" />
-						<br></br>
-						<br></br>
+								value="#{actorCtr.actor.apellidosAct}" required="true"
+								requiredMessage="#{msj.reqApellidos}" />
+							<br></br>
+							<br></br>
 						#{msj.fechaNacimiento}
 						<br></br>
-						<p:calendar id="fecNacActCal" value="#{actorCtr.actor.fecNacAct}"
-							required="true" requiredMessage="#{msj.reqFechaNacimiento}"
-							pattern="#{msj.forFechaCorta}" navigator="true" showOn="button"
-							showOtherMonths="true" showButtonPanel="true" showWeek="true" />
-						<br></br>
-						<br></br>
+							<p:calendar id="fecNacActCal" value="#{actorCtr.actor.fecNacAct}"
+								required="true" requiredMessage="#{msj.reqFechaNacimiento}"
+								pattern="#{msj.forFechaCorta}" navigator="true" showOn="button"
+								showOtherMonths="true" showButtonPanel="true" showWeek="true" />
+							<br></br>
+							<br></br>
 						#{msj.genero}
 						<h:selectOneMenu id="sexoAct" value="#{actorCtr.actor.sexoAct}"
-							styleClass="form-control">
-							<f:selectItem itemValue="F" itemLabel="#{msj.femenino}" />
-							<f:selectItem itemValue="M" itemLabel="#{msj.masculino}" />
-						</h:selectOneMenu>
-					</h:panelGroup>
-					<br></br>
-					<div class="panel-footer">
-						<div align="right">
-							<p:commandButton value="#{msj.nuevo}" process="@this"
-								update="pGridActor" action="#{actorCtr.inicio}" />
-							<p:commandButton value="#{msj.crear}" process="@this,pGridActor"
-								action="#{actorCtr.crearActor}" update="pGridActor" />
-
-						</div>
+								styleClass="form-control">
+								<f:selectItem itemValue="F" itemLabel="#{msj.femenino}" />
+								<f:selectItem itemValue="M" itemLabel="#{msj.masculino}" />
+							</h:selectOneMenu>
+							</h:panelGroup>
+						</p:panelGrid>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<div align="right">
+						<p:commandButton value="#{msj.nuevo}" process="@this"
+							update="pGridActor" action="#{actorCtr.inicio}" />
+						<p:commandButton value="#{msj.crear}" process="@this,pGridActor"
+							action="#{actorCtr.crearActor}" update="pGridActor" />
 					</div>
 				</div>
 			</div>

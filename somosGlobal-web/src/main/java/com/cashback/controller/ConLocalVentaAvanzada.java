@@ -1,6 +1,7 @@
 package com.cashback.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,16 +14,19 @@ import org.primefaces.event.SelectEvent;
 
 import com.cashback.enums.AppMensajes;
 import com.cashback.interfaces.Globales;
+import com.cashback.interfaces.IActor;
 import com.cashback.interfaces.ILocalVenta;
 import com.cashback.interfaces.ITextoClave;
-import com.cashback.model.LocalVenta;
+import com.cashback.model.Actor;
+import com.cashback.model.CatalogoGen;
+import com.cashback.model.ICatalogoGen;
 import com.cashback.model.TextoClave;
 import com.google.gson.Gson;
 
 @SessionScoped
 @ManagedBean
 public class ConLocalVentaAvanzada extends Controladores {
-	private List<LocalVenta> localVentaList;
+	private List<Actor> actorList;
 	private String lvPalabrasClave = "", ubiPalabrasClave = "";
 	private List<String> textoClaveUbiList, textoClaveUbiFilterList;
 	private List<String> textoClaveLvList, textoClaveLvFilterList;
@@ -32,6 +36,10 @@ public class ConLocalVentaAvanzada extends Controladores {
 	private ILocalVenta sLocalVenta;
 	@EJB
 	private ITextoClave sTextoClave;
+	@EJB
+	private IActor sActor;
+	@EJB
+	private ICatalogoGen sCatalogoGen;
 
 	public ConLocalVentaAvanzada() {
 
@@ -43,7 +51,7 @@ public class ConLocalVentaAvanzada extends Controladores {
 	}
 
 	public String nuevaBusqueda() {
-		localVentaList = new ArrayList<LocalVenta>();
+		actorList = new ArrayList<Actor>();
 		lvPalabrasClave = "";
 		ubiPalabrasClave = "";
 		List<TextoClave> tcList = sTextoClave.recuperarTextoClaveList("", "");
@@ -86,20 +94,23 @@ public class ConLocalVentaAvanzada extends Controladores {
 		ubiPalabrasClave = item.toString();
 	}
 
-	public String recuperarLocalVentaList() {
+	public String findAllActorByPalabraClave() {
 		if (lvPalabrasClave.trim().length() == 0
 				&& ubiPalabrasClave.trim().length() == 0) {
 			mostrarInfo(AppMensajes.INF_NO_RESULTADOS);
 			return null;
 		}
-		localVentaList = sLocalVenta.recuperarLocalVentaList(lvPalabrasClave,
-				ubiPalabrasClave);
+		CatalogoGen rolNegocio = sCatalogoGen.recuperarCatalogoGen(
+				Globales.ROL_NEGOCIO, Globales.NIVEL_GRUPO_EMPRESARIAL);
+		actorList = sActor.findAllByCategoriaInHijosFromRolNegocio(rolNegocio,
+				"", Globales.EST_OK, Globales.EST_OK, lvPalabrasClave);
+		Collections.shuffle(actorList);
 		return null;
 	}
 
 	public void test() {
 		List<TextoClave> tcList = sTextoClave.recuperarTextoClaveList("", "");
-		
+
 		for (TextoClave tc : tcList) {
 			if (tc.getTcTipo().compareTo(Globales.TC_TIPO_UBICACION) == 0) {
 				textoClaveUbiList.add(tc.getTcTexto());
@@ -108,17 +119,9 @@ public class ConLocalVentaAvanzada extends Controladores {
 				textoClaveLvList.add(tc.getTcTexto());
 			}
 		}
-		
+
 		testResult = new Gson().toJson(textoClaveLvList);
 
-	}
-
-	public List<LocalVenta> getLocalVentaList() {
-		return localVentaList;
-	}
-
-	public void setLocalVentaList(List<LocalVenta> localVentaList) {
-		this.localVentaList = localVentaList;
 	}
 
 	public String getLvPalabrasClave() {
@@ -175,6 +178,14 @@ public class ConLocalVentaAvanzada extends Controladores {
 
 	public void setTestResult(String testResult) {
 		this.testResult = testResult;
+	}
+
+	public List<Actor> getActorList() {
+		return actorList;
+	}
+
+	public void setActorList(List<Actor> actorList) {
+		this.actorList = actorList;
 	}
 
 }

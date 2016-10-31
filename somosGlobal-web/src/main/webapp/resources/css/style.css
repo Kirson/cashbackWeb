@@ -184,9 +184,8 @@ input.upper {
 
 #header {
 	background-image: url('../../imagenes/pie.png');
-	color: white;
-	text-align: center;
 	padding: 5px;
+	height: 60px;
 }
 
 .vcenter {

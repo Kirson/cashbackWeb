@@ -69,13 +69,13 @@ public class ActorLocalCtrl {
 	public String verGaleriaLocal() {
 		verGaleria = true;
 		verPromociones = false;
-		return "verGaleriaLocal";
+		return "verGaleriaLocal?faces-redirect=true";
 	}
 
 	public String verPromocionLocal() {
 		verGaleria = false;
 		verPromociones = true;
-		return "verGaleriaLocal";
+		return "verGaleriaLocal?faces-redirect=true";
 	}
 
 	public Actor getLocalActor() {

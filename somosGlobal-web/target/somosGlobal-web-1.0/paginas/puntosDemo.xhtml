@@ -5,33 +5,38 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="../templates/plantilla.xhtml">
-	<ui:define name="titulo">
-		<h:outputText value="Puntos" />
-	</ui:define>
-	<ui:define name="content">
-		<h:form id="frmPuntos" >
-                    <p:fieldset legend="Puntos" toggleable="false" collapsed="false">
-                        <h:panelGrid id="PuntosPanel" columns="3">
-                            <p:outputLabel for="puntos" value="Puntos: " />
-                            <p:selectOneMenu id="puntos" value="#{puntosCtrl.seleccion}">
-                                <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItems value="#{puntosCtrl.usuarios}" />
+    <ui:composition template="../templates/plantilla.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPuntos" >
+                <p:growl autoUpdate="true" showDetail="true" />
+                <div class="panel panel-primary">
+                    <div class="panel-heading">#{msj.registroPuntos}</div>
+                    <div class="panel-body">
+                        <h:panelGrid id="PuntosPanel" columns="2" width="100%">
+                            <p:outputLabel for="puntos" value="Consumidores: " />
+                            <p:selectOneMenu id="puntos" value="#{registroPuntosCtr.consumidor}" converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem itemLabel="Seleccione Consumidor" itemValue="" />
+                                <f:selectItems value="#{registroPuntosCtr.consumidores}" />
                             </p:selectOneMenu>
                             
-                            <br/>
-                            <p:outputLabel for="txtCodigoPersona" value="Puntos" />
-                            <p:inputText id="txtCodigoPersona" value="#{puntosCtrl.puntos}"
+                            <p:outputLabel for="txtDescripcionCompra" value="Descripci&oacute;n Compra" />
+                            <p:inputText id="txtDescripcionCompra" value="#{registroPuntosCtr.transaccionActor.descripcionCompra}"
+                                        required="true"  />
+                           
+                            <p:outputLabel for="txtValorCompra" value="Valor Compra" />
+                            <p:inputText id="txtValorCompra" value="#{registroPuntosCtr.transaccionActor.valorCompra}"
+                                        required="true"  />
+                            
+                             <p:outputLabel for="txtPorcentaje" value="% Descuento Compra" />
+                             <p:inputText id="txtPorcentaje" value="#{registroPuntosCtr.transaccionActor.porcentajeDescuento}"
                                         required="true"  />
                
-                            <br/>
-                            <p:commandButton id="puntosBtn" icon="ui-icon-search"
-                                        value="Ok" action="#{puntosCtrl.anadirPuntos}"
-                                         />
                         </h:panelGrid>
-                    </p:fieldset>
-		</h:form>
-
-	</ui:define>
-</ui:composition>
+                         <p:commandButton id="puntosBtn" icon="ui-icon-save" value="GUARDAR" action="#{registroPuntosCtr.guardar}"/>
+                  
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>
