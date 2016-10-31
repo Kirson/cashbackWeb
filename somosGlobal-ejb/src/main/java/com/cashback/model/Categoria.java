@@ -15,7 +15,7 @@ import java.util.List;
 @NamedQueries({
 		@NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
 		@NamedQuery(name = "Categoria.findByIdList", query = "SELECT c FROM Categoria c"
-				+ " WHERE c.catId LIKE :catId"
+				+ " WHERE c.catId LIKE :catId AND LENGTH(c.catId) > 2 AND LENGTH(c.catId) <5"
 				+ " AND c.catEstado LIKE :catEstado ORDER BY c.catNombre") })
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;

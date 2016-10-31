@@ -27,6 +27,8 @@ import javax.persistence.Transient;
 		@NamedQuery(name = "ActorReferencia.findAll", query = "SELECT a FROM ActorReferencia a"),
 		@NamedQuery(name = "ActorReferencia.findByActorReferencia", query = "SELECT ar FROM ActorReferencia ar WHERE ar.actor =:actor AND ar.catalogoGen.tipoCg =:tipoCg AND ar.catalogoGen.refCg =:refCg"),
 		@NamedQuery(name = "ActorReferencia.findAllByActorAndPadreCatalogoGen", query = "SELECT ar FROM ActorReferencia ar WHERE ar.actor =:actor AND ar.catalogoGen.catalogoGen =:padreCatalogoGen"),
+		@NamedQuery(name = "ActorReferencia.findAllByActor", query = "SELECT ar FROM ActorReferencia ar WHERE ar.actor =:actor"),
+		@NamedQuery(name = "ActorReferencia.findByDiaSemana", query = "SELECT ar FROM ActorReferencia ar WHERE ar.catalogoGen.ref02Cg =:diaSemana AND ar.catalogoGen.catalogoGen.tipoCg ='DS' AND ar.actor =:actor")
 })
 public class ActorReferencia implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -55,32 +57,31 @@ public class ActorReferencia implements Serializable {
 
 	@Column(name = "val2_ar")
 	private String val2Ar;
-	
+
 	@Column(name = "val3_ar")
 	private String val3Ar;
-	
+
 	@Column(name = "val4_ar")
 	private String val4ar;
 
 	@Column(name = "estado_ar")
 	private String estado_ar;
-	
+
 	@Column(name = "url_gmap_ar")
 	private String urlGmapAr;
-	
+
 	@Column(name = "url_sview_ar")
 	private String urlSviewAr;
-	
+
 	@Column(name = "latitud_ar")
 	private String latitudAr;
-	
+
 	@Column(name = "longitud_ar")
 	private String longitudAr;
-	
+
 	@Column(name = "sector_ar")
 	private String sector_ar;
-	
-	
+
 	// bi-directional many-to-one association to Actor
 	@ManyToOne
 	@JoinColumn(name = "id_act")
@@ -93,7 +94,7 @@ public class ActorReferencia implements Serializable {
 
 	@Transient
 	private Localidad localidad;
-	
+
 	public ActorReferencia() {
 	}
 
@@ -177,7 +178,6 @@ public class ActorReferencia implements Serializable {
 		this.val3Ar = val3Ar;
 	}
 
-
 	public String getEstado_ar() {
 		return estado_ar;
 	}
@@ -240,6 +240,19 @@ public class ActorReferencia implements Serializable {
 
 	public void setSector_ar(String sector_ar) {
 		this.sector_ar = sector_ar;
+	}
+
+	@Override
+	public String toString() {
+		return "ActorReferencia [idAr=" + idAr + ", fecCreaAr=" + fecCreaAr
+				+ ", fecModAr=" + fecModAr + ", usrCreaAr=" + usrCreaAr
+				+ ", usrModAr=" + usrModAr + ", val1Ar=" + val1Ar + ", val2Ar="
+				+ val2Ar + ", val3Ar=" + val3Ar + ", val4ar=" + val4ar
+				+ ", estado_ar=" + estado_ar + ", urlGmapAr=" + urlGmapAr
+				+ ", urlSviewAr=" + urlSviewAr + ", latitudAr=" + latitudAr
+				+ ", longitudAr=" + longitudAr + ", sector_ar=" + sector_ar
+				+ ", actor=" + actor + ", catalogoGen=" + catalogoGen
+				+ ", localidad=" + localidad + "]";
 	}
 
 }

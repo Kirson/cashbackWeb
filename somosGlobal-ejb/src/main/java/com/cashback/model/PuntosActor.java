@@ -63,6 +63,7 @@ public class PuntosActor implements Serializable {
     private Actor actor;
 
     public PuntosActor() {
+        totalPuntos =0;
     }
 
     public PuntosActor(Integer id) {

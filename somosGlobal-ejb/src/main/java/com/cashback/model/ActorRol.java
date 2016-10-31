@@ -20,8 +20,8 @@ import java.util.List;
 		@NamedQuery(name = "ActorRol.findByActorAndRolNegocioAndPorcentaje", query = "SELECT COUNT(ar) FROM ActorRol ar WHERE ar.actor =:actor AND ar.catalogoGen =:rolNegocio AND ar.prcArol =:prcArol"),
 		@NamedQuery(name = "ActorRol.findByCedrucpasActAndPadreActor", query = "SELECT ar FROM ActorRol ar WHERE ar.actor.cedrucpasAct LIKE :cedrucpasAct AND ar.actorRol.actor =:padreActor ORDER BY ar.actor.razonSocialAct, ar.actor.apellidosAct, ar.actor.nombresAct"),
 		@NamedQuery(name = "ActorRol.findAllByRolNegocioAndCategoria", query = "SELECT ar.actor FROM ActorRol ar WHERE ar.catalogoGen =:rolNegocio AND ar.actor.catId LIKE :catId"),
-		@NamedQuery(name = "ActorRol.findAllByPalabraClaveAndRolNegocio", query = "SELECT DISTINCT ar.actor FROM ActorRol ar WHERE ar.catalogoGen =:rolNegocio AND ar.actor.palabrasClaveAct LIKE :palabraClaveAct")
-		})
+		@NamedQuery(name = "ActorRol.findAllByPalabraClaveAndRolNegocio", query = "SELECT DISTINCT ar.actor FROM ActorRol ar WHERE ar.catalogoGen =:rolNegocio AND ar.actor.palabrasClaveAct LIKE :palabraClaveAct"),
+		@NamedQuery(name = "ActorRol.findAllByDatosActor", query = "SELECT ar FROM ActorRol ar WHERE ar.actor.cedrucpasAct LIKE :cedrucpasAct AND ar.actor.razonSocialAct LIKE :razonSocialAct AND ar.actor.nombresAct LIKE :nombresAct AND ar.actor.apellidosAct LIKE :apellidosAct order by ar.actor.razonSocialAct") })
 public class ActorRol implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 

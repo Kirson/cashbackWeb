@@ -71,4 +71,26 @@ public class SActorReferencia extends AbstractService implements
 	public ActorReferencia findById(int idAr) {
 		return emCashback.find(ActorReferencia.class, idAr);
 	}
+
+	@Override
+	public boolean delete(ActorReferencia actorReferencia) {
+		emCashback.remove(emCashback.merge(actorReferencia));
+		emCashback.flush();
+		return true;
+	}
+
+	@Override
+	public ActorReferencia actualizarActorReferencia(
+			ActorReferencia actorReferencia) {
+		actorReferencia.setFecModAr(new Date());
+		return emCashback.merge(actorReferencia);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ActorReferencia> findAllByActor(Actor actor) {
+		Query q = emCashback.createNamedQuery("ActorReferencia.findAllByActor");
+		q.setParameter("actor", actor);
+		return q.getResultList();
+	}
 }

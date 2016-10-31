@@ -1,5 +1,6 @@
 package com.cashback.interfaces;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.cashback.excepciones.ExcGuardarRegistro;
@@ -9,7 +10,7 @@ import com.cashback.model.CatalogoGen;
 
 public interface IActor {
 
-	Actor guardarActor(Actor actor);
+	Actor actualizarActor(Actor actor);
 
 	boolean crearActor(Actor actor) throws ExcGuardarRegistro;
 
@@ -17,7 +18,7 @@ public interface IActor {
 			String apellidosAct, String cedrucpasAct, String estadoAct);
 
 	Actor recuperarActor(int idAct);
-	
+
 	Actor findByIdAct(int idAct);
 
 	Actor recuperarActorByCedRucPas(String cedrucpasAct);
@@ -29,9 +30,13 @@ public interface IActor {
 			String estadoArol, String catId, boolean recuperarHijos);
 
 	List<Actor> findAllByCategoriaInHijosFromRolNegocio(CatalogoGen rolNegocio,
-			String catId, String estadoAct, String estadoArol);
+			String catId, String estadoAct, String estadoArol,
+			String palabraClave);
 
 	List<Actor> findAllByCedRucPasAndRazonSocialNombre(String cedRucPas,
-			String razonSocialAct, String nombresAct, String apellidosAct, String estadoAct);
+			String razonSocialAct, String nombresAct, String apellidosAct,
+			String estadoAct);
+	
+	List<Actor> findAllCercanosByCategoria(String catId, BigDecimal latitud, BigDecimal longitud);
 
 }

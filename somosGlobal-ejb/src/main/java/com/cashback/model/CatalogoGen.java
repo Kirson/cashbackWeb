@@ -195,4 +195,15 @@ public class CatalogoGen implements Serializable {
 		this.catalogoGens = catalogoGens;
 	}
 
+	@Override
+	public String toString() {
+		return "CatalogoGen [idCg=" + idCg + ", fecCreaCg=" + fecCreaCg
+				+ ", fecModCg=" + fecModCg + ", nombreCg=" + nombreCg
+				+ ", refCg=" + refCg + ", ref02Cg=" + ref02Cg + ", tipoCg="
+				+ tipoCg + ", usrCreaCg=" + usrCreaCg + ", usrModCg="
+				+ usrModCg + ", actorReferencias=" + actorReferencias
+				+ ", actorRols=" + actorRols + ", catalogoGen=" + catalogoGen
+				+ ", catalogoGens=" + catalogoGens + "]";
+	}
+
 }

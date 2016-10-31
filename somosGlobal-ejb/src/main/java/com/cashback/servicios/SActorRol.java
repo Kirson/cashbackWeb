@@ -46,11 +46,12 @@ public class SActorRol extends AbstractService implements IActorRol {
 	}
 
 	@Override
-	public ActorRol recuperarActorRol(Actor actor, CatalogoGen catalogoGen,
+	public ActorRol recuperarActorRol(Actor actor, CatalogoGen rolNegocio,
 			String estadoArol) {
-		Query q = emCashback.createNamedQuery("ActorRol.findByActorAndRolNegocio");
+		Query q = emCashback
+				.createNamedQuery("ActorRol.findByActorAndRolNegocio");
 		q.setParameter("actor", actor);
-		q.setParameter("catalogoGen", catalogoGen);
+		q.setParameter("rolNegocio", rolNegocio);
 		q.setParameter("estadoArol", estadoArol + "%");
 
 		@SuppressWarnings("unchecked")
@@ -80,7 +81,8 @@ public class SActorRol extends AbstractService implements IActorRol {
 	@Override
 	public List<ActorRol> recuperarActorRolList(Actor actor,
 			CatalogoGen rolNegocio, String estadoArol) {
-		Query q = emCashback.createNamedQuery("ActorRol.findByActorAndRolNegocio");
+		Query q = emCashback
+				.createNamedQuery("ActorRol.findByActorAndRolNegocio");
 		q.setParameter("actor", actor);
 		q.setParameter("rolNegocio", rolNegocio);
 		q.setParameter("estadoArol", estadoArol + "%");
@@ -193,10 +195,23 @@ public class SActorRol extends AbstractService implements IActorRol {
 		q.setParameter("palabraClaveAct", "%" + palabraClaveAct + "%");
 		q.setParameter("rolNegocio", rolNegocio);
 		List<Actor> actorList = (List<Actor>) q.getResultList();
+		List<Actor> ac = new ArrayList<Actor>();
 		for (Actor actor : actorList) {
-			int i = actor.getActorReferencias().size();
+			actor.getActorReferencias().size();
+			ac.add(actor);
 		}
-		return q.getResultList();
+		return ac;
+	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ActorRol> findAllByDatosActor(String cedrucpasAct,
+			String razonSocialAct, String nombresAct, String apellidosAct) {
+		Query q = emCashback.createNamedQuery("ActorRol.findAllByDatosActor");
+		q.setParameter("cedrucpasAct", cedrucpasAct + "%");
+		q.setParameter("razonSocialAct", "%" + razonSocialAct + "%");
+		q.setParameter("nombresAct", "%" + nombresAct + "%");
+		q.setParameter("apellidosAct", "%"+apellidosAct+"%");
+		return q.getResultList();
 	}
 }

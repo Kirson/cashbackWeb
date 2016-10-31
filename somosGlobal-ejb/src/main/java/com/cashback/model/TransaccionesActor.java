@@ -84,6 +84,10 @@ public class TransaccionesActor implements Serializable {
     private Actor localVenta;
 
     public TransaccionesActor() {
+        valorCompra = new BigDecimal(0);
+        porcentajeDescuento = new BigDecimal(0);
+        puntosGanados = 0;
+        puntosTransaccion = 0;
     }
 
     public TransaccionesActor(Integer id) {

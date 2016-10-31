@@ -11,10 +11,16 @@ public interface IActorReferencia {
 
 	ActorReferencia recuperarActorReferencia(Actor actor, String tipoCg,
 			String refCg);
-	
-	List<ActorReferencia> findAllByActorAndPadreCatalogoGen(Actor actor, CatalogoGen padreCatalogoGen);
-	
+
+	List<ActorReferencia> findAllByActorAndPadreCatalogoGen(Actor actor,
+			CatalogoGen padreCatalogoGen);
+
 	ActorReferencia findById(int idAr);
-	
+
+	boolean delete(ActorReferencia actorReferencia);
+
+	ActorReferencia actualizarActorReferencia(ActorReferencia actorReferencia);
+
+	List<ActorReferencia> findAllByActor(Actor actor);
 
 }

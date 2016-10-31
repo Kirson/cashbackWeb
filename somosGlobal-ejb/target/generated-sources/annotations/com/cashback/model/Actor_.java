@@ -10,7 +10,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-10-19T02:14:34")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-10-31T00:31:22")
 @StaticMetamodel(Actor.class)
 public class Actor_ { 
 
@@ -45,8 +45,8 @@ public class Actor_ {
     public static volatile ListAttribute<Actor, ActorReferencia> actorReferencias;
     public static volatile SingularAttribute<Actor, String> catId;
     public static volatile SingularAttribute<Actor, String> calPrinAct;
-    public static volatile SingularAttribute<Actor, Integer> rankingAct;
     public static volatile ListAttribute<Actor, ActorRol> actorRols;
+    public static volatile SingularAttribute<Actor, Integer> rankingAct;
     public static volatile SingularAttribute<Actor, String> estadoAct;
     public static volatile SingularAttribute<Actor, String> cedrucpasAct;
     public static volatile SingularAttribute<Actor, Date> fecCreaAct;

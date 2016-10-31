@@ -33,7 +33,7 @@ import javax.persistence.Transient;
 		@NamedQuery(name = "Actor.findByCedrucpasAct", query = "SELECT a FROM Actor a WHERE a.cedrucpasAct =:cedrucpasAct"),
 		@NamedQuery(name = "Actor.findAllByRolNegocio", query = "SELECT DISTINCT ar.actor FROM ActorRol ar WHERE ar.catalogoGen =:rolNegocio AND ar.estadoArol LIKE :estadoArol"),
 		@NamedQuery(name = "Actor.findAllByPadreInRolNegocioAndCategoria", query = "SELECT ar.actor FROM ActorRol ar WHERE ar.actor.catId LIKE :catId AND ar.actorRol.actor =:actor AND ar.estadoArol LIKE :estadoArol"),
-		@NamedQuery(name = "Actor.findAllByCategoriaInHijosFromRolNegocio", query = "SELECT DISTINCT a FROM Actor a WHERE a.estadoAct LIKE :estadoAct AND a.idAct IN (SELECT ar.actorRol.actor.idAct FROM ActorRol ar WHERE ar.actorRol.catalogoGen =:rolNegocio AND ar.actor.catId LIKE :catId AND ar.estadoArol LIKE :estadoArol)"),
+		@NamedQuery(name = "Actor.findAllByCategoriaInHijosFromRolNegocio", query = "SELECT DISTINCT a FROM Actor a WHERE a.estadoAct LIKE :estadoAct AND a.idAct IN (SELECT ar.actorRol.actor.idAct FROM ActorRol ar WHERE ar.actorRol.catalogoGen =:rolNegocio AND ar.actor.catId LIKE :catId AND ar.estadoArol LIKE :estadoArol AND ar.actor.palabrasClaveAct LIKE :palabraClave)"),
 		@NamedQuery(name = "Actor.findAllByCedRucPasAndRazonSocialNombre", query = "SELECT a FROM Actor a WHERE a.cedrucpasAct LIKE :cedRucPas AND a.razonSocialAct LIKE :razonSocialAct AND a.nombresAct LIKE :nombresAct AND a.apellidosAct LIKE :apellidosAct AND a.estadoAct LIKE :estadoAct ORDER BY a.razonSocialAct, a.apellidosAct, a.nombresAct") })
 public class Actor implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -79,17 +79,17 @@ public class Actor implements Serializable {
 	@Column(name = "foto_act")
 	private String fotoAct;
 
-	@Column(name = "url_direccion_act")
-	private String urlDireccionAct;
-
 	@Column(name = "url_sview_act")
 	private String urlSViewAct;
 
-	@Column(name = "latitud_act")
-	private String latitudAct;
-
 	@Column(name = "logo_act")
 	private String logoAct;
+
+	@Column(name = "url_direccion_act")
+	private String urlDireccionAct;
+
+	@Column(name = "latitud_act")
+	private String latitudAct;
 
 	@Column(name = "longitud_act")
 	private String longitudAct;
@@ -172,10 +172,22 @@ public class Actor implements Serializable {
 	private List<ActorReferencia> promocionImgActor;
 
 	@Transient
+	private List<ActorReferencia> contactosDigitalesActor;
+	
+	@Transient
 	private List<Actor> actoresHijos;
-        
-        @Transient
-        private BigDecimal porcentaje;
+	
+	@Transient
+	private List<ActorReferencia> serviciosActor;
+
+	@Transient
+	private BigDecimal distancia;
+	
+	@Transient
+	private String abiertoCerrado;
+	
+	@Transient
+    private BigDecimal porcentaje;
 
 	public Actor() {
             porcentaje = new BigDecimal(0);
@@ -539,17 +551,48 @@ public class Actor implements Serializable {
 		this.actoresHijos = actoresHijos;
 	}
 
-    public BigDecimal getPorcentaje() {
+	public List<ActorReferencia> getContactosDigitalesActor() {
+		return contactosDigitalesActor;
+	}
+
+	public void setContactosDigitalesActor(
+			List<ActorReferencia> contactosDigitalesActor) {
+		this.contactosDigitalesActor = contactosDigitalesActor;
+	}
+
+	public BigDecimal getDistancia() {
+		return distancia;
+	}
+
+	public void setDistancia(BigDecimal distancia) {
+		this.distancia = distancia;
+	}
+	
+	public BigDecimal getPorcentaje() {
         return porcentaje;
     }
 
     public void setPorcentaje(BigDecimal porcentaje) {
         this.porcentaje = porcentaje;
     }
-        
-        
+	
+	public String getAbiertoCerrado() {
+		return abiertoCerrado;
+	}
 
-        @Override
+	public void setAbiertoCerrado(String abiertoCerrado) {
+		this.abiertoCerrado = abiertoCerrado;
+	}
+
+	public List<ActorReferencia> getServiciosActor() {
+		return serviciosActor;
+	}
+
+	public void setServiciosActor(List<ActorReferencia> serviciosActor) {
+		this.serviciosActor = serviciosActor;
+	}
+	
+	 @Override
         public String toString() {
             String str = "";
             if(this.getNombresAct()!=null){
@@ -561,6 +604,7 @@ public class Actor implements Serializable {
             
             return str;
         }
+
 }
 
 // public Actor addActor(Actor actor) {

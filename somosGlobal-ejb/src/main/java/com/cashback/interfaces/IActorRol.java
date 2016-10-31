@@ -22,7 +22,7 @@ public interface IActorRol {
 	 * @param estadoArol
 	 * @return
 	 */
-	ActorRol recuperarActorRol(Actor actor, CatalogoGen catalogoGen,
+	ActorRol recuperarActorRol(Actor actor, CatalogoGen rolNegocio,
 			String estadoArol);
 
 	boolean tieneRolNegocio(Actor actor, String refCg, String estadoArol);
@@ -44,5 +44,8 @@ public interface IActorRol {
 
 	List<Actor> findAllByPalabraClaveAndRolNegocio(String palabraClaveAct,
 			CatalogoGen rolNegocio);
-	 
+
+	List<ActorRol> findAllByDatosActor(String cedrucpasAct,
+			String razonSocialAct, String nombresAct, String apellidosAct);
+
 }
