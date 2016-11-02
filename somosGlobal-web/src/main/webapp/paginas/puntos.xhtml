@@ -8,7 +8,7 @@
     <ui:composition template="../templates/plantilla.xhtml">
         <ui:define name="content">
             <h:form id="frmPuntos" >
-                <p:growl autoUpdate="true" showDetail="true" />
+                <p:growl autoUpdate="true" id="msgs" showDetail="true"/>
                 <div class="panel panel-primary">
                     <div class="panel-heading">#{msj.registroVenta}</div>
                     <div class="panel-body">
@@ -21,12 +21,12 @@
                             </f:facet>
                             <p:row>
                                 <p:column colspan="5">
-                                    <p:fieldset legend="Datos de Cliente" toggleable="true" toggleSpeed="500">
+                                    <p:fieldset legend="Datos de Cliente" toggleable="false" toggleSpeed="500">
                                         <h:panelGrid columns="4" cellpadding="5">
                                             <p:outputLabel for="txtDocumento" value="C&eacute;dula / RUC / Pasaporte" />
                                             <p:inputText id="txtDocumento" value="#{registroVentaCtr.clienteBean.documento}" required="true"  />
                                             <p:outputLabel for="txtFechaNacimiento" value="Fecha Nacimiento" />
-                                            <p:inputText id="txtFechaNacimiento" value="#{registroVentaCtr.clienteBean.fechaNacimiento}" required="true"  />
+                                            <p:calendar id="txtFechaNacimiento" value="#{registroVentaCtr.clienteBean.fechaNacimiento}" />
                                             <p:outputLabel for="txtNombre" value="Nombre" />
                                             <p:inputText id="txtNombre" value="#{registroVentaCtr.clienteBean.nombre}" required="true"  />
                                             <p:outputLabel for="txtApellido" value="Apellido" />
@@ -38,34 +38,134 @@
                             </p:row>
                             <p:row>
                                 <p:column colspan="5">
-                                    <p:fieldset legend="Productos / Servicios " toggleable="true" toggleSpeed="500">
-                                        <p:dataTable id="datatablecollection">
-                                            <p:column headerText="C&oacute;digo">
-                                                <div align="right">
-                                                    <h:outputText value="1" />
-                                                </div>
+                                    <p:fieldset legend="Productos / Servicios " toggleable="false" toggleSpeed="500">
+                                        <p:panelGrid columns="1">
+                                            <h:commandButton value="Agregar detalle" action="#{registroVentaCtr.addRow}"/>
+                                        </p:panelGrid>
+                                        <p:spacer height="30px;"/>
+                                        <p:dataTable id="datatableItem" var="item" value="#{registroVentaCtr.comprobanteBean.items}" editable="true">
+                                            <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditItem}" update=":frmPuntos:msgs" />  
+                                            <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelItem}" update=":frmPuntos:msgs" /> 
+                    
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Nombre / Descripci&oacute;n" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.descripcionItem}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.descripcionItem}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
                                             </p:column>
-                                            <p:column headerText="Nombre Item">
-                                                <div align="right">
-                                                    <h:outputText value="1" />
-                                                </div>
+                                            
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Cantidad" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.cantidad}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.cantidad}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
                                             </p:column>
-                                            <p:column headerText="Cantidad">
-                                                <div align="right">
-                                                    <h:outputText value="1" />
-                                                </div>
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Valor Unitario" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.valorItem}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.valorItem}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
                                             </p:column>
-                                            <p:column headerText="Valor Unitario">
-                                                <div align="right">
-                                                    <h:outputText value="1" />
-                                                </div>
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Total" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.valorTotal}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.valorTotal}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
                                             </p:column>
-                                            <p:column headerText="Total">
-                                                <div align="right">
-                                                    <h:outputText value="1" />
-                                                </div>
-                                            </p:column>
+                                            <p:column headerText="Acciones" style="width:50px">  
+                                                <p:rowEditor />  
+                                            </p:column> 
                                         </p:dataTable>
+                                        <p:spacer height="30px;"/>
+                                         <p:panelGrid columns="3">
+                                            <h:outputLabel value="" />
+                                            <h:outputLabel for="item" value="Subtotal: " />
+                                            <p:inputText  value="#{registroVentaCtr.comprobanteBean.comprobante.valorCompra}"/>
+                                            <h:outputLabel value="" />
+                                            <h:outputLabel for="item" value="IVA: " />
+                                            <p:inputText  value="#{registroVentaCtr.comprobanteBean.comprobante.valorIva}"/>
+                                             <h:outputLabel value="" />
+                                            <h:outputLabel for="item" value="Total: " />
+                                            <p:inputText  value="#{registroVentaCtr.comprobanteBean.comprobante.totalCompra}"/>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                 <p:column colspan="5">
+                                    <p:fieldset legend="Forma de Pago " toggleable="false" toggleSpeed="500">
+                                        <p:panelGrid columns="2">
+                                            <h:outputText value="Paga con puntos" />
+                                            <p:selectBooleanCheckbox value="#{registroVentaCtr.comprobanteBean.pagaConPuntos}" />
+                                            <h:outputText value="" />
+                                            <h:commandButton value="Agregar detalle" action="#{registroVentaCtr.addFormaPago}"/>
+                                        </p:panelGrid>
+                                        <p:spacer height="30px;"/>
+                                        <p:dataTable id="datatableFP" var="formaPago" value="#{registroVentaCtr.comprobanteBean.listaFormaPago}" editable="true">
+                                             <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditFP}" update=":frmPuntos:msgs" />  
+                                            <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelFP}" update=":frmPuntos:msgs" /> 
+                    
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Descripci&oacute;n" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{formaPago.descripcionFormaPago}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{formaPago.descripcionFormaPago}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            
+                                           
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Valor" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{formaPago.valorFormaPago}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{formaPago.valorFormaPago}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column headerText="Acciones" style="width:50px">  
+                                                <p:rowEditor />  
+                                            </p:column> 
+                                        </p:dataTable>
+                                       
                                     </p:fieldset>
                                 </p:column>
                             </p:row>

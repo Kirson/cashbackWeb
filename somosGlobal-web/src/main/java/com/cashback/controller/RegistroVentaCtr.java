@@ -7,21 +7,25 @@ package com.cashback.controller;
 
 import com.cashback.beans.ClienteBean;
 import com.cashback.beans.ComprobanteBean;
-import com.cashback.interfaces.Globales;
 import com.cashback.interfaces.IActor;
 import com.cashback.interfaces.IActorRol;
 import com.cashback.interfaces.IPuntosActor;
 import com.cashback.interfaces.ISecuencia;
 import com.cashback.interfaces.ITransaccionesActor;
 import com.cashback.model.Actor;
+import com.cashback.model.ComprobanteFormaPago;
+import com.cashback.model.ComprobanteItem;
 import com.cashback.model.ICatalogoGen;
 import com.cashback.model.PuntosActor;
 import com.cashback.model.Secuencia;
 import com.cashback.model.TransaccionesActor;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -130,6 +134,8 @@ public class RegistroVentaCtr extends Controladores {
         if(secuencia!=null){
             numeroSecuencia = formatSecuence(secuencia); 
         }
+        comprobanteBean = new ComprobanteBean();
+        clienteBean = new ClienteBean();
     }
 
     
@@ -143,4 +149,42 @@ public class RegistroVentaCtr extends Controladores {
         
         return num;
     }
+    
+    public void addRow(){
+       
+        ComprobanteItem ci = new ComprobanteItem();
+        
+        this.comprobanteBean.getItems().add(ci);
+    
+    }
+    
+     public void addFormaPago(){
+       
+        ComprobanteFormaPago cfp = new ComprobanteFormaPago();
+        
+        this.comprobanteBean.getListaFormaPago().add(cfp);
+    
+    }
+     
+    public void onEditItem(RowEditEvent event) {  
+        FacesMessage msg = new FacesMessage("Item Edited",((ComprobanteItem) event.getObject()).getDescripcionItem());  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }  
+       
+    public void onCancelItem(RowEditEvent event) {  
+        FacesMessage msg = new FacesMessage("Item Cancelled");   
+        FacesContext.getCurrentInstance().addMessage(null, msg); 
+        this.comprobanteBean.getItems().remove((ComprobanteItem) event.getObject());
+    }  
+    
+     public void onEditFP(RowEditEvent event) {  
+        FacesMessage msg = new FacesMessage("Forma Pago Edited",((ComprobanteFormaPago) event.getObject()).getDescripcionFormaPago());  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }  
+       
+    public void onCancelFP(RowEditEvent event) {  
+        FacesMessage msg = new FacesMessage("Forma Pago Cancelled");   
+        FacesContext.getCurrentInstance().addMessage(null, msg); 
+        this.comprobanteBean.getListaFormaPago().remove((ComprobanteFormaPago) event.getObject());
+    }  
 }
