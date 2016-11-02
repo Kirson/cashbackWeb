@@ -54,8 +54,13 @@ public class ComprobanteItem implements Serializable {
     @JoinColumn(name = "id_comprobante", referencedColumnName = "id_comprobante")
     @ManyToOne(optional = false)
     private Comprobante idComprobante;
+    @Column(name = "cantidad")
+    private Long cantidad;
+    @Column(name = "valor_total")
+    private BigDecimal valorTotal;
 
     public ComprobanteItem() {
+        cantidad = 1L;
     }
 
     public ComprobanteItem(Integer idItem) {
@@ -102,6 +107,25 @@ public class ComprobanteItem implements Serializable {
         this.idComprobante = idComprobante;
     }
 
+    public Long getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Long cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+    
+    
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -116,10 +140,7 @@ public class ComprobanteItem implements Serializable {
             return false;
         }
         ComprobanteItem other = (ComprobanteItem) object;
-        if ((this.idItem == null && other.idItem != null) || (this.idItem != null && !this.idItem.equals(other.idItem))) {
-            return false;
-        }
-        return true;
+        return !((this.idItem == null && other.idItem != null) || (this.idItem != null && !this.idItem.equals(other.idItem)));
     }
 
     @Override

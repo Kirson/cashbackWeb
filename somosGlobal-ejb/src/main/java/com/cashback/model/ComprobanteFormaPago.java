@@ -6,6 +6,7 @@
 package com.cashback.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +46,12 @@ public class ComprobanteFormaPago implements Serializable {
     @JoinColumn(name = "id_comprobante", referencedColumnName = "id_comprobante")
     @ManyToOne(optional = false)
     private Comprobante idComprobante;
+    @Column(name = "descripcion_forma_pago")
+    private String descripcionFormaPago;
+    @Column(name = "valor_forma_pago")
+    private BigDecimal valorFormaPago;
 
+    
     public ComprobanteFormaPago() {
     }
 
@@ -77,6 +83,24 @@ public class ComprobanteFormaPago implements Serializable {
         this.idComprobante = idComprobante;
     }
 
+    public String getDescripcionFormaPago() {
+        return descripcionFormaPago;
+    }
+
+    public void setDescripcionFormaPago(String descripcionFormaPago) {
+        this.descripcionFormaPago = descripcionFormaPago;
+    }
+
+    public BigDecimal getValorFormaPago() {
+        return valorFormaPago;
+    }
+
+    public void setValorFormaPago(BigDecimal valorFormaPago) {
+        this.valorFormaPago = valorFormaPago;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -91,10 +115,7 @@ public class ComprobanteFormaPago implements Serializable {
             return false;
         }
         ComprobanteFormaPago other = (ComprobanteFormaPago) object;
-        if ((this.idFp == null && other.idFp != null) || (this.idFp != null && !this.idFp.equals(other.idFp))) {
-            return false;
-        }
-        return true;
+        return !((this.idFp == null && other.idFp != null) || (this.idFp != null && !this.idFp.equals(other.idFp)));
     }
 
     @Override

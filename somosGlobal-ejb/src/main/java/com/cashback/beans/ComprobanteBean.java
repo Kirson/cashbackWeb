@@ -29,13 +29,15 @@ public class ComprobanteBean implements Serializable {
     private Actor local;
     private String resultado;
     private List<String> errores;
+    private Boolean pagaConPuntos;
     
     @SuppressWarnings("Convert2Diamond")
     public ComprobanteBean(){
         items = new ArrayList<ComprobanteItem>();
         listaFormaPago = new ArrayList<ComprobanteFormaPago>();
         errores = new ArrayList<String>();
-        
+        comprobante = new Comprobante();
+        pagaConPuntos = Boolean.FALSE;
     }
 
     public Comprobante getComprobante() {
@@ -108,6 +110,14 @@ public class ComprobanteBean implements Serializable {
 
     public void setErrores(List<String> errores) {
         this.errores = errores;
+    }
+
+    public Boolean getPagaConPuntos() {
+        return pagaConPuntos;
+    }
+
+    public void setPagaConPuntos(Boolean pagaConPuntos) {
+        this.pagaConPuntos = pagaConPuntos;
     }
     
     
