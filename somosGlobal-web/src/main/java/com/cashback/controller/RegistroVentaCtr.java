@@ -29,6 +29,7 @@ import com.cashback.model.ItemLoc;
 import com.cashback.model.PuntosActor;
 import com.cashback.model.Secuencia;
 import com.cashback.model.TransaccionesActor;
+import com.cashback.utilidades.Util;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -357,14 +358,46 @@ public class RegistroVentaCtr extends Controladores {
                 ci.setItem(itemSeleccionado);
                 ci.setValorItem(new BigDecimal(itemSeleccionado.getCosUniIl()));
                 ci.setDescripcionItem(itemSeleccionado.getNombreIl());
-                ci.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl()));
+                if(ci.getCantidad()!=null){
+                    ci.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl()*ci.getCantidad()));
+                }else{
+                    ci.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl()));
+                }
                 comprobanteBean.getItems().add(ci);
             }
         }else{
             System.out.println("Item es nulo");
         }
         
+        actualizarTotales();
     }
+    
+    private void actualizarTotales(){
+        Double iva=0D;
+        Double subTotal=0D;
+        Double total = 0D;
+        for(ComprobanteItem ci:comprobanteBean.getItems()){
+            if(ci.getValorTotal()!=null){
+                subTotal = subTotal+ci.getValorTotal().doubleValue();
+            }
+      }
+        
+        subTotal = Util.round(subTotal);
+        
+        iva=subTotal*14/100;
+        
+        iva = Util.round(iva);
+        
+        total = subTotal+iva;
+        
+        total = Util.round(total);
+        
+        comprobanteBean.getComprobante().setValorIva(new BigDecimal(iva));
+        comprobanteBean.getComprobante().setValorCompra(new BigDecimal(subTotal));
+        comprobanteBean.getComprobante().setTotalCompra(new BigDecimal(total));
+    }
+    
+    
 
     public String guardarComprobante() {
 

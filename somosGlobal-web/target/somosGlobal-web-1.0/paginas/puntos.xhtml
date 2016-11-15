@@ -65,7 +65,7 @@
                                                     <f:facet name="input">  
                                                        
                                                         <p:selectOneMenu id="puntos" value="#{registroVentaCtr.itemSeleccionado}" converter="omnifaces.SelectItemsConverter">
-                                                            <p:ajax listener="#{registroVentaCtr.handleChange(item)}" />
+                                                            <p:ajax listener="#{registroVentaCtr.handleChange(item)}" update=":frmPuntos:datatableItem" />
                                                             <f:selectItem itemLabel="Seleccione Producto" itemValue="" />
                                                             <f:selectItems value="#{registroVentaCtr.itemsLocal}" />
                                                         </p:selectOneMenu>
