@@ -58,6 +58,9 @@ public class ComprobanteItem implements Serializable {
     private Long cantidad;
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
+    @JoinColumn(name = "id_item_loc", referencedColumnName = "id_il")
+    @ManyToOne(optional = false)
+    private ItemLoc item;
 
     public ComprobanteItem() {
         cantidad = 1L;
@@ -121,6 +124,14 @@ public class ComprobanteItem implements Serializable {
 
     public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public ItemLoc getItem() {
+        return item;
+    }
+
+    public void setItem(ItemLoc item) {
+        this.item = item;
     }
     
     

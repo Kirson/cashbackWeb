@@ -5,6 +5,7 @@
  */
 package com.cashback.beans;
 
+import com.cashback.model.Actor;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class ClienteBean implements Serializable {
     private String celular;
     private Date fechaNacimiento;
     private String email;
+    private Actor consumidor;
 
     public String getDocumento() {
         return documento;
@@ -77,6 +79,15 @@ public class ClienteBean implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Actor getConsumidor() {
+        return consumidor;
+    }
+
+    public void setConsumidor(Actor consumidor) {
+        this.consumidor = consumidor;
+    }
+    
     
     
 }

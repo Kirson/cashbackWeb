@@ -22,7 +22,12 @@
                             <p:row>
                                 <p:column colspan="5">
                                     <p:fieldset legend="Datos de Cliente" toggleable="false" toggleSpeed="500">
-                                        <h:panelGrid columns="4" cellpadding="5">
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <p:commandButton value="Buscar cliente" type="button" 
+                                                             onclick="PF('dlgConsumidor').show();" 
+                                                             update=":frmPuntos:pnConsumidor"/>
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="4" cellpadding="5" id="pnConsumidor">
                                             <p:outputLabel for="txtDocumento" value="C&eacute;dula / RUC / Pasaporte" />
                                             <p:inputText id="txtDocumento" value="#{registroVentaCtr.clienteBean.documento}" required="true"  />
                                             <p:outputLabel for="txtFechaNacimiento" value="Fecha Nacimiento" />
@@ -31,7 +36,9 @@
                                             <p:inputText id="txtNombre" value="#{registroVentaCtr.clienteBean.nombre}" required="true"  />
                                             <p:outputLabel for="txtApellido" value="Apellido" />
                                             <p:inputText id="txtApellido" value="#{registroVentaCtr.clienteBean.apellido}" required="true"  />
-                                            
+                                            <p:outputLabel for="txtEmail" value="Email" />
+                                            <p:inputText id="txtEmail" value="#{registroVentaCtr.clienteBean.email}" required="true"  />
+                                         
                                         </h:panelGrid>
                                     </p:fieldset>
                                 </p:column>
@@ -47,6 +54,25 @@
                                             <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditItem}" update=":frmPuntos:msgs" />  
                                             <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelItem}" update=":frmPuntos:msgs" /> 
                     
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Producto" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.item.nombreIl}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                       
+                                                        <p:selectOneMenu id="puntos" value="#{registroVentaCtr.itemSeleccionado}" converter="omnifaces.SelectItemsConverter">
+                                                            <p:ajax listener="#{registroVentaCtr.handleChange(item)}" />
+                                                            <f:selectItem itemLabel="Seleccione Producto" itemValue="" />
+                                                            <f:selectItems value="#{registroVentaCtr.itemsLocal}" />
+                                                        </p:selectOneMenu>
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            
                                             <p:column>
                                                 <f:facet name="header">  
                                                     <h:outputText value="Nombre / Descripci&oacute;n" />  
@@ -117,6 +143,7 @@
                                             <p:inputText  value="#{registroVentaCtr.comprobanteBean.comprobante.totalCompra}"/>
                                         </p:panelGrid>
                                     </p:fieldset>
+                                     
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -169,9 +196,97 @@
                                     </p:fieldset>
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <h:panelGrid columns="1" cellpadding="5">
+                                        <p:commandButton value="Guardar comprobante" type="button" 
+                                                         action="#{registroVentaCtr.guardarComprobante}"
+                                                         update=":frmPuntos"/>
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
                     </div>
                 </div>
+                <p:dialog header="Buscar consumidor" widgetVar="dlgConsumidor" modal="true">
+                    <p:panel>
+                    <div class="ui-fluid">
+                    <p:panelGrid id="buscarActorPGroup" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                 layout="grid" styleClass="ui-panelgrid-blank">
+
+			<h:outputLabel value="#{msj.cedRucPas}" for="cedrucpasAct" />
+			<p:inputText id="cedrucpasAct" value="#{registroVentaCtr.actorSearch.cedRucPasAct}"
+				     maxlength="25" />
+
+			<h:outputLabel value="#{msj.razonSocial}" for="razonSocialAct" />
+			<p:inputText id="razonSocialAct"
+				     value="#{registroVentaCtr.actorSearch.razonSocialAct}" maxlength="50" />
+
+			<h:outputLabel value="#{msj.nombres}" for="nombresAct" />
+			<p:inputText id="nombresAct" value="#{registroVentaCtr.actorSearch.nombres}"
+				     maxlength="25" />
+			
+                        <h:outputLabel value="#{msj.apellidos}" for="apellidosAct" />
+			<p:inputText id="apellidosAct" value="#{registroVentaCtr.actorSearch.apellidos}"
+							maxlength="25" />
+                    </p:panelGrid>
+		    </div>
+		
+                    <p:commandButton value="#{msj.buscar}"
+					process="@this buscarActorPGroup" update="actorTbl"
+                                        actionListener="#{registroVentaCtr.buscarConsumidorLista}" />
+			</p:panel>
+			<br></br>
+			<p:dataTable value="#{registroVentaCtr.actorRolList}" var="actorRol"
+				scrollable="true" scrollHeight="300" rowIndexVar="it"
+				styleClass="table table-striped" id="actorTbl" reflow="true">
+				<p:column headerText="Ln." style="width :60px; text-align :right;">
+					<h:outputText value="#{it+1}" />
+				</p:column>
+				<p:column headerText="#{msj.identificacion}">
+					<h:outputText value="#{actorRol.actor.cedrucpasAct}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.razonSocial}" />
+					</f:facet>
+					<h:outputText value="#{actorRol.actor.razonSocialAct}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.apellidos}" />
+					</f:facet>
+					<h:outputText value="#{actorRol.actor.apellidosAct}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.nombres}" />
+					</f:facet>
+					<h:outputText value="#{actorRol.actor.nombresAct}" />
+				</p:column>
+				<p:column headerText="#{msj.nivel}"   filterBy="#{actorRol.catalogoGen.nombreCg}" filterMatchMode="contains">
+					<h:outputText value="#{actorRol.catalogoGen.nombreCg}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msj.fechaCrea}" />
+					</f:facet>
+					<h:outputText
+						value="#{actorCtr.dateTimeToFechaHora2(actorRol.actor.fecCreaAct)}" />
+				</p:column>
+
+				<p:column headerText="#{msj.seleccionar}" style="width :60px;">
+					<div align="center">
+						<p:commandButton title="#{msj.seleccionar}" process="@this"
+							icon="ui-icon-pencil" action="#{registroVentaCtr.seleccionarActor}">
+							<f:setPropertyActionListener target="#{registroVentaCtr.actorRol}"
+								value="#{actorRol}" />
+						</p:commandButton>
+					</div>
+				</p:column>
+			</p:dataTable>
+                </p:dialog>
             </h:form>
         </ui:define>
     </ui:composition>
