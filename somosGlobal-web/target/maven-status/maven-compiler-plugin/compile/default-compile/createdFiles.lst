@@ -2,6 +2,7 @@ com\cashback\controller\ConLocalVentaCategoria02.class
 com\cashback\utilidades\Util.class
 com\cashback\controller\UsuarioCtr.class
 com\cashback\utilidades\Util$1.class
+com\cashback\ejb\interceptor\TracingInterceptor.class
 com\app\controller\ActorCat02Ctrl.class
 com\cashback\controller\ConLocalVentaCategoria.class
 com\cashback\controller\ConLocalVentaCategoria05.class
@@ -27,6 +28,7 @@ com\cashback\controller\ConLocalVenta02Ctr.class
 com\cashback\utilidades\EnviadorMail$autentificadorSMTP.class
 com\cashback\utilidades\Util$EnviadorMail.class
 com\cashback\controller\MntPerfilCtr.class
+com\cashback\utilidades\NumberUtil.class
 com\app\controller\ActorCat07Ctrl.class
 com\cashback\utilidades\EnviadorMail.class
 com\cashback\controller\Controladores.class

@@ -56,6 +56,12 @@ public class ItemLoc implements Serializable {
     @JoinColumn(name = "id_ig", referencedColumnName = "id_ig")
     @ManyToOne
     private ItemGlo idIg;
+    
+    @Column(name = "porc_fijo_il")
+    private Double porcFijoIl;
+    
+    @Column(name = "porc_var_il")
+    private Double porcVarIl;
 
     public ItemLoc() {
     }
@@ -111,6 +117,24 @@ public class ItemLoc implements Serializable {
     public void setIdIg(ItemGlo idIg) {
         this.idIg = idIg;
     }
+
+    public Double getPorcFijoIl() {
+        return porcFijoIl;
+    }
+
+    public void setPorcFijoIl(Double porcFijoIl) {
+        this.porcFijoIl = porcFijoIl;
+    }
+
+    public Double getPorcVarIl() {
+        return porcVarIl;
+    }
+
+    public void setPorcVarIl(Double porcVarIl) {
+        this.porcVarIl = porcVarIl;
+    }
+    
+    
 
     @Override
     public int hashCode() {

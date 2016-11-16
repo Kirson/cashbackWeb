@@ -1,5 +1,6 @@
 package com.cashback.model;
 
+import com.cashback.model.Actor;
 import com.cashback.model.ActorReferencia;
 import com.cashback.model.ActorRol;
 import com.cashback.model.Localidad;
@@ -10,7 +11,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-15T06:03:37")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-16T11:53:06")
 @StaticMetamodel(Actor.class)
 public class Actor_ { 
 
@@ -29,6 +30,7 @@ public class Actor_ {
     public static volatile SingularAttribute<Actor, String> logoAct;
     public static volatile SingularAttribute<Actor, String> servicioAct;
     public static volatile SingularAttribute<Actor, String> fotoAct;
+    public static volatile SingularAttribute<Actor, Actor> actorPadre;
     public static volatile SingularAttribute<Actor, Localidad> localidad;
     public static volatile SingularAttribute<Actor, String> mailAct;
     public static volatile SingularAttribute<Actor, String> sexoAct;

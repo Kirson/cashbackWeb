@@ -10,16 +10,12 @@ import com.cashback.bean.PuntosBean;
 import com.cashback.excepciones.ExcGuardarRegistro;
 import com.cashback.interfaces.Globales;
 import com.cashback.interfaces.IActor;
-import com.cashback.interfaces.IActorRol;
-import com.cashback.interfaces.IPuntosActor;
 import com.cashback.interfaces.ITransaccionesActor;
 import com.cashback.model.Actor;
 import com.cashback.model.ActorRol;
 import com.cashback.model.CatalogoGen;
-import com.cashback.model.ICatalogoGen;
 import com.cashback.model.PuntosActor;
 import com.cashback.model.TransaccionesActor;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +23,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.transaction.Transactional;
 
 /**
  *
@@ -42,7 +37,6 @@ public class RegistroPuntosCtr extends Controladores {
     private List<Actor> locales;
     private CatalogoGen rolNegocio;
 
-    private Actor usuario;
     private Actor consumidor;
     private Actor local;
     private PuntosActor puntosActor;
@@ -51,17 +45,12 @@ public class RegistroPuntosCtr extends Controladores {
     @EJB
     private IActor sActor;
 
-    @EJB
-    private IPuntosActor sPuntosActor;
+   
 
     @EJB
     private ITransaccionesActor sTransaccionesActor;
 
-    @EJB
-    private ICatalogoGen sCatalogoGen;
-
-    @EJB
-    private IActorRol sActorRol;
+   
 
     public PuntosBean getPuntosBean() {
         return puntosBean;
@@ -87,13 +76,7 @@ public class RegistroPuntosCtr extends Controladores {
         this.locales = locales;
     }
 
-    public Actor getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Actor usuario) {
-        this.usuario = usuario;
-    }
+   
 
     public Actor getLocal() {
         return local;
@@ -152,7 +135,7 @@ public class RegistroPuntosCtr extends Controladores {
         puntosActor = new PuntosActor();
         transaccionActor = new TransaccionesActor();
     }
-    @Transactional
+    
     public void guardar(){
         
         
@@ -182,91 +165,106 @@ public class RegistroPuntosCtr extends Controladores {
         }
     }
     
-    
-    private TransaccionesActor calcularPuntos(TransaccionesActor transaccion){
-    
-       Double puntosPorcentaje = (transaccion.getPorcentajeDescuento().doubleValue()*transaccion.getValorCompra().doubleValue())/100;
-       
-       Integer puntos = new Double(puntosPorcentaje*100).intValue();
-       
-       transaccion.setPuntosTransaccion(puntos);
-       transaccion.setPuntosTransaccion(puntos);
-       
-       return transaccion;
-    } 
-    
-    private void actualizarPuntosCadena(CadenaValorBean cadenaValor, TransaccionesActor transaccion) throws ExcGuardarRegistro{
-    
-        if(cadenaValor.getActores()!=null && !cadenaValor.getActores().isEmpty()){
-            for(Actor actor:cadenaValor.getActores()){
+    @SuppressWarnings("CallToPrintStackTrace")
+    protected CadenaValorBean formarCadenaValor(Actor actor) {
+        CadenaValorBean cvb = new CadenaValorBean();
+
+        try {
+
+            CatalogoGen catalogoGen = sCatalogoGen.recuperarCatalogoGen(
+                    Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
+
+            ActorRol consumidorRol = sActorRol.recuperarActorRol(actor, catalogoGen, "");
+
+            if (consumidorRol != null) {
+                Actor consumidorA = consumidorRol.getActor();
+                consumidorA.setPorcentaje(consumidorRol.getPrcArol());
+                cvb.getActores().add(consumidorA);
+                cvb.getListaActorRol().add(consumidorRol);
+
+                ActorRol localRol = consumidorRol.getActorRol();
+                if (localRol != null) {
+                    Actor localA = localRol.getActor();
+                    localA.setPorcentaje(localRol.getPrcArol());
+                    cvb.getActores().add(localA);
+                    cvb.getListaActorRol().add(localRol);
+
+                    ActorRol grupoEmpresarialRol = localRol.getActorRol();
+                    if (grupoEmpresarialRol != null) {
+                        Actor grupoEmpresarial = grupoEmpresarialRol.getActor();
+                        grupoEmpresarial.setPorcentaje(grupoEmpresarialRol.getPrcArol());
+                        cvb.getActores().add(grupoEmpresarial);
+                        cvb.getListaActorRol().add(grupoEmpresarialRol);
+
+                        ActorRol holdingRol = grupoEmpresarialRol.getActorRol();
+                        if (holdingRol != null) {
+                            Actor holding = holdingRol.getActor();
+                            holding.setPorcentaje(holdingRol.getPrcArol());
+                            cvb.getActores().add(holding);
+                            cvb.getListaActorRol().add(holdingRol);
+
+                            ActorRol supervisorHoldingRol = holdingRol.getActorRol();
+                            if (supervisorHoldingRol != null) {
+                                Actor supervisorHolding = supervisorHoldingRol.getActor();
+                                supervisorHolding.setPorcentaje(supervisorHoldingRol.getPrcArol());
+                                cvb.getActores().add(supervisorHolding);
+                                cvb.getListaActorRol().add(supervisorHoldingRol);
+
+                                ActorRol globalRol = supervisorHoldingRol.getActorRol();
+                                if (globalRol != null) {
+                                    Actor global = globalRol.getActor();
+                                    global.setPorcentaje(globalRol.getPrcArol());
+                                    cvb.getActores().add(global);
+                                    cvb.getListaActorRol().add(globalRol);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error formando cadena de valor " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return cvb;
+
+    }
+
+    protected TransaccionesActor calcularPuntos(TransaccionesActor transaccion) {
+
+        Double puntosPorcentaje = (transaccion.getPorcentajeDescuento().doubleValue() * transaccion.getValorCompra().doubleValue()) / 100;
+
+        Integer puntos = new Double(puntosPorcentaje * 100).intValue();
+
+        transaccion.setPuntosTransaccion(puntos);
+        transaccion.setPuntosTransaccion(puntos);
+
+        return transaccion;
+    }
+
+    protected void actualizarPuntosCadena(CadenaValorBean cadenaValor, TransaccionesActor transaccion) throws ExcGuardarRegistro {
+
+        if (cadenaValor.getActores() != null && !cadenaValor.getActores().isEmpty()) {
+            for (Actor actor : cadenaValor.getActores()) {
                 List<PuntosActor> listaPuntos = sPuntosActor.recuperarPuntos(actor);
                 PuntosActor puntosCadena = new PuntosActor();
-                if(listaPuntos!=null && !listaPuntos.isEmpty()){
+                if (listaPuntos != null && !listaPuntos.isEmpty()) {
                     puntosCadena = listaPuntos.get(0);
-                    puntosCadena.setTotalPuntos(puntosCadena.getTotalPuntos()+transaccion.getPuntosGanados());
-                }else{
+                    puntosCadena.setTotalPuntos(puntosCadena.getTotalPuntos() + transaccion.getPuntosGanados());
+                } else {
                     puntosCadena.setTotalPuntos(transaccion.getPuntosGanados());
                     puntosCadena.setActor(actor);
                 }
                 sPuntosActor.crearPuntos(puntosCadena);
             }
-        
+
         }
-        
+
     }
+
+   
     
-    private CadenaValorBean formarCadenaValor(Actor actor){
-        CadenaValorBean cvb = new CadenaValorBean();
-        
-        try{
-        
-            
-		CatalogoGen catalogoGen = sCatalogoGen.recuperarCatalogoGen(
-				Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
-
-		ActorRol consumidorRol = sActorRol.recuperarActorRol(actor,
-				catalogoGen, "");
-		Actor consumidorA = consumidorRol.getActor();
-                consumidorA.setPorcentaje(consumidorRol.getPrcArol());
-		cvb.getActores().add(consumidorA);
-                cvb.getListaActorRol().add(consumidorRol);
-
-		ActorRol localRol = consumidorRol.getActorRol();
-		Actor localA = localRol.getActor();
-                localA.setPorcentaje(localRol.getPrcArol());
-                cvb.getActores().add(localA);
-		cvb.getListaActorRol().add(localRol);
-
-		ActorRol grupoEmpresarialRol = localRol.getActorRol();
-		Actor grupoEmpresarial = grupoEmpresarialRol.getActor();
-                grupoEmpresarial.setPorcentaje(grupoEmpresarialRol.getPrcArol());
-                cvb.getActores().add(grupoEmpresarial);
-		cvb.getListaActorRol().add(grupoEmpresarialRol);
-
-		ActorRol holdingRol = grupoEmpresarialRol.getActorRol();
-		Actor holding = holdingRol.getActor();
-                holding.setPorcentaje(holdingRol.getPrcArol());
-                cvb.getActores().add(holding);
-		cvb.getListaActorRol().add(holdingRol);
-
-		ActorRol supervisorHoldingRol = holdingRol.getActorRol();
-		Actor supervisorHolding = supervisorHoldingRol.getActor();
-                supervisorHolding.setPorcentaje(supervisorHoldingRol.getPrcArol());
-                cvb.getActores().add(supervisorHolding);
-		cvb.getListaActorRol().add(supervisorHoldingRol);
-
-		ActorRol globalRol = supervisorHoldingRol.getActorRol();
-		Actor global = globalRol.getActor();
-                global.setPorcentaje(globalRol.getPrcArol());
-                cvb.getActores().add(global);
-		cvb.getListaActorRol().add(globalRol);
-            
-        }catch(Exception e){
-            System.out.println("Error formando cadena de valor "+e.getMessage());
-            e.printStackTrace();
-        }
-        
-        return cvb;
-        
-    }
+   
 }

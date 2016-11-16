@@ -5,6 +5,7 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat06Ctrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVenta02Ctr.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\MntProvinciaCtr.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\ejb\interceptor\TracingInterceptor.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCategoria03.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorLocalCtrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCtr.java
@@ -36,6 +37,7 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCategoria.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCategoria06.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\global\PuntosCtrl.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\utilidades\NumberUtil.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\utilidades\EnviadorMail.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat07Ctrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\UsuarioCtr.java

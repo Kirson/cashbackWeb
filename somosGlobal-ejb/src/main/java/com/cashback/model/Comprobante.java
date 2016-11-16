@@ -104,6 +104,9 @@ public class Comprobante implements Serializable {
 
     public Comprobante() {
         pagaPuntos = Boolean.FALSE;
+        valorIva = new BigDecimal(0);
+        valorCompra = new BigDecimal(0);
+        totalCompra = new BigDecimal(0);
     }
 
     public Comprobante(Integer idComprobante) {

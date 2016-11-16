@@ -14,6 +14,7 @@ import com.cashback.model.ComprobanteItem;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -23,6 +24,7 @@ import javax.persistence.Query;
 public class SComprobante extends AbstractService implements IComprobante {
 
     @Override
+    @Transactional
     public ComprobanteBean guardarComprobante(ComprobanteBean comprobanteBean) {
         String resultado = "OK";
         try{
@@ -34,6 +36,7 @@ public class SComprobante extends AbstractService implements IComprobante {
             if(items!=null && !items.isEmpty()){
                 for(ComprobanteItem ci:items){
                     ci.setIdComprobante(c);
+                    ci.setNumComprobante(c.getNumComprobante());
                     emCashback.persist(ci);
                 }
             }

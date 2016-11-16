@@ -153,6 +153,10 @@ public class Actor implements Serializable {
 
     @OneToMany(mappedBy = "actor", cascade = CascadeType.PERSIST)
     private List<ActorRol> actorRols;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_act_padre")
+    private Actor actorPadre;
 
     @Transient
     private List<ActorReferencia> telefonosActor;
@@ -604,6 +608,16 @@ public class Actor implements Serializable {
     public void setEncontrado(Boolean encontrado) {
         this.encontrado = encontrado;
     }
+
+    public Actor getActorPadre() {
+        return actorPadre;
+    }
+
+    public void setActorPadre(Actor actorPadre) {
+        this.actorPadre = actorPadre;
+    }
+    
+    
 
     @Override
     public String toString() {

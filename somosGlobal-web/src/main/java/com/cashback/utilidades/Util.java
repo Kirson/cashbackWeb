@@ -17,7 +17,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- * T�tulo: Util Descripci�n: Varias utilidades Copyright: Copyright (c) 2005 -
+ * T�tulo: Util Descripcion: Varias utilidades Copyright: Copyright (c) 2005 -
  * GPL License. Este archivo se distribuye bajo licencia GPL de la Free Software
  * Foundation GNU.
  *
@@ -29,13 +29,7 @@ public class Util {
     /**
      * Numero de Provincias del Ecuador
      */
-
     public static final int NUMERO_DE_PROVINCIAS = 24;// 22;
-    
-    public static Double round(Double val){
-       val= (double) Math.round(val * 100) / 100;
-       return val;
-    }
 
     /**
      * Este m�todo permite verificar si una c�dula de identidad es verdadera
