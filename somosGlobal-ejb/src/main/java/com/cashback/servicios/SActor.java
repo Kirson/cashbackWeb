@@ -24,8 +24,8 @@ import com.cashback.model.Actor;
 import com.cashback.model.ActorReferencia;
 import com.cashback.model.ActorRol;
 import com.cashback.model.CatalogoGen;
-import com.cashback.model.ICatalogoGen;
-import com.cashback.model.ILocalidad;
+import com.cashback.interfaces.ICatalogoGen;
+import com.cashback.interfaces.ILocalidad;
 import com.cashback.model.Perfil;
 import com.cashback.model.Usuario;
 

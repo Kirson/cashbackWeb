@@ -19,8 +19,8 @@ import com.cashback.interfaces.ICategoria;
 import com.cashback.model.Actor;
 import com.cashback.model.CatalogoGen;
 import com.cashback.model.Categoria;
-import com.cashback.model.ICatalogoGen;
-import com.cashback.model.ILocalidad;
+import com.cashback.interfaces.ICatalogoGen;
+import com.cashback.interfaces.ILocalidad;
 
 @SessionScoped
 @ManagedBean
@@ -72,7 +72,7 @@ public class ActorCat07Ctrl extends Controladores {
 	public void recuperarLocalVentaList3() {
 		if (palabraClaveAct.trim().length() == 0) {
 			mostrarInfoSummary("Palabra Clave",
-					"Debes ingresar una palabra clave para realizar la búsqueda");
+					"Debes ingresar una palabra clave para realizar la bï¿½squeda");
 			return;
 		}
 		actorList = findAllActores(palabraClaveAct, "07");

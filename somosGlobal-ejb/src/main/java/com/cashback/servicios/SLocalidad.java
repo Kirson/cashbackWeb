@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-import com.cashback.model.ILocalidad;
+import com.cashback.interfaces.ILocalidad;
 import com.cashback.model.Localidad;
 
 @Stateless

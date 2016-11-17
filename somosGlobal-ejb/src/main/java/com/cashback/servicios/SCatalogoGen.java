@@ -8,7 +8,7 @@ import javax.persistence.Query;
 
 import com.cashback.interfaces.Globales;
 import com.cashback.model.CatalogoGen;
-import com.cashback.model.ICatalogoGen;
+import com.cashback.interfaces.ICatalogoGen;
 
 @Stateless
 public class SCatalogoGen extends AbstractService implements ICatalogoGen {

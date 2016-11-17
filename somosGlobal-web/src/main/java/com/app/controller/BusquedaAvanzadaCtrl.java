@@ -9,7 +9,7 @@ import com.cashback.interfaces.Globales;
 import com.cashback.interfaces.IActor;
 import com.cashback.model.Actor;
 import com.cashback.model.CatalogoGen;
-import com.cashback.model.ICatalogoGen;
+import com.cashback.interfaces.ICatalogoGen;
 
 public class BusquedaAvanzadaCtrl {
 

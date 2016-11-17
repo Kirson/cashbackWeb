@@ -13,7 +13,7 @@ import org.primefaces.model.map.Marker;
 import com.cashback.interfaces.IActorReferencia;
 import com.cashback.model.Actor;
 import com.cashback.model.ActorReferencia;
-import com.cashback.model.ICatalogoGen;
+import com.cashback.interfaces.ICatalogoGen;
 
 @SessionScoped
 @ManagedBean

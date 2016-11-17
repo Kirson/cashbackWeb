@@ -14,7 +14,7 @@ import com.cashback.interfaces.IActorRol;
 import com.cashback.model.Actor;
 import com.cashback.model.ActorRol;
 import com.cashback.model.CatalogoGen;
-import com.cashback.model.ICatalogoGen;
+import com.cashback.interfaces.ICatalogoGen;
 
 @SessionScoped
 @ManagedBean

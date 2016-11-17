@@ -69,13 +69,13 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\IPuntosActor.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\servicios\SCiudad.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\ILocalPromocion.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\ILocalidad.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\TransaccionesActor.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\beans\ActorSearch.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\ILocalVenta.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\IUsuario.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\Appmensaje.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\Barrio.java
-C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\ICatalogoGen.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\IPuntos.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\ParametrosGen.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\Actor.java
@@ -89,6 +89,7 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\IContacto.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\servicios\SAppmensaje.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\IItemGlo.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\ICatalogoGen.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\CatalogoGen.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\PuntosActor.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\LocalVentaCategoria.java
@@ -104,7 +105,6 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\servicios\SComprobante.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\IComprobanteFormaPago.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\servicios\SActorRol.java
-C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\ILocalidad.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\interfaces\IAppmensajes.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\HorarioAtencion.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-ejb\src\main\java\com\cashback\model\LocalVenta.java

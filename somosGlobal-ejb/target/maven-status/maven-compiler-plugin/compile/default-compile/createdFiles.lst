@@ -89,6 +89,7 @@ com\cashback\model\CatalogoGen_.class
 com\cashback\interfaces\IItemLoc.class
 com\cashback\model\Contacto.class
 com\cashback\model\RedActor.class
+com\cashback\interfaces\ICatalogoGen.class
 com\cashback\beans\ComprobanteBean.class
 com\cashback\model\Puntos.class
 com\cashback\model\Ubicacion_.class
@@ -121,6 +122,7 @@ com\cashback\servicios\SAppmensaje.class
 com\cashback\interfaces\ILocalVenta.class
 com\cashback\model\HorarioAtencion_.class
 com\cashback\model\Ubicacion.class
+com\cashback\interfaces\ILocalidad.class
 com\cashback\interfaces\IComprobanteFormaPago.class
 com\cashback\model\Provincia.class
 com\cashback\servicios\SProvincia.class
@@ -132,11 +134,9 @@ com\cashback\model\Nota_.class
 com\cashback\servicios\SActorRol.class
 com\cashback\model\Ciudad_.class
 com\cashback\model\TextoClave.class
-com\cashback\model\ILocalidad.class
 com\cashback\model\LocalPromocion_.class
 com\cashback\beans\ClienteBean.class
 com\cashback\model\Licencia_.class
-com\cashback\model\ICatalogoGen.class
 com\cashback\interfaces\IMenu.class
 com\cashback\model\Appmensaje_.class
 com\cashback\model\ComprobanteItem_.class
