@@ -126,6 +126,7 @@ com\cashback\model\Provincia.class
 com\cashback\servicios\SProvincia.class
 com\cashback\servicios\SUbicacion.class
 com\cashback\model\LocalVenta.class
+com\cashback\beans\PuntosBean.class
 com\cashback\model\Contacto_.class
 com\cashback\model\Nota_.class
 com\cashback\servicios\SActorRol.class

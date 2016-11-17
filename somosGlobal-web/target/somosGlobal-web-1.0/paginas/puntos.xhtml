@@ -106,7 +106,9 @@
                                                 </f:facet>
                                                 <p:cellEditor>  
                                                     <f:facet name="output">  
-                                                        <h:outputText value="#{item.valorItem}" />  
+                                                        <h:outputText value="#{item.valorItem}">  
+                                                             <f:convertNumber pattern="#0.00" />
+                                                        </h:outputText>
                                                     </f:facet>  
                                                     <f:facet name="input">  
                                                         <p:inputText value="#{item.valorItem}"/>  
@@ -119,7 +121,9 @@
                                                 </f:facet>
                                                 <p:cellEditor>  
                                                     <f:facet name="output">  
-                                                        <h:outputText value="#{item.valorTotal}" />  
+                                                        <h:outputText value="#{item.valorTotal}">
+                                                             <f:convertNumber pattern="#0.00" />
+                                                        </h:outputText>
                                                     </f:facet>  
                                                     <f:facet name="input">  
                                                         <p:inputText value="#{item.valorTotal}"/>  

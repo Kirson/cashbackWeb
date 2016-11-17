@@ -1,4 +1,3 @@
-C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\bean\PuntosBean.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ActorRolCtr.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\RegistroPuntosCtr.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\CtrMntHobbie.java
@@ -8,6 +7,7 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\ejb\interceptor\TracingInterceptor.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCategoria03.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorLocalCtrl.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConsultaPuntosCtr.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCtr.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\validadores\ValidadorEmail.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat04Ctrl.java
@@ -25,6 +25,7 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\Controladores.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\bean\CadenaValorBean.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\MntCategoriaCtr.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\bean\PuntosActorBean.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\LoginCtr.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat02Ctrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCategoria07.java

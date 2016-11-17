@@ -196,6 +196,9 @@ public class Actor implements Serializable {
 
     @Transient
     private Boolean encontrado;
+    
+    @Transient
+    private String nombreActor;
 
     public Actor() {
         porcentaje = new BigDecimal(0);
@@ -615,6 +618,23 @@ public class Actor implements Serializable {
 
     public void setActorPadre(Actor actorPadre) {
         this.actorPadre = actorPadre;
+    }
+
+    public String getNombreActor() {
+        
+        if(razonSocialAct!=null){
+            nombreActor = razonSocialAct;
+        }else if(nombresAct!=null && apellidosAct!=null){
+            nombreActor = nombresAct + " " + apellidosAct;
+        }else{
+            nombreActor = "";
+        }
+        
+        return nombreActor;
+    }
+
+    public void setNombreActor(String nombreActor) {
+        this.nombreActor = nombreActor;
     }
     
     

@@ -23,21 +23,17 @@ public class MenuCtr implements Serializable {
 
     private MenuModel menuModel;
     private Usuario usuario;
-    
+
     @EJB
     private IMenuPerfil sMenuPerfil;
     @EJB
     private IMenu sMenu;
-    
-    
 
     public MenuCtr() {
         usuario = (Usuario) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("usuario");
     }
 
-    
-    
     @PostConstruct
     public void inicio() {
         recuperarMenuList();
@@ -51,8 +47,6 @@ public class MenuCtr implements Serializable {
         this.usuario = usuario;
     }
 
-    
-    
     public String recuperarMenuList() {
         menuModel = new DefaultMenuModel();
         // First submenu
@@ -142,7 +136,7 @@ public class MenuCtr implements Serializable {
         item11.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
                 men11) != null);
         consultasSubmenu.addElement(item11);
-
+        /*
         Menu men12 = sMenu.recuperarMenu("CONSULTAS:DEMOPUNTOS");
         DefaultMenuItem item12 = new DefaultMenuItem("Puntos demo");
         item12.setUrl(men12.getMenUrl());
@@ -150,6 +144,14 @@ public class MenuCtr implements Serializable {
         item12.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
                 men12) != null);
         consultasSubmenu.addElement(item12);
+         */
+        Menu men13 = sMenu.recuperarMenu("CONSULTAS:PUNTOSTRANSACCIONES");
+        DefaultMenuItem item13 = new DefaultMenuItem("Transacciones Actor");
+        item13.setUrl(men13.getMenUrl());
+        item13.setIcon("ui-icon-person");
+        item13.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
+                men13) != null);
+        consultasSubmenu.addElement(item13);
 
         menuModel.addElement(firstSubmenu);
         menuModel.addElement(consultasSubmenu);

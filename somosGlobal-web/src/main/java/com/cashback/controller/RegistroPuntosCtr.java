@@ -6,7 +6,7 @@
 package com.cashback.controller;
 
 import com.cashback.bean.CadenaValorBean;
-import com.cashback.bean.PuntosBean;
+import com.cashback.bean.PuntosActorBean;
 import com.cashback.excepciones.ExcGuardarRegistro;
 import com.cashback.interfaces.Globales;
 import com.cashback.interfaces.IActor;
@@ -32,7 +32,7 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 public class RegistroPuntosCtr extends Controladores {
 
-    private PuntosBean puntosBean;
+    private PuntosActorBean puntosBean;
     private List<Actor> consumidores;
     private List<Actor> locales;
     private CatalogoGen rolNegocio;
@@ -52,11 +52,11 @@ public class RegistroPuntosCtr extends Controladores {
 
    
 
-    public PuntosBean getPuntosBean() {
+    public PuntosActorBean getPuntosBean() {
         return puntosBean;
     }
 
-    public void setPuntosBean(PuntosBean puntosBean) {
+    public void setPuntosBean(PuntosActorBean puntosBean) {
         this.puntosBean = puntosBean;
     }
 
@@ -174,6 +174,8 @@ public class RegistroPuntosCtr extends Controladores {
             CatalogoGen catalogoGen = sCatalogoGen.recuperarCatalogoGen(
                     Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
 
+            cvb.getActores().add(actor);
+            
             ActorRol consumidorRol = sActorRol.recuperarActorRol(actor, catalogoGen, "");
 
             if (consumidorRol != null) {
@@ -239,7 +241,7 @@ public class RegistroPuntosCtr extends Controladores {
         Integer puntos = new Double(puntosPorcentaje * 100).intValue();
 
         transaccion.setPuntosTransaccion(puntos);
-        transaccion.setPuntosTransaccion(puntos);
+        transaccion.setPuntosGanados(puntos);
 
         return transaccion;
     }

@@ -70,11 +70,9 @@ public class RegistroVentaCtr extends Controladores {
     private List<ItemGlo> itemsGlobal;
     private List<ItemLoc> itemsLocal;
     private ItemLoc itemSeleccionado;
-   
 
     @EJB
     private IActor sActor;
-
 
     @EJB
     private ITransaccionesActor sTransaccionesActor;
@@ -82,7 +80,6 @@ public class RegistroVentaCtr extends Controladores {
     @EJB
     private IComprobante sComprobante;
 
-   
     @EJB
     private ISecuencia sSecuencia;
 
@@ -219,8 +216,6 @@ public class RegistroVentaCtr extends Controladores {
     public void setActorRolLocal(ActorRol actorRolLocal) {
         this.actorRolLocal = actorRolLocal;
     }
-    
-    
 
     @PostConstruct
     @SuppressWarnings("Convert2Diamond")
@@ -246,20 +241,20 @@ public class RegistroVentaCtr extends Controladores {
         }
 
         itemSeleccionado = new ItemLoc();
-        
+
         usuario = (Usuario) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("usuario");
-    
+
         determinarLocal();
-        
+
         transaccionActor = new TransaccionesActor();
         puntosActor = new PuntosActor();
     }
-    
-    private void determinarLocal(){
-      if(usuario!=null){
-          local=usuario.getActor();
-      }
+
+    private void determinarLocal() {
+        if (usuario != null) {
+            local = usuario.getActor();
+        }
     }
 
     private String formatSecuence(Secuencia secuencia) {
@@ -313,16 +308,21 @@ public class RegistroVentaCtr extends Controladores {
 
     public void buscarConsumidorLista() {
         actorRolList = sActorRol.findAllByDatosActor(actorSearch.getCedRucPasAct(),
-        actorSearch.getRazonSocialAct(), actorSearch.getNombres(), actorSearch.getApellidos());
+                actorSearch.getRazonSocialAct(), actorSearch.getNombres(), actorSearch.getApellidos());
     }
 
     public void establecerConsumidor() {
 
-        try{
+        try {
             consumidor = sActor.recuperarActorByCedRucPas(clienteBean.getDocumento());
 
             if (consumidor != null) {
                 consumidor.setEncontrado(Boolean.TRUE);
+                CatalogoGen catalogoGen = sCatalogoGen.recuperarCatalogoGen(
+                        Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
+
+                actorRol = sActorRol.recuperarActorRol(consumidor, catalogoGen, "");
+            
             } else {
                 consumidor = new Actor();
                 consumidor.setNombresAct(clienteBean.getNombre());
@@ -335,7 +335,7 @@ public class RegistroVentaCtr extends Controladores {
                 consumidor.setFecNacAct(clienteBean.getFechaNacimiento());
                 crearConsumidor();
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             Logger.getLogger(RegistroVentaCtr.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al crear el consumidor");
         }
@@ -354,9 +354,9 @@ public class RegistroVentaCtr extends Controladores {
                     actorRol.setEstadoArol("OK");
                     actorRol.setFecCreaArol(new Date());
                     actorRol.setPrcArol(new BigDecimal(50));
-                    
+
                     catalogoGen = sCatalogoGen.recuperarCatalogoGen(Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
-                    if(local!=null){
+                    if (local != null) {
                         actorRolLocal = sActorRol.recuperarActorRol(local, catalogoGen, "");
                         actorRol.setActorRol(actorRolLocal);
                     }
@@ -364,6 +364,11 @@ public class RegistroVentaCtr extends Controladores {
                 } catch (ExcGuardarRegistro ex) {
                     Logger.getLogger(RegistroVentaCtr.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                CatalogoGen catalogoGen = sCatalogoGen.recuperarCatalogoGen(
+                        Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
+
+                actorRol = sActorRol.recuperarActorRol(consumidor, catalogoGen, "");
             }
         }
 
@@ -397,58 +402,55 @@ public class RegistroVentaCtr extends Controladores {
     }
 
     public void handleChange(ComprobanteItem item) {
-        if(item!=null){
+        if (item != null) {
             System.out.println("Item no es nulo");
-            
-            
+
             if (itemSeleccionado != null) {
                 System.out.println("Existe elemento seleccionado ");
                 //comprobanteBean.getItems().remove(item);
-                 item.setItem(itemSeleccionado);
+                item.setItem(itemSeleccionado);
                 item.setValorItem(new BigDecimal(itemSeleccionado.getCosUniIl()));
                 item.setDescripcionItem(itemSeleccionado.getNombreIl());
-                if(item.getCantidad()!=null){
-                    item.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl()*item.getCantidad()));
-                }else{
+                if (item.getCantidad() != null) {
+                    item.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl() * item.getCantidad()));
+                } else {
                     item.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl()));
                 }
-                
+
             }
-        }else{
+        } else {
             System.out.println("Item es nulo");
         }
-        
+
         actualizarTotales();
     }
-    
+
     @SuppressWarnings("UnusedAssignment")
-    private void actualizarTotales(){
-        
-        Double iva=0D;
-        Double subTotal=0D;
+    private void actualizarTotales() {
+
+        Double iva = 0D;
+        Double subTotal = 0D;
         Double total = 0D;
-        for(ComprobanteItem ci:comprobanteBean.getItems()){
-            if(ci.getValorTotal()!=null){
-                subTotal = subTotal+ci.getValorTotal().doubleValue();
+        for (ComprobanteItem ci : comprobanteBean.getItems()) {
+            if (ci.getValorTotal() != null) {
+                subTotal = subTotal + ci.getValorTotal().doubleValue();
             }
-      }
-        
+        }
+
         subTotal = NumberUtil.round(subTotal);
-        
-        iva=subTotal*14/100;
-        
+
+        iva = subTotal * 14 / 100;
+
         iva = NumberUtil.round(iva);
-        
-        total = subTotal+iva;
-        
+
+        total = subTotal + iva;
+
         total = NumberUtil.round(total);
-        
+
         comprobanteBean.getComprobante().setValorIva(new BigDecimal(iva));
         comprobanteBean.getComprobante().setValorCompra(new BigDecimal(subTotal));
         comprobanteBean.getComprobante().setTotalCompra(new BigDecimal(total));
     }
-    
-    
 
     @SuppressWarnings("CallToPrintStackTrace")
     public String guardarComprobante() {
@@ -457,8 +459,8 @@ public class RegistroVentaCtr extends Controladores {
 
         try {
             establecerConsumidor();
-            
-            if(local!=null){
+
+            if (local != null) {
                 consumidor.setActorPadre(local);
             }
 
@@ -470,9 +472,9 @@ public class RegistroVentaCtr extends Controladores {
             sComprobante.guardarComprobante(comprobanteBean);
 
             ponerMensajeInfo("", "Comprobante registrado exitosamente");
-            
+
             CadenaValorBean cvb = formarCadenaValor(consumidor);
-            
+
             transaccionActor = new TransaccionesActor();
             transaccionActor.setConsumidor(consumidor);
             transaccionActor.setNumDocumentoActor(consumidor.getCedrucpasAct());
@@ -481,22 +483,35 @@ public class RegistroVentaCtr extends Controladores {
             transaccionActor.setLocalVenta(local);
             transaccionActor.setValorCompra(comprobanteBean.getComprobante().getTotalCompra());
             transaccionActor = this.calcularPuntos(transaccionActor);
-            
+
             sTransaccionesActor.crearTransaccion(transaccionActor);
-            
-            actualizarPuntosCadena(cvb,transaccionActor);
-            
+
+            List<PuntosActor> puntosConsumidorList = sPuntosActor.recuperarPuntos(consumidor);
+            PuntosActor puntosConsumidor = new PuntosActor();
+            if (puntosConsumidorList != null && !puntosConsumidorList.isEmpty()) {
+                puntosConsumidor = puntosConsumidorList.get(0);
+                Integer puntosActuales = puntosConsumidor.getTotalPuntos();
+                puntosConsumidor.setTotalPuntos(transaccionActor.getPuntosTransaccion() + puntosActuales);
+            } else {
+                puntosConsumidor.setActor(consumidor);
+                puntosConsumidor.setNumDocumentoActor(consumidor.getCedrucpasAct());
+                puntosConsumidor.setTotalPuntos(transaccionActor.getPuntosTransaccion());
+            }
+            sPuntosActor.crearPuntos(puntosConsumidor);
+
+            actualizarPuntosCadena(cvb, transaccionActor);
+
         } catch (Exception e) {
             ponerMensajeError("", "Error al registrar comprobante");
             Logger.getLogger(RegistroVentaCtr.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("Error al guardar comprobante "+e.getMessage());
+            System.out.println("Error al guardar comprobante " + e.getMessage());
             e.printStackTrace();
         }
         return result;
 
     }
 
-     @SuppressWarnings("CallToPrintStackTrace")
+    @SuppressWarnings("CallToPrintStackTrace")
     protected CadenaValorBean formarCadenaValor(Actor actor) {
         CadenaValorBean cvb = new CadenaValorBean();
 
@@ -506,6 +521,8 @@ public class RegistroVentaCtr extends Controladores {
                     Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
 
             ActorRol consumidorRol = sActorRol.recuperarActorRol(actor, catalogoGen, "");
+
+            cvb.getActores().add(actor);
 
             if (consumidorRol != null) {
                 Actor consumidorA = consumidorRol.getActor();
@@ -570,7 +587,7 @@ public class RegistroVentaCtr extends Controladores {
         Integer puntos = new Double(puntosPorcentaje * 100).intValue();
 
         transaccion.setPuntosTransaccion(puntos);
-        transaccion.setPuntosTransaccion(puntos);
+        transaccion.setPuntosGanados(puntos);
 
         return transaccion;
     }

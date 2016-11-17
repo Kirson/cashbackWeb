@@ -34,10 +34,10 @@ public class STransaccionesActor extends AbstractService implements ITransaccion
     }
 
     @Override
-    public List<TransaccionesActor> recuperarHistorialTransaccion(Actor actor) {
-        String jpql = "SELECT p FROM TransaccionesActor p WHERE p.actor =:actor";
+    public List<TransaccionesActor> recuperarHistorialTransaccion(Actor consumidor) {
+        String jpql = "SELECT ta FROM TransaccionesActor ta WHERE ta.consumidor =:consumidor";
 	Query q = emCashback.createQuery(jpql);
-	q.setParameter("actor", actor);
+	q.setParameter("consumidor", consumidor);
 	@SuppressWarnings("unchecked")
 	List<TransaccionesActor> puntosList = (List<TransaccionesActor>) q.getResultList();
 	return puntosList;
