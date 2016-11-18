@@ -50,7 +50,9 @@ public class ComprobanteFormaPago implements Serializable {
     private String descripcionFormaPago;
     @Column(name = "valor_forma_pago")
     private BigDecimal valorFormaPago;
-
+    @JoinColumn(name = "id_for_pag", referencedColumnName = "id_for_pag")
+    @ManyToOne(optional = false)
+    private FormaPago formaPago;
     
     public ComprobanteFormaPago() {
     }
@@ -97,6 +99,14 @@ public class ComprobanteFormaPago implements Serializable {
 
     public void setValorFormaPago(BigDecimal valorFormaPago) {
         this.valorFormaPago = valorFormaPago;
+    }
+
+    public FormaPago getFormaPago() {
+        return formaPago;
+    }
+
+    public void setFormaPago(FormaPago formaPago) {
+        this.formaPago = formaPago;
     }
     
     
