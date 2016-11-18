@@ -9,6 +9,7 @@ import com.cashback.model.Actor;
 import com.cashback.model.Comprobante;
 import com.cashback.model.ComprobanteFormaPago;
 import com.cashback.model.ComprobanteItem;
+import com.cashback.model.FormaPago;
 import com.cashback.model.Secuencia;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ComprobanteBean implements Serializable {
     private String resultado;
     private List<String> errores;
     private Boolean pagaConPuntos;
+    private List<FormaPago> formasPago;
     
     @SuppressWarnings("Convert2Diamond")
     public ComprobanteBean(){
@@ -38,6 +40,7 @@ public class ComprobanteBean implements Serializable {
         errores = new ArrayList<String>();
         comprobante = new Comprobante();
         pagaConPuntos = Boolean.FALSE;
+        formasPago = new ArrayList<FormaPago>();
     }
 
     public Comprobante getComprobante() {
@@ -118,6 +121,14 @@ public class ComprobanteBean implements Serializable {
 
     public void setPagaConPuntos(Boolean pagaConPuntos) {
         this.pagaConPuntos = pagaConPuntos;
+    }
+
+    public List<FormaPago> getFormasPago() {
+        return formasPago;
+    }
+
+    public void setFormasPago(List<FormaPago> formasPago) {
+        this.formasPago = formasPago;
     }
     
     
