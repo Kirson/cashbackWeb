@@ -14,6 +14,7 @@ import com.cashback.excepciones.ExcGuardarRegistro;
 import com.cashback.interfaces.Globales;
 import com.cashback.interfaces.IActor;
 import com.cashback.interfaces.IComprobante;
+import com.cashback.interfaces.IFormaPago;
 import com.cashback.interfaces.IItemGlo;
 import com.cashback.interfaces.IItemLoc;
 import com.cashback.interfaces.ISecuencia;
@@ -24,6 +25,7 @@ import com.cashback.model.CatalogoGen;
 
 import com.cashback.model.ComprobanteFormaPago;
 import com.cashback.model.ComprobanteItem;
+import com.cashback.model.FormaPago;
 import com.cashback.model.ItemGlo;
 import com.cashback.model.ItemLoc;
 import com.cashback.model.PuntosActor;
@@ -70,6 +72,8 @@ public class RegistroVentaCtr extends Controladores {
     private List<ItemGlo> itemsGlobal;
     private List<ItemLoc> itemsLocal;
     private ItemLoc itemSeleccionado;
+    private List<FormaPago> listaFormaPago;
+    private FormaPago formaPagoSeleccionada;
 
     @EJB
     private IActor sActor;
@@ -88,6 +92,9 @@ public class RegistroVentaCtr extends Controladores {
 
     @EJB
     private IItemLoc sItemLoc;
+    
+    @EJB
+    private IFormaPago sFormaPago;
 
     public Actor getConsumidor() {
         return consumidor;
@@ -217,6 +224,24 @@ public class RegistroVentaCtr extends Controladores {
         this.actorRolLocal = actorRolLocal;
     }
 
+    public List<FormaPago> getListaFormaPago() {
+        return listaFormaPago;
+    }
+
+    public void setListaFormaPago(List<FormaPago> listaFormaPago) {
+        this.listaFormaPago = listaFormaPago;
+    }
+
+    public FormaPago getFormaPagoSeleccionada() {
+        return formaPagoSeleccionada;
+    }
+
+    public void setFormaPagoSeleccionada(FormaPago formaPagoSeleccionada) {
+        this.formaPagoSeleccionada = formaPagoSeleccionada;
+    }
+    
+    
+
     @PostConstruct
     @SuppressWarnings("Convert2Diamond")
     public void inicio() {
@@ -249,6 +274,12 @@ public class RegistroVentaCtr extends Controladores {
 
         transaccionActor = new TransaccionesActor();
         puntosActor = new PuntosActor();
+        
+        listaFormaPago = new ArrayList<FormaPago>();
+        
+        listaFormaPago = sFormaPago.getAll();
+        
+        formaPagoSeleccionada = new FormaPago();
     }
 
     private void determinarLocal() {
@@ -309,6 +340,28 @@ public class RegistroVentaCtr extends Controladores {
     public void buscarConsumidorLista() {
         actorRolList = sActorRol.findAllByDatosActor(actorSearch.getCedRucPasAct(),
                 actorSearch.getRazonSocialAct(), actorSearch.getNombres(), actorSearch.getApellidos());
+    }
+    
+    
+    public void buscarConsumidor(){
+        if(clienteBean.getDocumento()!=null){
+            CatalogoGen catalogoGen = sCatalogoGen.recuperarCatalogoGen(
+                        Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
+            consumidor = sActor.recuperarActorByCedRucPas(clienteBean.getDocumento());
+            if(consumidor==null){
+                ponerMensajeInfo("", "No existe el cliente con documento "+clienteBean.getDocumento()+ " registrado en la base de datos. Al registrar la compra el cliente quedará almacenado en el sistema");
+                consumidor = new Actor();
+            }else{
+                actorRol = sActorRol.recuperarActorRol(consumidor, catalogoGen, "");
+                clienteBean.setNombre(consumidor.getNombresAct());
+                clienteBean.setApellido(consumidor.getApellidosAct());
+                clienteBean.setDocumento(consumidor.getCedrucpasAct());
+                clienteBean.setFechaNacimiento(consumidor.getFecNacAct());
+                clienteBean.setEmail(consumidor.getMailAct());
+                clienteBean.setCelular("");
+                consumidor.setEncontrado(Boolean.TRUE);
+            }
+        }
     }
 
     public void establecerConsumidor() {
@@ -424,16 +477,31 @@ public class RegistroVentaCtr extends Controladores {
 
         actualizarTotales();
     }
+    
+    public void handlePayWay(ComprobanteFormaPago formaPago) {
+        if (formaPago != null) {
+            System.out.println("FormaPago no es nulo");
+
+            if (formaPagoSeleccionada != null) {
+                System.out.println("Existe elemento seleccionado ");
+                formaPago.setFormaPago(formaPagoSeleccionada);
+                formaPago.setDescripcionFormaPago(formaPagoSeleccionada.getNombreForPag());
+            }
+        } else {
+            System.out.println("FormaPago es nulo");
+        }
+
+    }
 
     @SuppressWarnings("UnusedAssignment")
-    private void actualizarTotales() {
+    public void actualizarTotales() {
 
         Double iva = 0D;
         Double subTotal = 0D;
         Double total = 0D;
         for (ComprobanteItem ci : comprobanteBean.getItems()) {
             if (ci.getValorTotal() != null) {
-                subTotal = subTotal + ci.getValorTotal().doubleValue();
+                subTotal = subTotal + ci.getCantidad() * ci.getValorTotal().doubleValue();
             }
         }
 

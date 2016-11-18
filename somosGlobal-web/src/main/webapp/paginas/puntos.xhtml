@@ -22,14 +22,18 @@
                             <p:row>
                                 <p:column colspan="5">
                                     <p:fieldset legend="Datos de Cliente" toggleable="false" toggleSpeed="500">
+                                        <!--
                                         <h:panelGrid columns="1" cellpadding="5">
                                             <p:commandButton value="Buscar cliente" type="button" 
                                                              onclick="PF('dlgConsumidor').show();" 
                                                              update=":frmPuntos:pnConsumidor"/>
                                         </h:panelGrid>
+                                        -->
                                         <h:panelGrid columns="4" cellpadding="5" id="pnConsumidor">
                                             <p:outputLabel for="txtDocumento" value="C&eacute;dula / RUC / Pasaporte" />
-                                            <p:inputText id="txtDocumento" value="#{registroVentaCtr.clienteBean.documento}" required="true"  />
+                                            <p:inputText id="txtDocumento" value="#{registroVentaCtr.clienteBean.documento}" required="true">
+                                                <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.buscarConsumidor}"/>
+                                            </p:inputText>
                                             <p:outputLabel for="txtFechaNacimiento" value="Fecha Nacimiento" />
                                             <p:calendar id="txtFechaNacimiento" value="#{registroVentaCtr.clienteBean.fechaNacimiento}" />
                                             <p:outputLabel for="txtNombre" value="Nombre" />
@@ -96,7 +100,9 @@
                                                         <h:outputText value="#{item.cantidad}" />  
                                                     </f:facet>  
                                                     <f:facet name="input">  
-                                                        <p:inputText value="#{item.cantidad}"/>  
+                                                        <p:inputText value="#{item.cantidad}" converter="javax.faces.Integer">
+                                                            <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                                        </p:inputText>    
                                                     </f:facet>  
                                                 </p:cellEditor>
                                             </p:column>
@@ -111,7 +117,9 @@
                                                         </h:outputText>
                                                     </f:facet>  
                                                     <f:facet name="input">  
-                                                        <p:inputText value="#{item.valorItem}"/>  
+                                                        <p:inputText value="#{item.valorItem}" converter="javax.faces.Double">
+                                                            <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                                        </p:inputText>
                                                     </f:facet>  
                                                 </p:cellEditor>
                                             </p:column>
@@ -173,7 +181,26 @@
                                         <p:dataTable id="datatableFP" var="formaPago" value="#{registroVentaCtr.comprobanteBean.listaFormaPago}" editable="true">
                                             <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditFP}" update=":frmPuntos:msgs" />  
                                             <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelFP}" update=":frmPuntos:msgs" /> 
+                                            
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Forma de Pago" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{formaPago.formaPago.nombreForPag}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
 
+                                                        <p:selectOneMenu id="puntosFP" value="#{registroVentaCtr.formaPagoSeleccionada}" converter="omnifaces.SelectItemsConverter">
+                                                            <p:ajax listener="#{registroVentaCtr.handlePayWay(formaPago)}" update=":frmPuntos" />
+                                                            <f:selectItem itemLabel="Seleccione Forma Pago" itemValue="" />
+                                                            <f:selectItems value="#{registroVentaCtr.listaFormaPago}" />
+                                                        </p:selectOneMenu>
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--
                                             <p:column>
                                                 <f:facet name="header">  
                                                     <h:outputText value="Descripci&oacute;n" />  
@@ -187,7 +214,7 @@
                                                     </f:facet>  
                                                 </p:cellEditor>
                                             </p:column>
-
+                                            -->
 
                                             <p:column>
                                                 <f:facet name="header">  
