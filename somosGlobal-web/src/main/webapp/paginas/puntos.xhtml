@@ -42,6 +42,8 @@
                                             <p:inputText id="txtApellido" value="#{registroVentaCtr.clienteBean.apellido}" required="true"  />
                                             <p:outputLabel for="txtEmail" value="Email" />
                                             <p:inputText id="txtEmail" value="#{registroVentaCtr.clienteBean.email}" required="true"  />
+                                             <p:outputLabel for="txtTelefono" value="Tel&eacute;fono" />
+                                             <p:inputText id="txtTelefono" value="#{registroVentaCtr.clienteBean.telefono}" required="true"  />
 
                                         </h:panelGrid>
                                     </p:fieldset>
@@ -239,12 +241,17 @@
                             </p:row>
                             <p:row>
                                 <p:column colspan="5">
-                                    <h:panelGrid columns="1" cellpadding="5">
+                                    <h:panelGrid columns="2" cellpadding="5">
                                         <p:commandButton value="Guardar comprobante" 
                                                          actionListener="#{registroVentaCtr.guardarComprobante}"
-                                                         update=":frmPuntos" process="@this"
+                                                         update=":frmPuntos" process="@this" disabled="#{registroVentaCtr.disable}"
                                                          styleClass="ui-priority-primary"
                                                          id="puntosBtn" icon="ui-icon-save" />
+                                        <p:commandButton value="Limpiar pantalla" 
+                                                         actionListener="#{registroVentaCtr.limpiar}"
+                                                         update=":frmPuntos" process="@this"
+                                                         styleClass="ui-priority-primary"
+                                                         id="puntosCleanBtn"  />
                                     </h:panelGrid>
                                 </p:column>
                             </p:row>

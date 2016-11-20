@@ -34,13 +34,35 @@ public class SPuntosActor extends AbstractService implements IPuntosActor{
     }
 
     @Override
-    public List<PuntosActor> recuperarPuntos(Actor actor) {
+    public PuntosActor recuperarPuntos(Actor actor) {
        String jpql = "SELECT p FROM PuntosActor p WHERE p.actor =:actor";
 	Query q = emCashback.createQuery(jpql);
 	q.setParameter("actor", actor);
+        
 	@SuppressWarnings("unchecked")
-	List<PuntosActor> puntosList = (List<PuntosActor>) q.getResultList();
-	return puntosList;
+        PuntosActor puntos = (PuntosActor) q.getSingleResult();
+	return puntos;
     }
+
+    @Override
+    public List<PuntosActor> getPuntos() {
+        String jpql = "SELECT p FROM PuntosActor p ";
+        Query q = emCashback.createQuery(jpql);
+        @SuppressWarnings("unchecked")
+        List<PuntosActor> puntos = (List<PuntosActor>) q.getSingleResult();
+        return puntos;
+    }
+
+    @Override
+    public void actualizarPuntos(PuntosActor puntos) throws ExcGuardarRegistro {
+        try {
+            emCashback.merge(puntos);
+	} catch (PersistenceException e) {
+            e.printStackTrace();
+            throw new ExcGuardarRegistro(AppMensajes.ERR_CREAR_REGISTRO);
+	}
+    }
+    
+    
     
 }

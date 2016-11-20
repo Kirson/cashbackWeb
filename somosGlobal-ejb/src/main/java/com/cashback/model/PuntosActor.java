@@ -61,6 +61,10 @@ public class PuntosActor implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_actor")
     private Actor actor;
+    
+    @ManyToOne
+    @JoinColumn(name="id_usuario")
+    private Usuario usuario;
 
     public PuntosActor() {
         totalPuntos =0;
@@ -116,6 +120,14 @@ public class PuntosActor implements Serializable {
 
     public void setActor(Actor actor) {
         this.actor = actor;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
    

@@ -74,6 +74,7 @@ public class RegistroVentaCtr extends Controladores {
     private ItemLoc itemSeleccionado;
     private List<FormaPago> listaFormaPago;
     private FormaPago formaPagoSeleccionada;
+    private Boolean disable = false;
 
     @EJB
     private IActor sActor;
@@ -92,7 +93,7 @@ public class RegistroVentaCtr extends Controladores {
 
     @EJB
     private IItemLoc sItemLoc;
-    
+
     @EJB
     private IFormaPago sFormaPago;
 
@@ -239,6 +240,14 @@ public class RegistroVentaCtr extends Controladores {
     public void setFormaPagoSeleccionada(FormaPago formaPagoSeleccionada) {
         this.formaPagoSeleccionada = formaPagoSeleccionada;
     }
+
+    public Boolean getDisable() {
+        return disable;
+    }
+
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
+    }
     
     
 
@@ -259,6 +268,11 @@ public class RegistroVentaCtr extends Controladores {
 
         itemsGlobal = sItemGlo.getAll();
 
+        usuario = (Usuario) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("usuario");
+
+        determinarLocal();
+
         if (local != null) {
             itemsLocal = sItemLoc.findByLocal(local);
         } else {
@@ -267,19 +281,16 @@ public class RegistroVentaCtr extends Controladores {
 
         itemSeleccionado = new ItemLoc();
 
-        usuario = (Usuario) FacesContext.getCurrentInstance()
-                .getExternalContext().getSessionMap().get("usuario");
-
-        determinarLocal();
-
         transaccionActor = new TransaccionesActor();
         puntosActor = new PuntosActor();
-        
+
         listaFormaPago = new ArrayList<FormaPago>();
-        
+
         listaFormaPago = sFormaPago.getAll();
-        
+
         formaPagoSeleccionada = new FormaPago();
+        
+        disable= false;
     }
 
     private void determinarLocal() {
@@ -341,17 +352,16 @@ public class RegistroVentaCtr extends Controladores {
         actorRolList = sActorRol.findAllByDatosActor(actorSearch.getCedRucPasAct(),
                 actorSearch.getRazonSocialAct(), actorSearch.getNombres(), actorSearch.getApellidos());
     }
-    
-    
-    public void buscarConsumidor(){
-        if(clienteBean.getDocumento()!=null){
+
+    public void buscarConsumidor() {
+        if (clienteBean.getDocumento() != null) {
             CatalogoGen catalogoGen = sCatalogoGen.recuperarCatalogoGen(
-                        Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
+                    Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
             consumidor = sActor.recuperarActorByCedRucPas(clienteBean.getDocumento());
-            if(consumidor==null){
-                ponerMensajeInfo("", "No existe el cliente con documento "+clienteBean.getDocumento()+ " registrado en la base de datos. Al registrar la compra el cliente quedará almacenado en el sistema");
+            if (consumidor == null) {
+                ponerMensajeInfo("", "No existe el cliente con documento " + clienteBean.getDocumento() + " registrado en la base de datos. Al registrar la compra el cliente quedará almacenado en el sistema");
                 consumidor = new Actor();
-            }else{
+            } else {
                 actorRol = sActorRol.recuperarActorRol(consumidor, catalogoGen, "");
                 clienteBean.setNombre(consumidor.getNombresAct());
                 clienteBean.setApellido(consumidor.getApellidosAct());
@@ -359,6 +369,9 @@ public class RegistroVentaCtr extends Controladores {
                 clienteBean.setFechaNacimiento(consumidor.getFecNacAct());
                 clienteBean.setEmail(consumidor.getMailAct());
                 clienteBean.setCelular("");
+                if (consumidor.getTelefonosActor() != null && !consumidor.getTelefonosActor().isEmpty()) {
+                    clienteBean.setTelefono(consumidor.getTelefonosActor().get(0).getVal1Ar());
+                }
                 consumidor.setEncontrado(Boolean.TRUE);
             }
         }
@@ -375,7 +388,7 @@ public class RegistroVentaCtr extends Controladores {
                         Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
 
                 actorRol = sActorRol.recuperarActorRol(consumidor, catalogoGen, "");
-            
+
             } else {
                 consumidor = new Actor();
                 consumidor.setNombresAct(clienteBean.getNombre());
@@ -425,6 +438,13 @@ public class RegistroVentaCtr extends Controladores {
             }
         }
 
+    }
+    
+    @SuppressWarnings("Convert2Diamond")
+    public void limpiar() {
+        limpiarDatos();
+        comprobanteBean  = new ComprobanteBean();
+        disable = false;
     }
 
     @SuppressWarnings("Convert2Diamond")
@@ -477,7 +497,7 @@ public class RegistroVentaCtr extends Controladores {
 
         actualizarTotales();
     }
-    
+
     public void handlePayWay(ComprobanteFormaPago formaPago) {
         if (formaPago != null) {
             System.out.println("FormaPago no es nulo");
@@ -551,29 +571,37 @@ public class RegistroVentaCtr extends Controladores {
             transaccionActor.setLocalVenta(local);
             transaccionActor.setValorCompra(comprobanteBean.getComprobante().getTotalCompra());
             transaccionActor = this.calcularPuntos(transaccionActor);
+            transaccionActor.setUsuario(usuario);
+            transaccionActor.setNumeroComprobante(comprobanteBean.getComprobante().getNumComprobante());
 
             sTransaccionesActor.crearTransaccion(transaccionActor);
 
-            List<PuntosActor> puntosConsumidorList = sPuntosActor.recuperarPuntos(consumidor);
+            PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(consumidor);
             PuntosActor puntosConsumidor = new PuntosActor();
-            if (puntosConsumidorList != null && !puntosConsumidorList.isEmpty()) {
-                puntosConsumidor = puntosConsumidorList.get(0);
+            if (puntosConsulta != null) {
+                puntosConsumidor = puntosConsulta;
                 Integer puntosActuales = puntosConsumidor.getTotalPuntos();
                 puntosConsumidor.setTotalPuntos(transaccionActor.getPuntosTransaccion() + puntosActuales);
+                sPuntosActor.actualizarPuntos(puntosConsumidor);
             } else {
                 puntosConsumidor.setActor(consumidor);
                 puntosConsumidor.setNumDocumentoActor(consumidor.getCedrucpasAct());
                 puntosConsumidor.setTotalPuntos(transaccionActor.getPuntosTransaccion());
+                puntosConsumidor.setUsuario(usuario);
+                sPuntosActor.crearPuntos(puntosConsumidor);
             }
-            sPuntosActor.crearPuntos(puntosConsumidor);
+            
 
             actualizarPuntosCadena(cvb, transaccionActor);
+            
+             disable = true;
 
         } catch (Exception e) {
             ponerMensajeError("", "Error al registrar comprobante");
             Logger.getLogger(RegistroVentaCtr.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Error al guardar comprobante " + e.getMessage());
             e.printStackTrace();
+             disable = false;
         }
         return result;
 
@@ -664,19 +692,33 @@ public class RegistroVentaCtr extends Controladores {
 
         if (cadenaValor.getActores() != null && !cadenaValor.getActores().isEmpty()) {
             for (Actor actor : cadenaValor.getActores()) {
-                List<PuntosActor> listaPuntos = sPuntosActor.recuperarPuntos(actor);
-                PuntosActor puntosCadena = new PuntosActor();
-                if (listaPuntos != null && !listaPuntos.isEmpty()) {
-                    puntosCadena = listaPuntos.get(0);
-                    puntosCadena.setTotalPuntos(puntosCadena.getTotalPuntos() + transaccion.getPuntosGanados());
-                } else {
-                    puntosCadena.setTotalPuntos(transaccion.getPuntosGanados());
-                    puntosCadena.setActor(actor);
-                }
-                sPuntosActor.crearPuntos(puntosCadena);
-            }
-
-        }
+                if (!actor.equals(consumidor)) {
+                    PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(actor);
+                    PuntosActor puntosCadena = new PuntosActor();
+                    if (puntosConsulta != null) {
+                        puntosCadena = puntosConsulta;
+                        puntosCadena.setTotalPuntos(puntosCadena.getTotalPuntos() + transaccion.getPuntosGanados());
+                        sPuntosActor.actualizarPuntos(puntosCadena);
+                    } else {
+                        puntosCadena.setTotalPuntos(transaccion.getPuntosGanados());
+                        puntosCadena.setActor(actor);
+                        sPuntosActor.crearPuntos(puntosCadena);
+                    }
+                    
+                    TransaccionesActor transaccionCadena = new TransaccionesActor();
+                    transaccionCadena.setConsumidor(actor);
+                    transaccionCadena.setNumDocumentoActor(actor.getCedrucpasAct());
+                    transaccionCadena.setPorcentajeDescuento(actor.getPorcentaje());
+                    transaccionCadena.setFechaTransaccion(new Date());
+                    transaccionCadena.setLocalVenta(local);
+                    transaccionCadena.setValorCompra(comprobanteBean.getComprobante().getTotalCompra());
+                    transaccionCadena = this.calcularPuntos(transaccionCadena);
+                    transaccionCadena.setNumeroComprobante(comprobanteBean.getComprobante().getNumComprobante());
+                    transaccionCadena.setUsuario(usuario);
+                    sTransaccionesActor.crearTransaccion(transaccionCadena);
+                }//fin de actor no es consumidor
+            }//fin de for
+        }//fin de cadena de valor
 
     }
 

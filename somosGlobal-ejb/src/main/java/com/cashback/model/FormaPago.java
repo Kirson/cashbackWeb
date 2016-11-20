@@ -86,7 +86,7 @@ public class FormaPago implements Serializable {
 
     @Override
     public String toString() {
-        return "com.cashback.model.FormaPago[ idForPag=" + idForPag + " ]";
+        return this.nombreForPag;
     }
     
 }

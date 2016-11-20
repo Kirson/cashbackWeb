@@ -82,12 +82,27 @@ public class TransaccionesActor implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_local")
     private Actor localVenta;
+    
+    @ManyToOne
+    @JoinColumn(name="id_usuario")
+    private Usuario usuario;
+    
+    @Column(name = "signo")
+    private String signo;
+    
+    @Column(name = "tipo")
+    private String tipo;
+    
+    @Column(name = "numero_comprobante")
+    private String numeroComprobante;
 
     public TransaccionesActor() {
         valorCompra = new BigDecimal(0);
         porcentajeDescuento = new BigDecimal(0);
         puntosGanados = 0;
         puntosTransaccion = 0;
+        tipo="COMPRA";
+        signo="POSITIVO";
     }
 
     public TransaccionesActor(Integer id) {
@@ -190,6 +205,38 @@ public class TransaccionesActor implements Serializable {
 
     public void setDescripcionCompra(String descripcionCompra) {
         this.descripcionCompra = descripcionCompra;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getSigno() {
+        return signo;
+    }
+
+    public void setSigno(String signo) {
+        this.signo = signo;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getNumeroComprobante() {
+        return numeroComprobante;
+    }
+
+    public void setNumeroComprobante(String numeroComprobante) {
+        this.numeroComprobante = numeroComprobante;
     }
 
    

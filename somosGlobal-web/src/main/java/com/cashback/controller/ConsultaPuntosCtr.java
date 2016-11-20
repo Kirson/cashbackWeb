@@ -55,12 +55,10 @@ public class ConsultaPuntosCtr extends Controladores {
             
             if(consulta!=null){
                 puntosBean.setActor(consulta);
-                List<PuntosActor> puntosActorList = sPuntosActor.recuperarPuntos(consulta);
-                if(puntosActorList!=null && !puntosActorList.isEmpty()){
-                    PuntosActor puntosActor = puntosActorList.get(0);
-                    if(puntosActor!=null){
-                        puntosBean.setPuntosActor(puntosActor);
-                    }
+                PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(consulta);
+                if(puntosConsulta!=null){
+                    PuntosActor puntosActor = puntosConsulta;
+                    puntosBean.setPuntosActor(puntosActor);
                 }
             
                 List<TransaccionesActor> transaccionesList = sTransaccionesActor.recuperarHistorialTransaccion(consulta);

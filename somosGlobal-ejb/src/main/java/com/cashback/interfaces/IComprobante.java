@@ -8,6 +8,7 @@ package com.cashback.interfaces;
 import com.cashback.beans.ComprobanteBean;
 import com.cashback.model.Actor;
 import com.cashback.model.Comprobante;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,4 +21,5 @@ public interface IComprobante {
     void crearComprobante(Comprobante comprobante);
     List<Comprobante> listarComprobantesActor(Actor actor);
     List<Comprobante> listarComprobantesLocal(Actor local);
+    List<Comprobante> listarComprobantesLocalFecha(Actor local, Date fechaComprobante);
 }

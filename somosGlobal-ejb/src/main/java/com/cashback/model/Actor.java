@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -153,7 +154,7 @@ public class Actor implements Serializable {
 
     @OneToMany(mappedBy = "actor", cascade = CascadeType.PERSIST)
     private List<ActorRol> actorRols;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_act_padre")
     private Actor actorPadre;
@@ -196,7 +197,7 @@ public class Actor implements Serializable {
 
     @Transient
     private Boolean encontrado;
-    
+
     @Transient
     private String nombreActor;
 
@@ -621,23 +622,32 @@ public class Actor implements Serializable {
     }
 
     public String getNombreActor() {
-        
-        if(razonSocialAct!=null){
-            nombreActor = razonSocialAct;
-        }else if(nombresAct!=null && apellidosAct!=null){
-            nombreActor = nombresAct + " " + apellidosAct;
-        }else{
-            nombreActor = "";
+
+        if (nombreActor == null || nombreActor.equals("")) {
+            loadNombre();
         }
-        
+
         return nombreActor;
     }
 
     public void setNombreActor(String nombreActor) {
         this.nombreActor = nombreActor;
     }
-    
-    
+
+    @PostLoad
+    public void postLoad() {
+        loadNombre();
+    }
+
+    public void loadNombre() {
+        if (razonSocialAct != null) {
+            nombreActor = razonSocialAct;
+        } else if (nombresAct != null && apellidosAct != null) {
+            nombreActor = nombresAct + " " + apellidosAct;
+        } else {
+            nombreActor = "";
+        }
+    }
 
     @Override
     public String toString() {

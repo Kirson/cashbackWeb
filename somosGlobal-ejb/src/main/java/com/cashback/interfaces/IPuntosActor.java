@@ -18,7 +18,9 @@ public interface IPuntosActor {
     
     void crearPuntos(PuntosActor puntos) throws ExcGuardarRegistro;
     
+    void actualizarPuntos(PuntosActor puntos) throws ExcGuardarRegistro;
     
+    List<PuntosActor> getPuntos();
 
-    List<PuntosActor> recuperarPuntos(Actor actor);
+    PuntosActor recuperarPuntos(Actor actor);
 }

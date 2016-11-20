@@ -11,6 +11,7 @@ import com.cashback.model.Actor;
 import com.cashback.model.Comprobante;
 import com.cashback.model.ComprobanteFormaPago;
 import com.cashback.model.ComprobanteItem;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -81,6 +82,17 @@ public class SComprobante extends AbstractService implements IComprobante {
         String jpql = "SELECT c FROM Comprobante c WHERE c.local =:local";
 	Query q = emCashback.createQuery(jpql);
 	q.setParameter("local", local);
+	@SuppressWarnings("unchecked")
+	List<Comprobante> list = (List<Comprobante>) q.getResultList();
+        return list;
+    }
+
+    @Override
+    public List<Comprobante> listarComprobantesLocalFecha(Actor local, Date fechaComprobante) {
+        String jpql = "SELECT c FROM Comprobante c WHERE c.local =:local and c.fechaComprobante =:fechaComprobante";
+	Query q = emCashback.createQuery(jpql);
+	q.setParameter("local", local);
+        q.setParameter("fechaComprobante", fechaComprobante);
 	@SuppressWarnings("unchecked")
 	List<Comprobante> list = (List<Comprobante>) q.getResultList();
         return list;

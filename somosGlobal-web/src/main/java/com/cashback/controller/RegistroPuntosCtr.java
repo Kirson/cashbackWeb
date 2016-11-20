@@ -142,9 +142,10 @@ public class RegistroPuntosCtr extends Controladores {
         try {
             transaccionActor = calcularPuntos(transaccionActor);
             if(consumidor!=null){
-                List<PuntosActor> listaPuntos = sPuntosActor.recuperarPuntos(consumidor);
-                if(listaPuntos!=null && !listaPuntos.isEmpty()){
-                    puntosActor = listaPuntos.get(0);
+                puntosActor = new PuntosActor();
+                PuntosActor puntosConsulta= sPuntosActor.recuperarPuntos(consumidor);
+                if(puntosConsulta!=null){
+                    puntosActor = puntosConsulta;
                     puntosActor.setTotalPuntos(puntosActor.getTotalPuntos()+transaccionActor.getPuntosGanados());
                 }else{
                     puntosActor.setTotalPuntos(transaccionActor.getPuntosGanados());
@@ -250,10 +251,10 @@ public class RegistroPuntosCtr extends Controladores {
 
         if (cadenaValor.getActores() != null && !cadenaValor.getActores().isEmpty()) {
             for (Actor actor : cadenaValor.getActores()) {
-                List<PuntosActor> listaPuntos = sPuntosActor.recuperarPuntos(actor);
+                PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(actor);
                 PuntosActor puntosCadena = new PuntosActor();
-                if (listaPuntos != null && !listaPuntos.isEmpty()) {
-                    puntosCadena = listaPuntos.get(0);
+                if (puntosConsulta != null) {
+                    puntosCadena = puntosConsulta;
                     puntosCadena.setTotalPuntos(puntosCadena.getTotalPuntos() + transaccion.getPuntosGanados());
                 } else {
                     puntosCadena.setTotalPuntos(transaccion.getPuntosGanados());

@@ -152,6 +152,14 @@ public class MenuCtr implements Serializable {
         item13.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
                 men13) != null);
         consultasSubmenu.addElement(item13);
+        
+        Menu men14 = sMenu.recuperarMenu("CONSULTAS:VENTASLOCAL");
+        DefaultMenuItem item14 = new DefaultMenuItem("Cierre Dia Local");
+        item14.setUrl(men14.getMenUrl());
+        item14.setIcon("ui-icon-person");
+        item14.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
+                men13) != null);
+        consultasSubmenu.addElement(item14);
 
         menuModel.addElement(firstSubmenu);
         menuModel.addElement(consultasSubmenu);
