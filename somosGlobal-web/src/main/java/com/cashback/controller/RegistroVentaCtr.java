@@ -32,6 +32,7 @@ import com.cashback.model.PuntosActor;
 import com.cashback.model.Secuencia;
 import com.cashback.model.TransaccionesActor;
 import com.cashback.model.Usuario;
+import com.cashback.utilidades.DateUtil;
 import com.cashback.utilidades.NumberUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -254,10 +255,7 @@ public class RegistroVentaCtr extends Controladores {
     @PostConstruct
     @SuppressWarnings("Convert2Diamond")
     public void inicio() {
-        secuencia = sSecuencia.obtenerSecuencia("Comprobante");
-        if (secuencia != null) {
-            numeroSecuencia = formatSecuence(secuencia);
-        }
+        obtenerSecuencia();
         comprobanteBean = new ComprobanteBean();
         clienteBean = new ClienteBean();
         actorRolList = new ArrayList<ActorRol>();
@@ -275,8 +273,15 @@ public class RegistroVentaCtr extends Controladores {
 
         if (local != null) {
             itemsLocal = sItemLoc.findByLocal(local);
+            
+            //solo por desarrollo
+            if(itemsLocal==null || itemsLocal.isEmpty()){
+                itemsLocal = sItemLoc.getAll();
+            }
         } else {
             itemsLocal = sItemLoc.getAll();
+            
+            
         }
 
         itemSeleccionado = new ItemLoc();
@@ -293,6 +298,14 @@ public class RegistroVentaCtr extends Controladores {
         disable= false;
     }
 
+    private void obtenerSecuencia(){
+        secuencia = sSecuencia.obtenerSecuencia("Comprobante");
+        if (secuencia != null) {
+            numeroSecuencia = formatSecuence(secuencia);
+        }
+        
+    }
+    
     private void determinarLocal() {
         if (usuario != null) {
             local = usuario.getActor();
@@ -445,6 +458,8 @@ public class RegistroVentaCtr extends Controladores {
         limpiarDatos();
         comprobanteBean  = new ComprobanteBean();
         disable = false;
+        clienteBean = new ClienteBean();
+        obtenerSecuencia();
     }
 
     @SuppressWarnings("Convert2Diamond")
@@ -556,7 +571,8 @@ public class RegistroVentaCtr extends Controladores {
             comprobanteBean.getComprobante().setLocalVenta(local);
             comprobanteBean.getComprobante().setNumDocumento(consumidor.getCedrucpasAct());
             comprobanteBean.getComprobante().setNumComprobante(this.numeroSecuencia + "");
-
+            comprobanteBean.getComprobante().setFechaComprobante(new Date());
+            comprobanteBean.getComprobante().setFecha(DateUtil.fromDateToString(new Date()));
             sComprobante.guardarComprobante(comprobanteBean);
 
             ponerMensajeInfo("", "Comprobante registrado exitosamente");

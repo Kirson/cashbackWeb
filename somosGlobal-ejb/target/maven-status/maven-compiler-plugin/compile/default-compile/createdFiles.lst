@@ -11,6 +11,7 @@ com\cashback\servicios\SComprobante.class
 com\cashback\servicios\SMenu.class
 com\cashback\interfaces\Globales.class
 com\cashback\excepciones\ExcGuardarRegistro.class
+com\cashback\servicios\SFormaPago.class
 com\cashback\servicios\SParametrosGen.class
 com\cashback\interfaces\IProvincia.class
 com\cashback\model\HorarioAtencion.class
@@ -27,6 +28,7 @@ com\cashback\interfaces\ILocalPromocion.class
 com\cashback\servicios\SSecuencia.class
 com\cashback\model\Transaccion.class
 com\cashback\interfaces\ILicencia.class
+com\cashback\beans\CierreDiaLocalBean.class
 com\cashback\model\Licencia.class
 com\cashback\model\TextoClave_.class
 com\cashback\interfaces\IPerfil.class
@@ -43,6 +45,7 @@ com\cashback\servicios\SLicencia.class
 com\cashback\model\ParametrosGen_.class
 com\cashback\model\PuntosActor_.class
 com\cashback\interfaces\IComprobante.class
+com\cashback\interfaces\IFormaPago.class
 com\cashback\model\Ciudad.class
 com\cashback\model\Provincia_.class
 com\cashback\model\Secuencia_.class
@@ -54,6 +57,7 @@ com\cashback\model\Comprobante.class
 com\cashback\model\Hobbie_.class
 com\cashback\interfaces\IActorRol.class
 com\cashback\enums\AppMensajes.class
+com\cashback\model\FormaPago_.class
 com\cashback\interfaces\IContacto.class
 com\cashback\interfaces\IItemGlo.class
 com\cashback\model\Categoria.class
@@ -88,6 +92,7 @@ com\cashback\interfaces\IAppmensajes.class
 com\cashback\model\CatalogoGen_.class
 com\cashback\interfaces\IItemLoc.class
 com\cashback\model\Contacto.class
+com\cashback\model\FormaPago.class
 com\cashback\model\RedActor.class
 com\cashback\interfaces\ICatalogoGen.class
 com\cashback\beans\ComprobanteBean.class
@@ -110,6 +115,7 @@ com\cashback\model\ItemLoc_.class
 com\cashback\interfaces\IMenuPerfil.class
 com\cashback\model\Actor.class
 com\cashback\model\ParametrosGen.class
+com\cashback\beans\FormaPagoBean.class
 com\cashback\model\ActorRol_.class
 com\cashback\interfaces\ICategoria.class
 com\cashback\model\LocalVentaCategoria_.class

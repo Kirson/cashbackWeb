@@ -20,28 +20,32 @@ import com.cashback.interfaces.IPuntosActor;
  * @author somosGlobal
  */
 @Stateless
-public class SPuntosActor extends AbstractService implements IPuntosActor{
+public class SPuntosActor extends AbstractService implements IPuntosActor {
 
     @Override
     @SuppressWarnings("CallToPrintStackTrace")
     public void crearPuntos(PuntosActor puntos) throws ExcGuardarRegistro {
         try {
             emCashback.persist(puntos);
-	} catch (PersistenceException e) {
+        } catch (PersistenceException e) {
             e.printStackTrace();
             throw new ExcGuardarRegistro(AppMensajes.ERR_CREAR_REGISTRO);
-	}
+        }
     }
 
     @Override
     public PuntosActor recuperarPuntos(Actor actor) {
-       String jpql = "SELECT p FROM PuntosActor p WHERE p.actor =:actor";
-	Query q = emCashback.createQuery(jpql);
-	q.setParameter("actor", actor);
-        
-	@SuppressWarnings("unchecked")
-        PuntosActor puntos = (PuntosActor) q.getSingleResult();
-	return puntos;
+        String jpql = "SELECT p FROM PuntosActor p WHERE p.actor =:actor";
+        Query q = emCashback.createQuery(jpql);
+        q.setParameter("actor", actor);
+        PuntosActor puntos;
+        try {
+            puntos = (PuntosActor) q.getSingleResult();
+        } catch (javax.persistence.NoResultException e) {
+            puntos = null;
+        }
+
+        return puntos;
     }
 
     @Override
@@ -57,12 +61,10 @@ public class SPuntosActor extends AbstractService implements IPuntosActor{
     public void actualizarPuntos(PuntosActor puntos) throws ExcGuardarRegistro {
         try {
             emCashback.merge(puntos);
-	} catch (PersistenceException e) {
+        } catch (PersistenceException e) {
             e.printStackTrace();
             throw new ExcGuardarRegistro(AppMensajes.ERR_CREAR_REGISTRO);
-	}
+        }
     }
-    
-    
-    
+
 }

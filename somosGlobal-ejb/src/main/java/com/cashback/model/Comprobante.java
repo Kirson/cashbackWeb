@@ -91,6 +91,8 @@ public class Comprobante implements Serializable {
     private List<ComprobanteFormaPago> comprobanteFormaPagoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idComprobante")
     private List<ComprobanteItem> comprobanteItemList;
+    @Column(name = "fecha")
+    private String fecha;
     
      //bi-directional many-to-one association to Actor
     @ManyToOne
@@ -273,6 +275,20 @@ public class Comprobante implements Serializable {
     @Override
     public String toString() {
         return "com.cashback.model.Comprobante[ idComprobante=" + idComprobante + " ]";
+    }
+
+    /**
+     * @return the fecha
+     */
+    public String getFecha() {
+        return fecha;
+    }
+
+    /**
+     * @param fecha the fecha to set
+     */
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
     
 }

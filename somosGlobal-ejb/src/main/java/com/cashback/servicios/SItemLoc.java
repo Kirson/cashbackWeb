@@ -30,7 +30,7 @@ public class SItemLoc extends AbstractService implements IItemLoc{
 
     @Override
     public List<ItemLoc> findByLocal(Actor local) {
-        String jpql = "SELECT il FROM ItemLoc il WHERE il.actor =:local";
+        String jpql = "SELECT il FROM ItemLoc il WHERE il.idAct =:local";
 	Query q = emCashback.createQuery(jpql);
         q.setParameter("local", local);
         List<ItemLoc> result = q.getResultList();

@@ -47,6 +47,7 @@ public class SComprobante extends AbstractService implements IComprobante {
             if(listaFP!=null && !listaFP.isEmpty()){
                 for(ComprobanteFormaPago fp:listaFP){
                     fp.setIdComprobante(c);
+                    fp.setNumComprobante(c.getNumComprobante());
                     emCashback.persist(fp);
                 }
             }
@@ -79,7 +80,7 @@ public class SComprobante extends AbstractService implements IComprobante {
 
     @Override
     public List<Comprobante> listarComprobantesLocal(Actor local) {
-        String jpql = "SELECT c FROM Comprobante c WHERE c.local =:local";
+        String jpql = "SELECT c FROM Comprobante c WHERE c.localVenta =:local";
 	Query q = emCashback.createQuery(jpql);
 	q.setParameter("local", local);
 	@SuppressWarnings("unchecked")
@@ -88,8 +89,19 @@ public class SComprobante extends AbstractService implements IComprobante {
     }
 
     @Override
-    public List<Comprobante> listarComprobantesLocalFecha(Actor local, Date fechaComprobante) {
-        String jpql = "SELECT c FROM Comprobante c WHERE c.local =:local and c.fechaComprobante =:fechaComprobante";
+    public List<Comprobante> listarComprobantesLocalFecha(Actor local, String fecha) {
+        String jpql = "SELECT c FROM Comprobante c WHERE c.localVenta =:local and c.fecha =:fecha";
+	Query q = emCashback.createQuery(jpql);
+	q.setParameter("local", local);
+        q.setParameter("fecha", fecha);
+	@SuppressWarnings("unchecked")
+	List<Comprobante> list = (List<Comprobante>) q.getResultList();
+        return list;
+    }
+    
+    @Override
+    public List<Comprobante> listarComprobantesLocalFechaComprobante(Actor local, Date fechaComprobante) {
+        String jpql = "SELECT c FROM Comprobante c WHERE c.localVenta =:local and c.fechaComprobante =:fechaComprobante";
 	Query q = emCashback.createQuery(jpql);
 	q.setParameter("local", local);
         q.setParameter("fechaComprobante", fechaComprobante);

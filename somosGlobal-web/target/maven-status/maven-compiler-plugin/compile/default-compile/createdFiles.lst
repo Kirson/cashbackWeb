@@ -9,6 +9,7 @@ com\cashback\controller\ConLocalVentaCategoria.class
 com\cashback\controller\ConLocalVentaCategoria05.class
 com\cashback\controller\CadenaValorCtr.class
 com\cashback\bean\CadenaValorBean.class
+com\cashback\controller\ConsultaVentaLocalCtr.class
 com\app\controller\ActorCat06Ctrl.class
 com\cashback\controller\CtrMntHobbie.class
 com\cashback\controller\ConLocalUsuarioCtr.class
@@ -39,6 +40,7 @@ com\cashback\controller\ConLocalVentaCategoria07.class
 com\app\controller\PlantillaConsultaCtrl.class
 com\app\controller\ActorCat04Ctrl.class
 com\cashback\pojo\LvLogoObj.class
+com\cashback\utilidades\DateUtil.class
 com\cashback\controller\Test.class
 com\cashback\controller\ConLocalVentaCategoria08.class
 com\cashback\controller\ActorRolCtr.class

@@ -15,6 +15,7 @@ import com.cashback.model.Comprobante;
 import com.cashback.model.ComprobanteFormaPago;
 import com.cashback.model.FormaPago;
 import com.cashback.model.Usuario;
+import com.cashback.utilidades.DateUtil;
 import com.cashback.utilidades.NumberUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class ConsultaVentaLocalCtr extends Controladores {
     @PostConstruct
     @SuppressWarnings("Convert2Diamond")
     public void inicio() {
+        cierreLocal = new CierreDiaLocalBean();
         usuario = (Usuario) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("usuario");
 
@@ -93,7 +95,7 @@ public class ConsultaVentaLocalCtr extends Controladores {
     public void consultarCierre() {
         Double total = 0D;
         if (cierreLocal.getFechaConsulta() != null) {
-            List<Comprobante> comprobantes = sComprobante.listarComprobantesLocalFecha(local, cierreLocal.getFechaConsulta());
+            List<Comprobante> comprobantes = sComprobante.listarComprobantesLocalFecha(local, DateUtil.fromDateToString(cierreLocal.getFechaConsulta()));
             if(comprobantes!=null && !comprobantes.isEmpty()){
                 cierreLocal.setLocal(local);
                 cierreLocal.setNumeroTransacciones(new Long(comprobantes.size()));
@@ -110,14 +112,18 @@ public class ConsultaVentaLocalCtr extends Controladores {
                                     subFormaPago = NumberUtil.round(subFormaPago);
                                     fpb.setTotalFormaPago( subFormaPago);
                                     
-                                }else{
-                                    continue;
                                 }
                             }
                         }
                     }
                 }//fin del for
+                cierreLocal.setListaFormaPago(listaFormaPagoBean);
+                cierreLocal.setTotalVentas(total);
             }
         }
+    }
+    
+    public void limpiar(){
+      cierreLocal = new CierreDiaLocalBean();
     }
 }

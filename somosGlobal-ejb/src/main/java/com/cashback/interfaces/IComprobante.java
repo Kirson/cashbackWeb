@@ -21,5 +21,6 @@ public interface IComprobante {
     void crearComprobante(Comprobante comprobante);
     List<Comprobante> listarComprobantesActor(Actor actor);
     List<Comprobante> listarComprobantesLocal(Actor local);
-    List<Comprobante> listarComprobantesLocalFecha(Actor local, Date fechaComprobante);
+    List<Comprobante> listarComprobantesLocalFecha(Actor local, String fecha);
+    List<Comprobante> listarComprobantesLocalFechaComprobante(Actor local, Date fechaComprobante);
 }

@@ -158,7 +158,7 @@ public class MenuCtr implements Serializable {
         item14.setUrl(men14.getMenUrl());
         item14.setIcon("ui-icon-person");
         item14.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
-                men13) != null);
+                men14) != null);
         consultasSubmenu.addElement(item14);
 
         menuModel.addElement(firstSubmenu);

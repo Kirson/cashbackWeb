@@ -10,7 +10,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-16T23:20:18")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-20T14:55:40")
 @StaticMetamodel(Comprobante.class)
 public class Comprobante_ { 
 
@@ -23,6 +23,7 @@ public class Comprobante_ {
     public static volatile SingularAttribute<Comprobante, Date> fechaComprobante;
     public static volatile SingularAttribute<Comprobante, Actor> localVenta;
     public static volatile SingularAttribute<Comprobante, BigDecimal> totalCompra;
+    public static volatile SingularAttribute<Comprobante, String> fecha;
     public static volatile SingularAttribute<Comprobante, Actor> cliente;
     public static volatile SingularAttribute<Comprobante, Integer> puntosGanados;
     public static volatile SingularAttribute<Comprobante, BigDecimal> valorIva;

@@ -26,7 +26,7 @@ public class SComprobanteFormaPago extends AbstractService implements IComproban
 
     @Override
     public List<ComprobanteFormaPago> listarFormaPagoComprobante(Comprobante comprobante) {
-         String jpql = "SELECT cfp FROM ComprobanteFormaPago cfp WHERE cfp.comprobante =:comprobante";
+         String jpql = "SELECT cfp FROM ComprobanteFormaPago cfp WHERE cfp.idComprobante =:comprobante";
 	Query q = emCashback.createQuery(jpql);
 	q.setParameter("comprobante", comprobante);
 	@SuppressWarnings("unchecked")

@@ -21,7 +21,7 @@
                             <p:spacer height="30px;"/>
                             <p:panelGrid columns="2">
                                 <h:outputText value="Actor" />  
-                                <h:outputText value="#{consultaPuntosCtr.puntosBean.actor.nombreActor}" /> 
+                                <h:outputText value="#{consultaPuntosCtr.puntosBean.actor.nombresAct} #{consultaPuntosCtr.puntosBean.actor.apellidosAct}" /> 
                                 <h:outputText value="Total puntos actuales" />  
                                 <h:outputText value="#{consultaPuntosCtr.puntosBean.puntosActor.totalPuntos}" /> 
                             </p:panelGrid>
@@ -29,6 +29,9 @@
                             <p:dataTable id="datatablePuntos" var="trans" value="#{consultaPuntosCtr.puntosBean.transaccionesActor}">
                                 <p:column headerText="Local Transacci&oacute;n">
                                     <h:outputText value="#{trans.localVenta.nombreActor}" />
+                                </p:column>
+                                <p:column headerText="N&uacute;mero de Comprobante">
+                                    <h:outputText value="#{trans.numeroComprobante}" />
                                 </p:column>
                                 <p:column headerText="Puntos Transacci&oacute;n">
                                     <h:outputText value="#{trans.puntosTransaccion}" />

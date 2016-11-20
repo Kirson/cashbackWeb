@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -661,5 +662,36 @@ public class Actor implements Serializable {
 
         return str;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + this.idAct;
+        hash = 41 * hash + Objects.hashCode(this.cedrucpasAct);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Actor other = (Actor) obj;
+        if (this.idAct != other.idAct) {
+            return false;
+        }
+        if (!Objects.equals(this.cedrucpasAct, other.cedrucpasAct)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 }

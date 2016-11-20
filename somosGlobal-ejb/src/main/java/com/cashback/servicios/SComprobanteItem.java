@@ -26,7 +26,7 @@ public class SComprobanteItem extends AbstractService implements IComprobanteIte
 
     @Override
     public List<ComprobanteItem> listarItemsComprobante(Comprobante comprobante) {
-        String jpql = "SELECT ci FROM ComprobanteItem ci WHERE ci.comprobante =:comprobante";
+        String jpql = "SELECT ci FROM ComprobanteItem ci WHERE ci.idComprobante =:comprobante";
 	Query q = emCashback.createQuery(jpql);
 	q.setParameter("comprobante", comprobante);
 	@SuppressWarnings("unchecked")
