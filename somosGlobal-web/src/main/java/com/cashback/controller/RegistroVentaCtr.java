@@ -535,9 +535,15 @@ public class RegistroVentaCtr extends Controladores {
         Double subTotal = 0D;
         Double total = 0D;
         for (ComprobanteItem ci : comprobanteBean.getItems()) {
-            if (ci.getValorTotal() != null) {
-                subTotal = subTotal + ci.getCantidad() * ci.getValorTotal().doubleValue();
+            Double itemSubTotal = 0D;
+            if (ci.getValorItem() != null) {
+                itemSubTotal = ci.getCantidad() * ci.getValorItem().doubleValue();
+                itemSubTotal = NumberUtil.round(itemSubTotal);
+                subTotal = subTotal + itemSubTotal;
+                ci.setValorTotal(new BigDecimal(itemSubTotal));
             }
+            
+            subTotal = NumberUtil.round(subTotal);
         }
 
         subTotal = NumberUtil.round(subTotal);
