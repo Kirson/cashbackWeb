@@ -381,9 +381,9 @@ public class RegistroVentaCtr extends Controladores {
                 clienteBean.setDocumento(consumidor.getCedrucpasAct());
                 clienteBean.setFechaNacimiento(consumidor.getFecNacAct());
                 clienteBean.setEmail(consumidor.getMailAct());
-                clienteBean.setCelular("");
+                clienteBean.setTelefono(consumidor.getTelefonoPrincipal());
                 if (consumidor.getTelefonosActor() != null && !consumidor.getTelefonosActor().isEmpty()) {
-                    clienteBean.setTelefono(consumidor.getTelefonosActor().get(0).getVal1Ar());
+                    clienteBean.setCelular(consumidor.getTelefonosActor().get(0).getVal1Ar());
                 }
                 consumidor.setEncontrado(Boolean.TRUE);
             }
@@ -401,6 +401,16 @@ public class RegistroVentaCtr extends Controladores {
                         Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
 
                 actorRol = sActorRol.recuperarActorRol(consumidor, catalogoGen, "");
+                
+                consumidor.setNombresAct(clienteBean.getNombre());
+                consumidor.setApellidosAct(clienteBean.getApellido());
+                consumidor.setCedrucpasAct(clienteBean.getDocumento());
+                consumidor.setMailAct(clienteBean.getEmail());
+                consumidor.setEstadoAct("OK");
+                consumidor.setFecNacAct(clienteBean.getFechaNacimiento());
+                consumidor.setTelefonoPrincipal(clienteBean.getTelefono());
+                
+                sActor.actualizarActor(consumidor);
 
             } else {
                 consumidor = new Actor();
@@ -412,6 +422,7 @@ public class RegistroVentaCtr extends Controladores {
                 consumidor.setEstadoAct("OK");
                 consumidor.setFecCreaAct(new Date());
                 consumidor.setFecNacAct(clienteBean.getFechaNacimiento());
+                consumidor.setTelefonoPrincipal(clienteBean.getTelefono());
                 crearConsumidor();
             }
         } catch (Exception ex) {
@@ -483,7 +494,7 @@ public class RegistroVentaCtr extends Controladores {
             clienteBean.setDocumento(consumidor.getCedrucpasAct());
             clienteBean.setFechaNacimiento(consumidor.getFecNacAct());
             clienteBean.setEmail(consumidor.getMailAct());
-            clienteBean.setCelular("");
+            clienteBean.setCelular(consumidor.getTelefonoPrincipal());
             consumidor.setEncontrado(Boolean.TRUE);
         }
         return "OK";

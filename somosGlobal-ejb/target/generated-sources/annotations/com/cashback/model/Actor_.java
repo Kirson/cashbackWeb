@@ -11,7 +11,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-22T02:09:28")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-22T21:14:04")
 @StaticMetamodel(Actor.class)
 public class Actor_ { 
 
@@ -19,6 +19,7 @@ public class Actor_ {
     public static volatile SingularAttribute<Actor, Integer> idAct;
     public static volatile SingularAttribute<Actor, Date> fecNacAct;
     public static volatile SingularAttribute<Actor, String> numPreAct;
+    public static volatile SingularAttribute<Actor, String> telefonoPrincipal;
     public static volatile SingularAttribute<Actor, Date> fecModAct;
     public static volatile SingularAttribute<Actor, String> latitudAct;
     public static volatile SingularAttribute<Actor, String> sloganAct;

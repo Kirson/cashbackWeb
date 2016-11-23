@@ -159,6 +159,9 @@ public class Actor implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_act_padre")
     private Actor actorPadre;
+    
+    @Column(name = "telefono_principal")
+    private String telefonoPrincipal;
 
     @Transient
     private List<ActorReferencia> telefonosActor;
@@ -634,6 +637,16 @@ public class Actor implements Serializable {
     public void setNombreActor(String nombreActor) {
         this.nombreActor = nombreActor;
     }
+
+    public String getTelefonoPrincipal() {
+        return telefonoPrincipal;
+    }
+
+    public void setTelefonoPrincipal(String telefonoPrincipal) {
+        this.telefonoPrincipal = telefonoPrincipal;
+    }
+    
+    
 
     @PostLoad
     public void postLoad() {
