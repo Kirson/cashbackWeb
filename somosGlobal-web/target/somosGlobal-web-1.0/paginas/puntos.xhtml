@@ -73,7 +73,7 @@
                                                         <p:selectOneMenu id="puntos" value="#{registroVentaCtr.itemSeleccionado}" converter="omnifaces.SelectItemsConverter">
                                                             <p:ajax listener="#{registroVentaCtr.handleChange(item)}" update=":frmPuntos" />
                                                             <f:selectItem itemLabel="Seleccione Producto" itemValue="" />
-                                                            <f:selectItems value="#{registroVentaCtr.itemsLocal}" />
+                                                            <f:selectItems value="#{registroVentaCtr.itemsLocal}"  />
                                                         </p:selectOneMenu>
                                                     </f:facet>  
                                                 </p:cellEditor>
@@ -174,6 +174,8 @@
                                 <p:column colspan="5">
                                     <p:fieldset legend="Forma de Pago " toggleable="false" toggleSpeed="500">
                                         <p:panelGrid columns="2">
+                                            <h:outputText value="" />
+                                            <h:outputText value="#{registroVentaCtr.mensajePuntos}" /> 
                                             <h:outputText value="Paga con puntos" />
                                             <p:selectBooleanCheckbox value="#{registroVentaCtr.comprobanteBean.pagaConPuntos}" />
                                             <h:outputText value="" />
@@ -194,7 +196,7 @@
                                                     </f:facet>  
                                                     <f:facet name="input">  
 
-                                                        <p:selectOneMenu id="puntosFP" value="#{registroVentaCtr.formaPagoSeleccionada}" converter="omnifaces.SelectItemsConverter">
+                                                        <p:selectOneMenu id="puntosFPA" value="#{registroVentaCtr.formaPagoSeleccionada}" converter="omnifaces.SelectItemsConverter">
                                                             <p:ajax listener="#{registroVentaCtr.handlePayWay(formaPago)}" update=":frmPuntos" />
                                                             <f:selectItem itemLabel="Seleccione Forma Pago" itemValue="" />
                                                             <f:selectItems value="#{registroVentaCtr.listaFormaPago}" />

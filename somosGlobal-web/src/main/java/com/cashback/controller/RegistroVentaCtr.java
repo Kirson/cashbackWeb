@@ -76,6 +76,7 @@ public class RegistroVentaCtr extends Controladores {
     private List<FormaPago> listaFormaPago;
     private FormaPago formaPagoSeleccionada;
     private Boolean disable = false;
+    private String mensajePuntos;
 
     @EJB
     private IActor sActor;
@@ -249,6 +250,14 @@ public class RegistroVentaCtr extends Controladores {
     public void setDisable(Boolean disable) {
         this.disable = disable;
     }
+
+    public String getMensajePuntos() {
+        return mensajePuntos;
+    }
+
+    public void setMensajePuntos(String mensajePuntos) {
+        this.mensajePuntos = mensajePuntos;
+    }
     
     
 
@@ -263,6 +272,7 @@ public class RegistroVentaCtr extends Controladores {
         actorRol = new ActorRol();
         itemsGlobal = new ArrayList<ItemGlo>();
         itemsLocal = new ArrayList<ItemLoc>();
+        mensajePuntos = "";
 
         itemsGlobal = sItemGlo.getAll();
 
@@ -386,6 +396,14 @@ public class RegistroVentaCtr extends Controladores {
                     clienteBean.setCelular(consumidor.getTelefonosActor().get(0).getVal1Ar());
                 }
                 consumidor.setEncontrado(Boolean.TRUE);
+                
+                PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(consumidor);
+                int puntos= 0;
+                if(puntosConsulta!=null){
+                    puntos = puntosConsulta.getTotalPuntos();
+                }
+                
+                mensajePuntos = "El usuario "+ consumidor.getNombresAct() + "  "+ consumidor.getApellidosAct() + " dispone de "+puntos +" puntos";
             }
         }
     }

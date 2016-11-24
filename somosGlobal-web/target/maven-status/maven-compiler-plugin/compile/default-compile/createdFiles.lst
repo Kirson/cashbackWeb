@@ -18,6 +18,7 @@ com\app\controller\BusquedaAvanzadaCtrl.class
 com\cashback\controller\ConLocalVentaCategoria03.class
 com\cashback\validadores\ValidadorEmail.class
 com\app\controller\ActorLocalCtrl.class
+com\cashback\converter\ItemLocConverter.class
 com\app\controller\ActorCat03Ctrl.class
 com\global\PuntosCtrl.class
 com\cashback\utilidades\Util$EnviadorMail$autentificadorSMTP.class
@@ -25,6 +26,7 @@ com\cashback\controller\ConLocalVentaCategoria06.class
 com\cashback\controller\LoginCtr.class
 com\cashback\controller\MntProvinciaCtr.class
 com\cashback\controller\MntCategoriaCtr.class
+com\cashback\converter\FormaPagoConverter.class
 com\cashback\controller\ConLocalVenta02Ctr.class
 com\cashback\utilidades\EnviadorMail$autentificadorSMTP.class
 com\cashback\utilidades\Util$EnviadorMail.class

@@ -13,6 +13,7 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\validadores\ValidadorEmail.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat04Ctrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\RegistroVentaCtr.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\converter\FormaPagoConverter.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat01Ctrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\ConLocalVentaCategoria08.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\MntLocalVentaCtr.java
@@ -44,6 +45,7 @@ C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\sr
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\utilidades\EnviadorMail.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat07Ctrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\UsuarioCtr.java
+C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\converter\ItemLocConverter.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\ActorCat03Ctrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\app\controller\BusquedaAvanzadaCtrl.java
 C:\Users\gabri_000\Documents\NetBeansProjects\dev\somosGlobal\somosGlobal-web\src\main\java\com\cashback\controller\CadenaValorCtr.java
