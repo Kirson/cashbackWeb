@@ -23,6 +23,11 @@ public class ClienteBean implements Serializable {
     private Date fechaNacimiento;
     private String email;
     private Actor consumidor;
+    private Integer puntos;
+    
+    public ClienteBean(){
+        puntos =0;
+    }
 
     public String getDocumento() {
         return documento;
@@ -86,6 +91,14 @@ public class ClienteBean implements Serializable {
 
     public void setConsumidor(Actor consumidor) {
         this.consumidor = consumidor;
+    }
+
+    public Integer getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(Integer puntos) {
+        this.puntos = puntos;
     }
     
     

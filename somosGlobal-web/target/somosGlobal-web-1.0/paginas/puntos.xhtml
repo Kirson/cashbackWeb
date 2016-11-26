@@ -35,7 +35,9 @@
                                                 <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.buscarConsumidor}"/>
                                             </p:inputText>
                                             <p:outputLabel for="txtFechaNacimiento" value="Fecha Nacimiento" />
-                                            <p:calendar id="txtFechaNacimiento" value="#{registroVentaCtr.clienteBean.fechaNacimiento}" />
+                                            <p:inputMask id="txtFechaNacimiento" value="#{registroVentaCtr.clienteBean.fechaNacimiento}" mask="99-99-9999">
+                                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                                            </p:inputMask>
                                             <p:outputLabel for="txtNombre" value="Nombre" />
                                             <p:inputText id="txtNombre" value="#{registroVentaCtr.clienteBean.nombre}" required="true"  />
                                             <p:outputLabel for="txtApellido" value="Apellido" />

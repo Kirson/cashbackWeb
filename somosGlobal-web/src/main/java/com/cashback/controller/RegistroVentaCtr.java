@@ -402,6 +402,7 @@ public class RegistroVentaCtr extends Controladores {
                 if(puntosConsulta!=null){
                     puntos = puntosConsulta.getTotalPuntos();
                 }
+                clienteBean.setPuntos(puntos);
                 
                 mensajePuntos = "El usuario "+ consumidor.getNombresAct() + "  "+ consumidor.getApellidosAct() + " dispone de "+puntos +" puntos";
             }
@@ -489,6 +490,7 @@ public class RegistroVentaCtr extends Controladores {
         disable = false;
         clienteBean = new ClienteBean();
         obtenerSecuencia();
+        mensajePuntos = "";
     }
 
     @SuppressWarnings("Convert2Diamond")
