@@ -109,5 +109,16 @@ public class SComprobante extends AbstractService implements IComprobante {
 	List<Comprobante> list = (List<Comprobante>) q.getResultList();
         return list;
     }
+
+    @Override
+    public Comprobante buscarComprobante(String numComprobante) {
+         String jpql = "SELECT c FROM Comprobante c WHERE c.numComprobante =:numComprobante";
+	Query q = emCashback.createQuery(jpql);
+	q.setParameter("numComprobante", numComprobante);
+	@SuppressWarnings("unchecked")
+        Comprobante result = (Comprobante)q.getSingleResult();
+        return result;
+        
+    }
     
 }

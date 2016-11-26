@@ -153,13 +153,29 @@ public class MenuCtr implements Serializable {
                 men13) != null);
         consultasSubmenu.addElement(item13);
         
-        Menu men14 = sMenu.recuperarMenu("CONSULTAS:VENTASLOCAL");
-        DefaultMenuItem item14 = new DefaultMenuItem("Cierre Dia Local");
+        Menu men14 = sMenu.recuperarMenu("CONSULTAS:PUNTOSTRANSACCIONESC");
+        DefaultMenuItem item14 = new DefaultMenuItem("Transacciones Comprobante");
         item14.setUrl(men14.getMenUrl());
         item14.setIcon("ui-icon-person");
         item14.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
                 men14) != null);
         consultasSubmenu.addElement(item14);
+        
+        Menu men15 = sMenu.recuperarMenu("CONSULTAS:VENTASLOCAL");
+        DefaultMenuItem item15 = new DefaultMenuItem("Cierre Dia Local");
+        item15.setUrl(men15.getMenUrl());
+        item15.setIcon("ui-icon-person");
+        item15.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
+                men15) != null);
+        consultasSubmenu.addElement(item15);
+        
+        Menu men16 = sMenu.recuperarMenu("CONSULTAS:CARGAPUNTOS");
+        DefaultMenuItem item16 = new DefaultMenuItem("Carga de Puntos");
+        item16.setUrl(men16.getMenUrl());
+        item16.setIcon("ui-icon-person");
+        item16.setRendered(sMenuPerfil.recuperarMenu(usuario.getPerfil(),
+                men16) != null);
+        consultasSubmenu.addElement(item16);
 
         menuModel.addElement(firstSubmenu);
         menuModel.addElement(consultasSubmenu);

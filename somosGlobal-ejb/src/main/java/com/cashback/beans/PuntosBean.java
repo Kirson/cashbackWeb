@@ -6,6 +6,7 @@
 package com.cashback.beans;
 
 import com.cashback.model.Actor;
+import com.cashback.model.Comprobante;
 import com.cashback.model.PuntosActor;
 import com.cashback.model.TransaccionesActor;
 import java.io.Serializable;
@@ -26,17 +27,22 @@ public class PuntosBean implements Serializable {
     private PuntosActor puntosLocal;
     private List<TransaccionesActor> transaccionesActor;
     private List<TransaccionesActor> transaccionesLocal;
+    private List<TransaccionesActor> transaccionesComprobante;
+    private String numeroComprobante;
+    private Comprobante comprobante;
     
     @SuppressWarnings("Convert2Diamond")
     public PuntosBean(){
         transaccionesActor = new ArrayList<TransaccionesActor>();
         transaccionesLocal = new ArrayList<TransaccionesActor>();
+        transaccionesComprobante = new ArrayList<TransaccionesActor>();
         actor = new Actor();
         local = new Actor();
         puntosActor = new PuntosActor();
         puntosLocal = new PuntosActor();
         documentoActor = "";
         documentoLocal = "";
+        numeroComprobante = "";
     }
 
     public Actor getActor() {
@@ -101,6 +107,30 @@ public class PuntosBean implements Serializable {
 
     public void setTransaccionesLocal(List<TransaccionesActor> transaccionesLocal) {
         this.transaccionesLocal = transaccionesLocal;
+    }
+
+    public List<TransaccionesActor> getTransaccionesComprobante() {
+        return transaccionesComprobante;
+    }
+
+    public void setTransaccionesComprobante(List<TransaccionesActor> transaccionesComprobante) {
+        this.transaccionesComprobante = transaccionesComprobante;
+    }
+
+    public String getNumeroComprobante() {
+        return numeroComprobante;
+    }
+
+    public void setNumeroComprobante(String numeroComprobante) {
+        this.numeroComprobante = numeroComprobante;
+    }
+
+    public Comprobante getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(Comprobante comprobante) {
+        this.comprobante = comprobante;
     }
 
     

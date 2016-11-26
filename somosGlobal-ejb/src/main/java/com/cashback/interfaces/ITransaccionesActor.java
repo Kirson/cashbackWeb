@@ -19,4 +19,5 @@ public interface ITransaccionesActor {
     void crearTransaccion(TransaccionesActor transaccion) throws ExcGuardarRegistro;
 
     List<TransaccionesActor> recuperarHistorialTransaccion(Actor actor);
+    List<TransaccionesActor> buscarTransaccionesComprobante(String numeroComprobante);
 }

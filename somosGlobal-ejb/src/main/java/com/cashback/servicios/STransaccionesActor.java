@@ -42,5 +42,15 @@ public class STransaccionesActor extends AbstractService implements ITransaccion
 	List<TransaccionesActor> puntosList = (List<TransaccionesActor>) q.getResultList();
 	return puntosList;
     }
+
+    @Override
+    public List<TransaccionesActor> buscarTransaccionesComprobante(String numeroComprobante) {
+        String jpql = "SELECT ta FROM TransaccionesActor ta WHERE ta.numeroComprobante =:numeroComprobante";
+	Query q = emCashback.createQuery(jpql);
+	q.setParameter("numeroComprobante", numeroComprobante);
+	@SuppressWarnings("unchecked")
+	List<TransaccionesActor> puntosList = (List<TransaccionesActor>) q.getResultList();
+	return puntosList;
+    }
     
 }

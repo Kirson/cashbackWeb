@@ -23,4 +23,5 @@ public interface IComprobante {
     List<Comprobante> listarComprobantesLocal(Actor local);
     List<Comprobante> listarComprobantesLocalFecha(Actor local, String fecha);
     List<Comprobante> listarComprobantesLocalFechaComprobante(Actor local, Date fechaComprobante);
+    Comprobante buscarComprobante(String numComprobante);
 }
