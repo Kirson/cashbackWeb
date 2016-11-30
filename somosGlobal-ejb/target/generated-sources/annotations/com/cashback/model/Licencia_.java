@@ -4,17 +4,17 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-25T21:46:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-29T20:07:58")
 @StaticMetamodel(Licencia.class)
 public class Licencia_ { 
 
-    public static volatile SingularAttribute<Licencia, String> licEstado;
     public static volatile SingularAttribute<Licencia, Integer> licId;
-    public static volatile SingularAttribute<Licencia, String> licNombre;
-    public static volatile SingularAttribute<Licencia, Integer> licVenderPto;
-    public static volatile SingularAttribute<Licencia, Integer> licCambiarPtoServicio;
     public static volatile SingularAttribute<Licencia, Integer> licCambiarPtoDinero;
-    public static volatile SingularAttribute<Licencia, Integer> licAgregarPersona;
     public static volatile SingularAttribute<Licencia, Integer> licCompraPuntos;
+    public static volatile SingularAttribute<Licencia, Integer> licAgregarPersona;
+    public static volatile SingularAttribute<Licencia, Integer> licCambiarPtoServicio;
+    public static volatile SingularAttribute<Licencia, Integer> licVenderPto;
+    public static volatile SingularAttribute<Licencia, String> licEstado;
+    public static volatile SingularAttribute<Licencia, String> licNombre;
 
 }

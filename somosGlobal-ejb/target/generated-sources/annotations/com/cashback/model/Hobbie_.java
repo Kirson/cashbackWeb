@@ -6,13 +6,13 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-25T21:46:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-29T20:07:58")
 @StaticMetamodel(Hobbie.class)
 public class Hobbie_ { 
 
-    public static volatile ListAttribute<Hobbie, HobbiePersona> hobbiePersonas;
     public static volatile SingularAttribute<Hobbie, String> hobEstado;
     public static volatile SingularAttribute<Hobbie, Integer> hobId;
+    public static volatile ListAttribute<Hobbie, HobbiePersona> hobbiePersonas;
     public static volatile SingularAttribute<Hobbie, String> hobNombre;
 
 }

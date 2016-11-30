@@ -6,15 +6,15 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-25T21:46:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-29T20:07:58")
 @StaticMetamodel(Menu.class)
 public class Menu_ { 
 
     public static volatile ListAttribute<Menu, MenuPerfil> menuPerfils;
-    public static volatile SingularAttribute<Menu, String> menUrl;
+    public static volatile SingularAttribute<Menu, String> menNombre;
     public static volatile SingularAttribute<Menu, String> menEstado;
     public static volatile SingularAttribute<Menu, String> menTipo;
     public static volatile SingularAttribute<Menu, Integer> menId;
-    public static volatile SingularAttribute<Menu, String> menNombre;
+    public static volatile SingularAttribute<Menu, String> menUrl;
 
 }

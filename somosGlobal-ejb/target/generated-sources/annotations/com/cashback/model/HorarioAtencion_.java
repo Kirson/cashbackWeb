@@ -5,15 +5,15 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-25T21:46:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-29T20:07:58")
 @StaticMetamodel(HorarioAtencion.class)
 public class HorarioAtencion_ { 
 
-    public static volatile SingularAttribute<HorarioAtencion, String> haEstado;
     public static volatile SingularAttribute<HorarioAtencion, Integer> haId;
-    public static volatile SingularAttribute<HorarioAtencion, String> haApertura;
     public static volatile SingularAttribute<HorarioAtencion, String> haDia;
-    public static volatile SingularAttribute<HorarioAtencion, String> haCierre;
     public static volatile SingularAttribute<HorarioAtencion, LocalVenta> localVenta;
+    public static volatile SingularAttribute<HorarioAtencion, String> haApertura;
+    public static volatile SingularAttribute<HorarioAtencion, String> haEstado;
+    public static volatile SingularAttribute<HorarioAtencion, String> haCierre;
 
 }

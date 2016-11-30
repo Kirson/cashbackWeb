@@ -7,21 +7,21 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-25T21:46:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-29T20:07:58")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
+    public static volatile SingularAttribute<Usuario, Date> usrFecCrea;
     public static volatile SingularAttribute<Usuario, String> usrNombre;
-    public static volatile SingularAttribute<Usuario, Actor> actor;
-    public static volatile SingularAttribute<Usuario, String> usrModPor;
-    public static volatile SingularAttribute<Usuario, Date> usrFecMod;
-    public static volatile SingularAttribute<Usuario, String> usrEstado;
     public static volatile SingularAttribute<Usuario, String> usrNombre2;
     public static volatile SingularAttribute<Usuario, Integer> usrId;
-    public static volatile SingularAttribute<Usuario, String> usrCreadoPor;
-    public static volatile SingularAttribute<Usuario, String> usrCambiaPassword;
-    public static volatile SingularAttribute<Usuario, String> usrPassword;
-    public static volatile SingularAttribute<Usuario, Date> usrFecCrea;
     public static volatile SingularAttribute<Usuario, Perfil> perfil;
+    public static volatile SingularAttribute<Usuario, String> usrCreadoPor;
+    public static volatile SingularAttribute<Usuario, String> usrModPor;
+    public static volatile SingularAttribute<Usuario, String> usrEstado;
+    public static volatile SingularAttribute<Usuario, Actor> actor;
+    public static volatile SingularAttribute<Usuario, String> usrPassword;
+    public static volatile SingularAttribute<Usuario, String> usrCambiaPassword;
+    public static volatile SingularAttribute<Usuario, Date> usrFecMod;
 
 }

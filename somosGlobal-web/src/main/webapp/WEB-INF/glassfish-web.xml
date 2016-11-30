@@ -3,9 +3,10 @@
 <glassfish-web-app error-url="">
   <context-root>/somosGlobal-web</context-root>
   <parameter-encoding default-charset="UTF-8"/>
-  <!--
-  <property name="alternatedocroot_1" value="from=/imagenes/* dir=C:/cf/cashback/"/>
-  -->
-  <property name="alternatedocroot_1" value="from=/imagenes/* dir=/usr/app/cashback/" />
   
+  <property name="alternatedocroot_1" value="from=/imagenes/* dir=C:/cf/cashback/"/>
+ 
+  <!--
+  <property name="alternatedocroot_1" value="from=/imagenes/* dir=/usr/app/cashback/" />
+  -->
 </glassfish-web-app>

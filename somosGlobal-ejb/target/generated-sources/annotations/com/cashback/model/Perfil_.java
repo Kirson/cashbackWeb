@@ -7,15 +7,15 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-25T21:46:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-11-29T20:07:58")
 @StaticMetamodel(Perfil.class)
 public class Perfil_ { 
 
+    public static volatile ListAttribute<Perfil, MenuPerfil> menuPerfils;
+    public static volatile SingularAttribute<Perfil, String> prfCodigo;
+    public static volatile ListAttribute<Perfil, Usuario> usuarioList;
+    public static volatile SingularAttribute<Perfil, String> prfNombre;
     public static volatile SingularAttribute<Perfil, Integer> prfId;
     public static volatile SingularAttribute<Perfil, String> prfEstado;
-    public static volatile ListAttribute<Perfil, Usuario> usuarioList;
-    public static volatile ListAttribute<Perfil, MenuPerfil> menuPerfils;
-    public static volatile SingularAttribute<Perfil, String> prfNombre;
-    public static volatile SingularAttribute<Perfil, String> prfCodigo;
 
 }
