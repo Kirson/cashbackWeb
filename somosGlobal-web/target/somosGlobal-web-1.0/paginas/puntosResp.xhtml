@@ -1,0 +1,382 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="../templates/plantilla.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPuntos" >
+                <p:growl autoUpdate="true" id="msgs" showDetail="true"/>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">#{msj.registroVenta}</div>
+                    <div class="panel-body">
+                        <p:panelGrid style="margin-top:20px">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column colspan="4">Número de comprobante</p:column>
+                                    <p:column>#{registroVentaCtr.numeroSecuencia}</p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <p:fieldset legend="Datos de Cliente" toggleable="false" toggleSpeed="500">
+                                       
+                                        <h:panelGrid columns="4" cellpadding="5" id="pnConsumidor">
+                                            <p:outputLabel for="txtDocumento" value="C&eacute;dula / RUC / Pasaporte" />
+                                            <p:inputText id="txtDocumento" value="#{registroVentaCtr.clienteBean.documento}" required="true">
+                                                <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.buscarConsumidor}"/>
+                                            </p:inputText>
+                                            <p:outputLabel for="txtFechaNacimiento" value="Fecha Nacimiento" />
+                                            <p:inputMask id="txtFechaNacimiento" value="#{registroVentaCtr.clienteBean.fechaNacimiento}" mask="99-99-9999">
+                                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                                            </p:inputMask>
+                                            <p:outputLabel for="txtNombre" value="Nombre" />
+                                            <p:inputText id="txtNombre" value="#{registroVentaCtr.clienteBean.nombre}" required="true"  />
+                                            <p:outputLabel for="txtApellido" value="Apellido" />
+                                            <p:inputText id="txtApellido" value="#{registroVentaCtr.clienteBean.apellido}" required="true"  />
+                                            <p:outputLabel for="txtEmail" value="Email" />
+                                            <p:inputText id="txtEmail" value="#{registroVentaCtr.clienteBean.email}" required="true"  />
+                                             <p:outputLabel for="txtTelefono" value="Tel&eacute;fono" />
+                                             <p:inputText id="txtTelefono" value="#{registroVentaCtr.clienteBean.telefono}"   maxlength="20" />
+
+                                        </h:panelGrid>
+                                    </p:fieldset>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <p:fieldset legend="Productos / Servicios " toggleable="false" toggleSpeed="500">
+                                        <p:panelGrid columns="1">
+                                            
+                                            <p:commandButton value="Nuevo detalle" type="button" 
+                                                             action="#{registroVentaCtr.newItem}"
+                                                             onclick="PF('dlgProducto').show();"
+                                                             update=":frmPuntos"/>
+                                        </p:panelGrid>
+                                        <p:spacer height="30px;"/>
+                                        <p:dataTable id="datatableItem" var="item" value="#{registroVentaCtr.comprobanteBean.items}" editable="true">
+                                            <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditItem}" update=":frmPuntos:msgs" />  
+                                            <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelItem}" update=":frmPuntos:msgs" /> 
+
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Producto" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.item.nombreIl}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+
+                                                        <p:selectOneMenu id="puntos" value="#{registroVentaCtr.itemSeleccionado}" converter="omnifaces.SelectItemsConverter">
+                                                            <p:ajax listener="#{registroVentaCtr.handleChange(item)}" update=":frmPuntos" />
+                                                            <f:selectItem itemLabel="Seleccione Producto" itemValue="" />
+                                                            <f:selectItems value="#{registroVentaCtr.itemsLocal}"  />
+                                                        </p:selectOneMenu>
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Nombre / Descripci&oacute;n" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.descripcionItem}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.descripcionItem}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Cantidad" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.cantidad}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.cantidad}" converter="javax.faces.Integer">
+                                                            <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                                        </p:inputText>    
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Valor Unitario" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.valorItem}">  
+                                                             <f:convertNumber pattern="#0.00" />
+                                                        </h:outputText>
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.valorItem}" converter="javax.faces.Double">
+                                                            <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                                        </p:inputText>
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Subtotal" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{item.valorTotal}">
+                                                             <f:convertNumber pattern="#0.00" />
+                                                        </h:outputText>
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{item.valorTotal}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column headerText="Acciones" style="width:50px">  
+                                                <p:rowEditor />  
+                                            </p:column> 
+                                        </p:dataTable>
+                                        <p:spacer height="30px;"/>
+                                        <div align="right">
+                                            <p:panelGrid columns="3" id="pnTotal">
+                                                <h:outputLabel value="" />
+                                                <h:outputLabel for="item" value="Subtotal: " />
+                                                <h:outputText value="#{registroVentaCtr.comprobanteBean.comprobante.valorCompra}">
+                                                    <f:convertNumber pattern="#0.00" />
+                                                </h:outputText>
+                                                <h:outputLabel value="" />
+                                                <h:outputLabel for="item" value="IVA: " />
+                                                <h:outputText value="#{registroVentaCtr.comprobanteBean.comprobante.valorIva}">
+                                                    <f:convertNumber pattern="#0.00" />
+                                                </h:outputText>
+
+                                                <h:outputLabel value="" />
+                                                <h:outputLabel for="item" value="Total: " />
+                                                <h:outputText value="#{registroVentaCtr.comprobanteBean.comprobante.totalCompra}">
+                                                    <f:convertNumber pattern="#0.00" />
+                                                </h:outputText>
+
+                                            </p:panelGrid>
+                                        </div>
+                                    </p:fieldset>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <p:fieldset legend="Forma de Pago " toggleable="false" toggleSpeed="500">
+                                        <p:panelGrid columns="2">
+                                            <h:outputText value="" />
+                                            <h:outputText value="#{registroVentaCtr.mensajePuntos}" /> 
+                                            <h:outputText value="Paga con puntos" />
+                                            <p:selectBooleanCheckbox value="#{registroVentaCtr.comprobanteBean.pagaConPuntos}" />
+                                            <h:outputText value="" />
+                                            <p:commandButton value="Nuevo forma de pago" type="button" 
+                                                             action="#{registroVentaCtr.newFP}"
+                                                             onclick="PF('dlgFormaPago').show();"
+                                                             update=":frmPuntos"/>
+                                        </p:panelGrid>
+                                        <p:spacer height="30px;"/>
+                                        <p:dataTable id="datatableFP" var="formaPago" value="#{registroVentaCtr.comprobanteBean.listaFormaPago}" editable="true">
+                                            <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditFP}" update=":frmPuntos:msgs" />  
+                                            <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelFP}" update=":frmPuntos:msgs" /> 
+                                            
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Forma de Pago" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{formaPago.formaPago.nombreForPag}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+
+                                                        <p:selectOneMenu id="puntosFPA" value="#{registroVentaCtr.formaPagoSeleccionada}" converter="omnifaces.SelectItemsConverter">
+                                                            <p:ajax listener="#{registroVentaCtr.handlePayWay(formaPago)}" update=":frmPuntos" />
+                                                            <f:selectItem itemLabel="Seleccione Forma Pago" itemValue="" />
+                                                            <f:selectItems value="#{registroVentaCtr.listaFormaPago}" />
+                                                        </p:selectOneMenu>
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            
+
+                                            <p:column>
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Valor" />  
+                                                </f:facet>
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{formaPago.valorFormaPago}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{formaPago.valorFormaPago}"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column headerText="Acciones" style="width:50px">  
+                                                <p:rowEditor />  
+                                            </p:column> 
+                                        </p:dataTable>
+
+                                    </p:fieldset>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <p:commandButton value="Guardar comprobante" 
+                                                         actionListener="#{registroVentaCtr.guardarComprobante}"
+                                                         update=":frmPuntos" process="@this" disabled="#{registroVentaCtr.disable}"
+                                                         styleClass="ui-priority-primary"
+                                                         id="puntosBtn" icon="ui-icon-save" />
+                                        <p:commandButton value="Nuevo comprobante" 
+                                                         actionListener="#{registroVentaCtr.limpiar}"
+                                                         update=":frmPuntos" process="@this"
+                                                         styleClass="ui-priority-primary"
+                                                         id="puntosCleanBtn"  />
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </div>
+                </div>
+                <p:dialog header="Detalle producto" widgetVar="dlgProducto" modal="true">
+                    <p:panel>
+                        <div class="ui-fluid">
+                            <p:panelGrid id="panDetalleProducto" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:outputText value="Producto" />  
+                                <p:selectOneMenu id="selProducto" value="#{registroVentaCtr.itemSeleccionado}" converter="omnifaces.SelectItemsConverter">
+                                    <p:ajax listener="#{registroVentaCtr.handleProductChange}"  />
+                                    <f:selectItem itemLabel="Seleccione Producto" itemValue="" />
+                                    <f:selectItems value="#{registroVentaCtr.itemsLocal}"  />
+                                </p:selectOneMenu>
+                                <h:outputText value="Cantidad" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteItem.cantidad}" converter="javax.faces.Integer">
+                                    <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                </p:inputText>    
+                                <h:outputText value="Valor Unitario" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteItem.valorItem}" converter="javax.faces.Double">
+                                    <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                </p:inputText>
+                                <h:outputText value="Subtotal" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteItem.valorTotal}"/>  
+                            </p:panelGrid>
+                            <p:commandButton value="Agregar detalle" type="button" action="#{registroVentaCtr.addItem}"  update="@this, frmPuntos" oncomplete="PF('dlgProducto').hide();" />  
+                        </div>
+                    </p:panel>
+                </p:dialog>
+                <p:dialog header="Detalle forma de pago" widgetVar="dlgFormaPago" modal="true">
+                    <p:panel>
+                        <div class="ui-fluid">
+                            <p:panelGrid id="panFormaPago" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:outputText value="Forma de Pago" />  
+                                <p:selectOneMenu id="selFormaPago" value="#{registroVentaCtr.formaPagoSeleccionada}" converter="omnifaces.SelectItemsConverter">
+                                    <p:ajax listener="#{registroVentaCtr.handlePW}"/>
+                                    <f:selectItem itemLabel="Seleccione Forma Pago" itemValue="" />
+                                    <f:selectItems value="#{registroVentaCtr.listaFormaPago}" />
+                                </p:selectOneMenu>
+                                <h:outputText value="Valor" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteFormaPago.valorFormaPago}" converter="javax.faces.Integer">
+
+                                </p:inputText>    
+                                 
+                                             
+                            </p:panelGrid>
+                            <p:commandButton type="button" value="Agregar forma de pago" action="#{registroVentaCtr.addFP}" oncomplete="dlgFormaPago.hide();" update="@this, frmPuntos" /> 
+                        </div>
+                    </p:panel>
+                </p:dialog>
+                <p:dialog header="Buscar consumidor" widgetVar="dlgConsumidor" modal="true">
+                    <p:panel>
+                        <div class="ui-fluid">
+                            <p:panelGrid id="buscarActorPGroup" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                         layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <h:outputLabel value="#{msj.cedRucPas}" for="cedrucpasAct" />
+                                <p:inputText id="cedrucpasAct" value="#{registroVentaCtr.actorSearch.cedRucPasAct}"
+                                             maxlength="25" />
+
+                                <h:outputLabel value="#{msj.razonSocial}" for="razonSocialAct" />
+                                <p:inputText id="razonSocialAct"
+                                             value="#{registroVentaCtr.actorSearch.razonSocialAct}" maxlength="50" />
+
+                                <h:outputLabel value="#{msj.nombres}" for="nombresAct" />
+                                <p:inputText id="nombresAct" value="#{registroVentaCtr.actorSearch.nombres}"
+                                             maxlength="25" />
+
+                                <h:outputLabel value="#{msj.apellidos}" for="apellidosAct" />
+                                <p:inputText id="apellidosAct" value="#{registroVentaCtr.actorSearch.apellidos}"
+                                             maxlength="25" />
+                            </p:panelGrid>
+                        </div>
+
+                        <p:commandButton value="#{msj.buscar}"
+                                         process="@this buscarActorPGroup" update="actorTbl"
+                                         actionListener="#{registroVentaCtr.buscarConsumidorLista}" />
+                    </p:panel>
+                    <br></br>
+                    <p:dataTable value="#{registroVentaCtr.actorRolList}" var="actorRol"
+                                 scrollable="true" scrollHeight="300" rowIndexVar="it"
+                                 styleClass="table table-striped" id="actorTbl" reflow="true">
+                        <p:column headerText="Ln." style="width :60px; text-align :right;">
+                            <h:outputText value="#{it+1}" />
+                        </p:column>
+                        <p:column headerText="#{msj.identificacion}">
+                            <h:outputText value="#{actorRol.actor.cedrucpasAct}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msj.razonSocial}" />
+                            </f:facet>
+                            <h:outputText value="#{actorRol.actor.razonSocialAct}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msj.apellidos}" />
+                            </f:facet>
+                            <h:outputText value="#{actorRol.actor.apellidosAct}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msj.nombres}" />
+                            </f:facet>
+                            <h:outputText value="#{actorRol.actor.nombresAct}" />
+                        </p:column>
+                        <p:column headerText="#{msj.nivel}"   filterBy="#{actorRol.catalogoGen.nombreCg}" filterMatchMode="contains">
+                            <h:outputText value="#{actorRol.catalogoGen.nombreCg}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msj.fechaCrea}" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{actorCtr.dateTimeToFechaHora2(actorRol.actor.fecCreaAct)}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.seleccionar}" style="width :60px;">
+                            <div align="center">
+                                <p:commandButton title="#{msj.seleccionar}" process="@this"
+                                                 icon="ui-icon-pencil" action="#{registroVentaCtr.seleccionarActor}">
+                                    <f:setPropertyActionListener target="#{registroVentaCtr.actorRol}"
+                                                                 value="#{actorRol}" />
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -58,12 +58,15 @@ public class ComprobanteItem implements Serializable {
     private Long cantidad;
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
+    @Column(name = "porcentaje_aplicado")
+    private BigDecimal porcentajeAplicado;
     @JoinColumn(name = "id_item_loc", referencedColumnName = "id_il")
     @ManyToOne(optional = false)
     private ItemLoc item;
 
     public ComprobanteItem() {
         cantidad = 1L;
+        porcentajeAplicado = new BigDecimal(100);
     }
 
     public ComprobanteItem(Integer idItem) {
@@ -132,6 +135,14 @@ public class ComprobanteItem implements Serializable {
 
     public void setItem(ItemLoc item) {
         this.item = item;
+    }
+
+    public BigDecimal getPorcentajeAplicado() {
+        return porcentajeAplicado;
+    }
+
+    public void setPorcentajeAplicado(BigDecimal porcentajeAplicado) {
+        this.porcentajeAplicado = porcentajeAplicado;
     }
     
     

@@ -58,7 +58,7 @@
                                             <h:commandButton value="Agregar detalle" action="#{registroVentaCtr.addRow}"/>
                                         </p:panelGrid>
                                         <p:spacer height="30px;"/>
-                                        <p:dataTable id="datatableItem" var="item" value="#{registroVentaCtr.comprobanteBean.items}" editable="true">
+                                        <p:dataTable id="datatableItem" var="item" value="#{registroVentaCtr.comprobanteBean.items}" editable="true" editMode="cell">
                                             <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditItem}" update=":frmPuntos:msgs" />  
                                             <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelItem}" update=":frmPuntos:msgs" /> 
 
@@ -80,7 +80,7 @@
                                                     </f:facet>  
                                                 </p:cellEditor>
                                             </p:column>
-
+                                            <!--
                                             <p:column>
                                                 <f:facet name="header">  
                                                     <h:outputText value="Nombre / Descripci&oacute;n" />  
@@ -94,7 +94,7 @@
                                                     </f:facet>  
                                                 </p:cellEditor>
                                             </p:column>
-
+                                            -->
                                             <p:column>
                                                 <f:facet name="header">  
                                                     <h:outputText value="Cantidad" />  
@@ -184,7 +184,7 @@
                                             <h:commandButton value="Agregar detalle" action="#{registroVentaCtr.addFormaPago}"/>
                                         </p:panelGrid>
                                         <p:spacer height="30px;"/>
-                                        <p:dataTable id="datatableFP" var="formaPago" value="#{registroVentaCtr.comprobanteBean.listaFormaPago}" editable="true">
+                                        <p:dataTable id="datatableFP" var="formaPago" value="#{registroVentaCtr.comprobanteBean.listaFormaPago}" editable="true" editMode="cell">
                                             <p:ajax event="rowEdit" listener="#{registroVentaCtr.onEditFP}" update=":frmPuntos:msgs" />  
                                             <p:ajax event="rowEditCancel" listener="#{registroVentaCtr.onCancelFP}" update=":frmPuntos:msgs" /> 
                                             
@@ -340,6 +340,54 @@
                             </div>
                         </p:column>
                     </p:dataTable>
+                </p:dialog>
+                 <p:dialog header="Detalle producto" widgetVar="dlgProducto" modal="true">
+                    <p:panel>
+                        <div class="ui-fluid">
+                            <p:panelGrid id="panDetalleProducto" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:outputText value="Producto" />  
+                                <p:selectOneMenu id="selProducto" value="#{registroVentaCtr.itemSeleccionado}" converter="omnifaces.SelectItemsConverter">
+                                    <p:ajax listener="#{registroVentaCtr.handleProductChange}"  />
+                                    <f:selectItem itemLabel="Seleccione Producto" itemValue="" />
+                                    <f:selectItems value="#{registroVentaCtr.itemsLocal}"  />
+                                </p:selectOneMenu>
+                                <h:outputText value="Cantidad" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteItem.cantidad}" converter="javax.faces.Integer">
+                                    <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                </p:inputText>    
+                                <h:outputText value="Valor Unitario" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteItem.valorItem}" converter="javax.faces.Double">
+                                    <p:ajax event="blur" update="@this, frmPuntos"  listener="#{registroVentaCtr.actualizarTotales}"/>
+                                </p:inputText>
+                                <h:outputText value="Subtotal" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteItem.valorTotal}"/>  
+                            </p:panelGrid>
+                            <p:commandButton value="Agregar detalle" type="button" action="#{registroVentaCtr.addItem}"  update="@this, frmPuntos" oncomplete="PF('dlgProducto').hide();" />  
+                        </div>
+                    </p:panel>
+                </p:dialog>
+                <p:dialog header="Detalle forma de pago" widgetVar="dlgFormaPago" modal="true">
+                    <p:panel>
+                        <div class="ui-fluid">
+                            <p:panelGrid id="panFormaPago" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:outputText value="Forma de Pago" />  
+                                <p:selectOneMenu id="selFormaPago" value="#{registroVentaCtr.formaPagoSeleccionada}" converter="omnifaces.SelectItemsConverter">
+                                    <p:ajax listener="#{registroVentaCtr.handlePW}"/>
+                                    <f:selectItem itemLabel="Seleccione Forma Pago" itemValue="" />
+                                    <f:selectItems value="#{registroVentaCtr.listaFormaPago}" />
+                                </p:selectOneMenu>
+                                <h:outputText value="Valor" />  
+                                <p:inputText value="#{registroVentaCtr.comprobanteFormaPago.valorFormaPago}" converter="javax.faces.Integer">
+
+                                </p:inputText>    
+                                 
+                                             
+                            </p:panelGrid>
+                            <p:commandButton type="button" value="Agregar forma de pago" action="#{registroVentaCtr.addFP}" oncomplete="dlgFormaPago.hide();" update="@this, frmPuntos" /> 
+                        </div>
+                    </p:panel>
                 </p:dialog>
             </h:form>
         </ui:define>

@@ -27,9 +27,11 @@
                             </p:panelGrid>
                             <p:spacer height="30px;"/>
                             <p:dataTable id="datatablePuntos" var="trans" value="#{consultaPuntosCtr.puntosBean.transaccionesActor}">
+                                <!--
                                 <p:column headerText="Local Transacci&oacute;n">
                                     <h:outputText value="#{trans.localVenta.nombreActor}" />
                                 </p:column>
+                                -->
                                 <p:column headerText="N&uacute;mero de Comprobante">
                                     <h:outputText value="#{trans.numeroComprobante}" />
                                 </p:column>

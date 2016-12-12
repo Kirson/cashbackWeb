@@ -77,6 +77,8 @@ public class RegistroVentaCtr extends Controladores {
     private FormaPago formaPagoSeleccionada;
     private Boolean disable = false;
     private String mensajePuntos;
+    private ComprobanteItem comprobanteItem;
+    private ComprobanteFormaPago comprobanteFormaPago;
 
     @EJB
     private IActor sActor;
@@ -258,8 +260,22 @@ public class RegistroVentaCtr extends Controladores {
     public void setMensajePuntos(String mensajePuntos) {
         this.mensajePuntos = mensajePuntos;
     }
-    
-    
+
+    public ComprobanteItem getComprobanteItem() {
+        return comprobanteItem;
+    }
+
+    public void setComprobanteItem(ComprobanteItem comprobanteItem) {
+        this.comprobanteItem = comprobanteItem;
+    }
+
+    public ComprobanteFormaPago getComprobanteFormaPago() {
+        return comprobanteFormaPago;
+    }
+
+    public void setComprobanteFormaPago(ComprobanteFormaPago comprobanteFormaPago) {
+        this.comprobanteFormaPago = comprobanteFormaPago;
+    }
 
     @PostConstruct
     @SuppressWarnings("Convert2Diamond")
@@ -272,6 +288,8 @@ public class RegistroVentaCtr extends Controladores {
         actorRol = new ActorRol();
         itemsGlobal = new ArrayList<ItemGlo>();
         itemsLocal = new ArrayList<ItemLoc>();
+        comprobanteItem = new ComprobanteItem();
+        comprobanteFormaPago = new ComprobanteFormaPago();
         mensajePuntos = "";
 
         itemsGlobal = sItemGlo.getAll();
@@ -283,15 +301,14 @@ public class RegistroVentaCtr extends Controladores {
 
         if (local != null) {
             itemsLocal = sItemLoc.findByLocal(local);
-            
+
             //solo por desarrollo
-            if(itemsLocal==null || itemsLocal.isEmpty()){
+            if (itemsLocal == null || itemsLocal.isEmpty()) {
                 itemsLocal = sItemLoc.getAll();
             }
         } else {
             itemsLocal = sItemLoc.getAll();
-            
-            
+
         }
 
         itemSeleccionado = new ItemLoc();
@@ -304,18 +321,18 @@ public class RegistroVentaCtr extends Controladores {
         listaFormaPago = sFormaPago.getAll();
 
         formaPagoSeleccionada = new FormaPago();
-        
-        disable= false;
+
+        disable = false;
     }
 
-    private void obtenerSecuencia(){
+    private void obtenerSecuencia() {
         secuencia = sSecuencia.obtenerSecuencia("Comprobante");
         if (secuencia != null) {
             numeroSecuencia = formatSecuence(secuencia);
         }
-        
+
     }
-    
+
     private void determinarLocal() {
         if (usuario != null) {
             local = usuario.getActor();
@@ -341,12 +358,26 @@ public class RegistroVentaCtr extends Controladores {
 
     }
 
+    public void addItem() {
+        this.comprobanteBean.getItems().add(comprobanteItem);
+        actualizarTotales();
+    }
+
     public void addFormaPago() {
 
         ComprobanteFormaPago cfp = new ComprobanteFormaPago();
 
         this.comprobanteBean.getListaFormaPago().add(cfp);
 
+    }
+    
+    public void newFP(){
+        comprobanteFormaPago = new ComprobanteFormaPago();
+        formaPagoSeleccionada = new FormaPago();
+    }
+    
+    public void addFP(){
+        comprobanteBean.getListaFormaPago().add(comprobanteFormaPago);
     }
 
     public void onEditItem(RowEditEvent event) {
@@ -396,15 +427,15 @@ public class RegistroVentaCtr extends Controladores {
                     clienteBean.setCelular(consumidor.getTelefonosActor().get(0).getVal1Ar());
                 }
                 consumidor.setEncontrado(Boolean.TRUE);
-                
+
                 PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(consumidor);
-                int puntos= 0;
-                if(puntosConsulta!=null){
+                int puntos = 0;
+                if (puntosConsulta != null) {
                     puntos = puntosConsulta.getTotalPuntos();
                 }
                 clienteBean.setPuntos(puntos);
-                
-                mensajePuntos = "El usuario "+ consumidor.getNombresAct() + "  "+ consumidor.getApellidosAct() + " dispone de "+puntos +" puntos";
+
+                mensajePuntos = "El usuario " + consumidor.getNombresAct() + "  " + consumidor.getApellidosAct() + " dispone de " + puntos + " puntos";
             }
         }
     }
@@ -420,7 +451,7 @@ public class RegistroVentaCtr extends Controladores {
                         Globales.ROL_NEGOCIO, Globales.NIVEL_CONSUMIDOR);
 
                 actorRol = sActorRol.recuperarActorRol(consumidor, catalogoGen, "");
-                
+
                 consumidor.setNombresAct(clienteBean.getNombre());
                 consumidor.setApellidosAct(clienteBean.getApellido());
                 consumidor.setCedrucpasAct(clienteBean.getDocumento());
@@ -428,7 +459,7 @@ public class RegistroVentaCtr extends Controladores {
                 consumidor.setEstadoAct("OK");
                 consumidor.setFecNacAct(clienteBean.getFechaNacimiento());
                 consumidor.setTelefonoPrincipal(clienteBean.getTelefono());
-                
+
                 sActor.actualizarActor(consumidor);
 
             } else {
@@ -482,11 +513,11 @@ public class RegistroVentaCtr extends Controladores {
         }
 
     }
-    
+
     @SuppressWarnings("Convert2Diamond")
     public void limpiar() {
         limpiarDatos();
-        comprobanteBean  = new ComprobanteBean();
+        comprobanteBean = new ComprobanteBean();
         disable = false;
         clienteBean = new ClienteBean();
         obtenerSecuencia();
@@ -518,6 +549,27 @@ public class RegistroVentaCtr extends Controladores {
             consumidor.setEncontrado(Boolean.TRUE);
         }
         return "OK";
+    }
+
+    public void handleProductChange() {
+
+        if (itemSeleccionado != null) {
+            System.out.println("Existe elemento seleccionado ");
+            comprobanteItem.setItem(itemSeleccionado);
+            comprobanteItem.setValorItem(new BigDecimal(itemSeleccionado.getCosUniIl()));
+            comprobanteItem.setDescripcionItem(itemSeleccionado.getNombreIl());
+
+            if (comprobanteItem.getCantidad() != null) {
+                comprobanteItem.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl() * comprobanteItem.getCantidad()));
+            } else {
+                comprobanteItem.setValorTotal(new BigDecimal(itemSeleccionado.getCosUniIl()));
+            }
+
+            actualizarTotales();
+        } else {
+            this.ponerMensajeInfo("", "Debe seleccionar un producto");
+        }
+
     }
 
     public void handleChange(ComprobanteItem item) {
@@ -552,10 +604,55 @@ public class RegistroVentaCtr extends Controladores {
                 System.out.println("Existe elemento seleccionado ");
                 formaPago.setFormaPago(formaPagoSeleccionada);
                 formaPago.setDescripcionFormaPago(formaPagoSeleccionada.getNombreForPag());
+                formaPago.setValorFormaPago(comprobanteBean.getComprobante().getTotalCompra());
             }
         } else {
             System.out.println("FormaPago es nulo");
         }
+
+    }
+    
+    
+    
+    
+    public void pagarConPuntos() throws ExcGuardarRegistro{
+        Integer puntosTotales = new Double(comprobanteBean.getComprobante().getTotalCompra().doubleValue() * 100).intValue();
+        PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(consumidor);
+        if(puntosConsulta.getTotalPuntos()>puntosTotales){
+            Integer temPuntos = puntosConsulta.getTotalPuntos() - puntosTotales;
+            puntosConsulta.setTotalPuntos(temPuntos);
+            sPuntosActor.actualizarPuntos(puntosActor);
+            
+            TransaccionesActor transActor = new TransaccionesActor();
+            transActor.setConsumidor(consumidor);
+            transActor.setNumDocumentoActor(consumidor.getCedrucpasAct());
+            transActor.setPorcentajeDescuento(actorRol.getPrcArol());
+            transActor.setFechaTransaccion(new Date());
+            transActor.setLocalVenta(local);
+            transActor.setValorCompra(comprobanteBean.getComprobante().getTotalCompra());
+            transActor.setPuntosTransaccion(puntosTotales);
+            transActor.setUsuario(usuario);
+            transActor.setSigno("NEGATIVO");
+            transActor.setTipo("PAGO");
+            transActor.setNumeroComprobante(comprobanteBean.getComprobante().getNumComprobante());
+
+            sTransaccionesActor.crearTransaccion(transActor);
+            this.ponerMensajeInfo("", "Pago con puntos realizado exitosamente. Se debitaron " + puntosTotales +" puntos.");
+            
+        }else{
+            this.ponerMensajeInfo("", "No cuenta con puntos suficientes para el pago");
+        }
+    }
+    
+    public void handlePW() {
+          if (formaPagoSeleccionada != null) {
+                System.out.println("Existe elemento forma de pago seleccionado ");
+                comprobanteFormaPago.setFormaPago(formaPagoSeleccionada);
+                comprobanteFormaPago.setDescripcionFormaPago(formaPagoSeleccionada.getNombreForPag());
+          }else{
+              this.ponerMensajeInfo("", "Debe seleccionar una forma de pago");
+          }
+        
 
     }
 
@@ -573,7 +670,7 @@ public class RegistroVentaCtr extends Controladores {
                 subTotal = subTotal + itemSubTotal;
                 ci.setValorTotal(new BigDecimal(itemSubTotal));
             }
-            
+
             subTotal = NumberUtil.round(subTotal);
         }
 
@@ -643,21 +740,29 @@ public class RegistroVentaCtr extends Controladores {
                 puntosConsumidor.setUsuario(usuario);
                 sPuntosActor.crearPuntos(puntosConsumidor);
             }
-            
 
             actualizarPuntosCadena(cvb, transaccionActor);
+
+            disable = true;
             
-             disable = true;
+            if(comprobanteBean.getPagaConPuntos()){
+                pagarConPuntos();
+            }
 
         } catch (Exception e) {
             ponerMensajeError("", "Error al registrar comprobante");
             Logger.getLogger(RegistroVentaCtr.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Error al guardar comprobante " + e.getMessage());
             e.printStackTrace();
-             disable = false;
+            disable = false;
         }
         return result;
 
+    }
+
+    public void newItem() {
+        comprobanteItem = new ComprobanteItem();
+        itemSeleccionado = new ItemLoc();
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
@@ -757,7 +862,7 @@ public class RegistroVentaCtr extends Controladores {
                         puntosCadena.setActor(actor);
                         sPuntosActor.crearPuntos(puntosCadena);
                     }
-                    
+
                     TransaccionesActor transaccionCadena = new TransaccionesActor();
                     transaccionCadena.setConsumidor(actor);
                     transaccionCadena.setNumDocumentoActor(actor.getCedrucpasAct());
