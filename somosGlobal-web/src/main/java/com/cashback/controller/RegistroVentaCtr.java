@@ -42,11 +42,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.interceptor.Interceptors;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -261,6 +264,7 @@ public class RegistroVentaCtr extends Controladores {
         this.mensajePuntos = mensajePuntos;
     }
 
+
     public ComprobanteItem getComprobanteItem() {
         return comprobanteItem;
     }
@@ -276,6 +280,7 @@ public class RegistroVentaCtr extends Controladores {
     public void setComprobanteFormaPago(ComprobanteFormaPago comprobanteFormaPago) {
         this.comprobanteFormaPago = comprobanteFormaPago;
     }
+
 
     @PostConstruct
     @SuppressWarnings("Convert2Diamond")
@@ -744,10 +749,12 @@ public class RegistroVentaCtr extends Controladores {
             actualizarPuntosCadena(cvb, transaccionActor);
 
             disable = true;
+
             
             if(comprobanteBean.getPagaConPuntos()){
                 pagarConPuntos();
             }
+
 
         } catch (Exception e) {
             ponerMensajeError("", "Error al registrar comprobante");
@@ -851,17 +858,47 @@ public class RegistroVentaCtr extends Controladores {
         if (cadenaValor.getActores() != null && !cadenaValor.getActores().isEmpty()) {
             for (Actor actor : cadenaValor.getActores()) {
                 if (!actor.equals(consumidor)) {
-                    PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(actor);
-                    PuntosActor puntosCadena = new PuntosActor();
-                    if (puntosConsulta != null) {
-                        puntosCadena = puntosConsulta;
-                        puntosCadena.setTotalPuntos(puntosCadena.getTotalPuntos() + transaccion.getPuntosGanados());
-                        sPuntosActor.actualizarPuntos(puntosCadena);
-                    } else {
-                        puntosCadena.setTotalPuntos(transaccion.getPuntosGanados());
-                        puntosCadena.setActor(actor);
-                        sPuntosActor.crearPuntos(puntosCadena);
+                    try {
+                        PuntosActor puntosConsulta = sPuntosActor.recuperarPuntos(actor);
+                        PuntosActor puntosCadena = new PuntosActor();
+                        if (puntosConsulta != null) {
+                            puntosCadena = puntosConsulta;
+                            puntosCadena.setTotalPuntos(puntosCadena.getTotalPuntos() + transaccion.getPuntosGanados());
+                            sPuntosActor.actualizarPuntos(puntosCadena);
+                        } else {
+                            puntosCadena.setTotalPuntos(transaccion.getPuntosGanados());
+                            puntosCadena.setActor(actor);
+                            sPuntosActor.crearPuntos(puntosCadena);
+                        }
+
+                        TransaccionesActor transaccionCadena = new TransaccionesActor();
+                        transaccionCadena.setConsumidor(actor);
+                        transaccionCadena.setNumDocumentoActor(actor.getCedrucpasAct());
+                        transaccionCadena.setPorcentajeDescuento(actor.getPorcentaje());
+                        transaccionCadena.setFechaTransaccion(new Date());
+                        transaccionCadena.setLocalVenta(local);
+                        transaccionCadena.setValorCompra(comprobanteBean.getComprobante().getTotalCompra());
+                        transaccionCadena = this.calcularPuntos(transaccionCadena);
+                        transaccionCadena.setNumeroComprobante(comprobanteBean.getComprobante().getNumComprobante());
+                        transaccionCadena.setUsuario(usuario);
+                        System.out.println("porDesc" + actor.getPorcentaje());
+                        System.out.println("totalCompra" + comprobanteBean.getComprobante().getTotalCompra());
+                        
+                        sTransaccionesActor.crearTransaccion(transaccionCadena);
+                    } catch (EJBException e) {
+                        @SuppressWarnings("ThrowableResultIgnored")
+                        Exception cause = e.getCausedByException();
+                        if (cause instanceof ConstraintViolationException) {
+                            @SuppressWarnings("ThrowableResultIgnored")
+                            ConstraintViolationException cve = (ConstraintViolationException) e.getCausedByException();
+                            for (ConstraintViolation<? extends Object> v : cve.getConstraintViolations()) {
+                                System.err.println(v);
+                                System.err.println("==>>" + v.getMessage());
+                            }
+                        }
+                        System.err.println("ejb exception");
                     }
+
 
                     TransaccionesActor transaccionCadena = new TransaccionesActor();
                     transaccionCadena.setConsumidor(actor);
@@ -874,7 +911,9 @@ public class RegistroVentaCtr extends Controladores {
                     transaccionCadena.setNumeroComprobante(comprobanteBean.getComprobante().getNumComprobante());
                     transaccionCadena.setUsuario(usuario);
                     sTransaccionesActor.crearTransaccion(transaccionCadena);
+
                 }//fin de actor no es consumidor
+
             }//fin de for
         }//fin de cadena de valor
 

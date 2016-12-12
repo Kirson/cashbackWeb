@@ -105,9 +105,10 @@ public class ConsultaVentaLocalCtr extends Controladores {
                     List<ComprobanteFormaPago> consultaListaFormaPago = sComprobanteFormaPago.listarFormaPagoComprobante(cr);
                     if(consultaListaFormaPago!=null && !consultaListaFormaPago.isEmpty()){
                         for(FormaPagoBean fpb:listaFormaPagoBean){
+                            Double subFormaPago = 0D;
                             for(ComprobanteFormaPago cfp:consultaListaFormaPago){
                                 if(fpb.getFormaPago().equals(cfp.getFormaPago())){
-                                    Double subFormaPago = fpb.getTotalFormaPago();
+                                    
                                     subFormaPago = subFormaPago + cfp.getValorFormaPago().doubleValue();
                                     subFormaPago = NumberUtil.round(subFormaPago);
                                     fpb.setTotalFormaPago( subFormaPago);
